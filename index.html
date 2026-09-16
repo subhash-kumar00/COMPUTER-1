@@ -33,8 +33,8 @@
       </div>
     </div>
     <div class="flex items-center space-x-3">
-      <button id="fullscreenToggleBtn" class="px-3 py-1.5 bg-slate-700 hover:bg-slate-600 text-slate-200 text-xs font-semibold rounded-lg border border-slate-600 transition flex items-center space-x-1">
-        <span>⛶ Fullscreen</span>
+      <button id="fullscreenToggleBtn" class="px-3 py-1.5 bg-slate-700 hover:bg-slate-600 text-slate-200 text-xs font-semibold rounded-lg border border-slate-600 transition">
+        ⛶ Fullscreen
       </button>
       <div class="text-right">
         <span id="displayUser" class="text-xs sm:text-sm font-semibold text-cyan-300">പഠിതാവ്</span>
@@ -61,7 +61,7 @@
       </div>
 
       <div class="pt-2 space-y-3">
-        <button type="button" onclick="startExamDirectly()" class="w-full py-4 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 text-slate-950 font-black rounded-2xl transition transform active:scale-95 shadow-xl text-base flex items-center justify-center space-x-2 cursor-pointer">
+        <button type="button" id="startExamBtn" class="w-full py-4 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 text-slate-950 font-black rounded-2xl transition transform active:scale-95 shadow-xl text-base flex items-center justify-center space-x-2 cursor-pointer">
           <span>പരീക്ഷ ആരംഭിക്കുക</span>
           <span>🚀</span>
         </button>
@@ -107,7 +107,7 @@
         </div>
 
         <div class="mb-5">
-          <h2 id="qText" class="font-semibold leading-relaxed text-slate-100 whitespace-pre-line transition-all duration-200"></h2>
+          <h2 id="qText" class="text-sm sm:text-base font-semibold leading-relaxed text-slate-100 whitespace-pre-line"></h2>
         </div>
 
         <div id="optionsContainer" class="space-y-2.5 mb-6"></div>
@@ -127,7 +127,7 @@
       </div>
     </div>
 
-    <!-- Step 3: Result Screen & Interactive Reviews -->
+    <!-- Step 3: Result Screen -->
     <div id="resultScreen" class="w-full hidden space-y-6">
       <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6 sm:p-8 shadow-2xl text-center space-y-5">
         
@@ -146,7 +146,6 @@
           </span>
         </div>
 
-        <!-- Motivation Badge -->
         <div id="scoreMotivationBadge" class="max-w-xl mx-auto p-4 rounded-2xl border text-sm leading-relaxed transition shadow-inner"></div>
 
         <!-- Clickable Score Cards -->
@@ -157,19 +156,19 @@
             <span class="text-[10px] text-slate-500 block">25 ൽ</span>
           </div>
 
-          <div id="filterCorrectCard" class="bg-slate-900/80 p-3.5 rounded-xl border border-emerald-800/80 hover:bg-emerald-950/40 cursor-pointer transition shadow hover:border-emerald-500 group" title="ശരിയായ ചോദ്യങ്ങൾ കാണാൻ ക്ലിക്ക് ചെയ്യുക">
+          <div id="filterCorrectCard" class="bg-slate-900/80 p-3.5 rounded-xl border border-emerald-800/80 hover:bg-emerald-950/40 cursor-pointer transition shadow hover:border-emerald-500 group">
             <span class="text-[11px] text-emerald-400 block font-semibold uppercase group-hover:underline">ശരി (+1) 👆</span>
             <span id="correctCount" class="text-xl sm:text-2xl font-bold text-emerald-400 font-mono">0</span>
             <span class="text-[10px] text-emerald-400/60 block">കാണാൻ ക്ലിക്ക് ചെയ്യുക</span>
           </div>
 
-          <div id="filterWrongCard" class="bg-slate-900/80 p-3.5 rounded-xl border border-rose-800/80 hover:bg-rose-950/40 cursor-pointer transition shadow hover:border-rose-500 group" title="തെറ്റിയ ചോദ്യങ്ങൾ കാണാൻ ക്ലിക്ക് ചെയ്യുക">
+          <div id="filterWrongCard" class="bg-slate-900/80 p-3.5 rounded-xl border border-rose-800/80 hover:bg-rose-950/40 cursor-pointer transition shadow hover:border-rose-500 group">
             <span class="text-[11px] text-rose-400 block font-semibold uppercase group-hover:underline">തെറ്റ് (-0.33) 👆</span>
             <span id="wrongCount" class="text-xl sm:text-2xl font-bold text-rose-400 font-mono">0</span>
             <span class="text-[10px] text-rose-400/60 block">കാണാൻ ക്ലിക്ക് ചെയ്യുക</span>
           </div>
 
-          <div id="filterSkippedCard" class="bg-slate-900/80 p-3.5 rounded-xl border border-slate-600/80 hover:bg-slate-700/40 cursor-pointer transition shadow hover:border-slate-400 group" title="സ്കിപ്പ് ചെയ്ത ചോദ്യങ്ങൾ കാണാൻ ക്ലിക്ക് ചെയ്യുക">
+          <div id="filterSkippedCard" class="bg-slate-900/80 p-3.5 rounded-xl border border-slate-600/80 hover:bg-slate-700/40 cursor-pointer transition shadow hover:border-slate-400 group">
             <span class="text-[11px] text-slate-300 block font-semibold uppercase group-hover:underline">Skip ചെയ്തവ 👆</span>
             <span id="skipCount" class="text-xl sm:text-2xl font-bold text-slate-300 font-mono">0</span>
             <span class="text-[10px] text-slate-400 block">കാണാൻ ക്ലിക്ക് ചെയ്യുക</span>
@@ -436,13 +435,13 @@
     let currentIndex = 0;
     let userAnswers = new Array(questionsData.length).fill(null);
     let wrongQuestionsList = [];
-    let currentFontSizeLevel = 1;
+    let currentFontSizeLevel = 0;
 
     const fontSizes = [
       { q: "text-sm sm:text-base" },
-      { text: "text-base sm:text-lg" },
-      { text: "text-lg sm:text-xl" },
-      { text: "text-xl sm:text-2xl" }
+      { q: "text-base sm:text-lg" },
+      { q: "text-lg sm:text-xl" },
+      { q: "text-xl sm:text-2xl" }
     ];
 
     let timeLeft = 25 * 60;
@@ -487,6 +486,9 @@
       if (motElem) {
         motElem.innerText = `ഹലോ, ${currentUser.name}! ✨`;
       }
+
+      // ബട്ടൺ ഇവന്റ് ലിസണർ നൽകുന്നു
+      document.getElementById('startExamBtn').addEventListener('click', startExamDirectly);
     });
 
     document.getElementById('fullscreenToggleBtn').onclick = () => {
@@ -503,7 +505,7 @@
       if (currentFontSizeLevel > 0) { currentFontSizeLevel--; updateFontSize(); }
     };
     document.getElementById('fontReset').onclick = () => {
-      currentFontSizeLevel = 1; updateFontSize();
+      currentFontSizeLevel = 0; updateFontSize();
     };
     document.getElementById('fontIncrease').onclick = () => {
       if (currentFontSizeLevel < fontSizes.length - 1) { currentFontSizeLevel++; updateFontSize(); }
@@ -511,7 +513,9 @@
 
     function updateFontSize() {
       const qElem = document.getElementById('qText');
-      qElem.className = `${fontSizes[currentFontSizeLevel].q} font-semibold leading-relaxed text-slate-100 whitespace-pre-line transition-all duration-200`;
+      if (qElem && fontSizes[currentFontSizeLevel]) {
+        qElem.className = `${fontSizes[currentFontSizeLevel].q} font-semibold leading-relaxed text-slate-100 whitespace-pre-line`;
+      }
     }
 
     function startExamDirectly() {
@@ -584,6 +588,7 @@
       const answered = userAnswers.filter(a => a !== null).length;
       document.getElementById('answeredCountTxt').innerText = `പൂർത്തിയാക്കിയത്: ${answered}/${questionsData.length}`;
       updatePalette();
+      updateFontSize();
     }
 
     document.getElementById('reportQuestionBtn').addEventListener('click', () => {
