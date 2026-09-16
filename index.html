@@ -270,7 +270,7 @@
   </main>
 
   <footer class="text-center py-3 text-[11px] text-slate-500 border-t border-slate-800">
-    കംപ്യൂട്ടർ സയൻസ്: ഇൻപുട്ട്-ഔട്ട്പുട്ട്, മെമ്മറി, സിപിയു, മദർബോർഡ് & ഇന്റർനെറ്റ് - സെറ്റ് 1 | Special Notes by Subhash Kumar[span_0](start_span)[span_0](end_span)
+    കംപ്യൂട്ടർ സയൻസ്: ഇൻപുട്ട്-ഔട്ട്പുട്ട്, മെമ്മറി, സിപിയു, മദർബോർഡ് & ഇന്റർനെറ്റ് - സെറ്റ് 1 | Special Notes by Subhash Kumar
   </footer>
 
   <script>
@@ -279,7 +279,7 @@
     let ORIGINAL_PDF_URL = "https://drive.google.com/file/d/1ExampleDriveLinkHere/view?usp=sharing";
     let examTitle = "കംപ്യൂട്ടർ സയൻസ് - സെറ്റ് 1";
 
-        const questionsData = [
+    const questionsData = [
       {
         q: "ബാങ്കുകളിൽ ചെക്കുകളിലെ അക്കങ്ങൾ വേഗത്തിൽ സ്‌കാൻ ചെയ്‌തു തിരിച്ചറിയാൻ ഉപയോഗിക്കുന്ന ഇൻപുട്ട് ഉപകരണം ഏത്?",
         options: [
@@ -978,6 +978,8 @@
       }
 
       payload.sheetName = QUIZ_SHEET_NAME;
+      payload.wrongQuestionsCount = wrongQuestionsList.length;
+      payload.wrongQuestionsList = wrongQuestionsList.join(", ");
 
       fetch(GOOGLE_SHEET_WEBAPP_URL, {
         method: 'POST',
