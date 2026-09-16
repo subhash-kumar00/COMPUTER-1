@@ -3,1059 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>കംപ്യൂട്ടർ സെറ്റ് 1 - മോഡൽ എക്സാം</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Noto+Sans+Malayalam:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-  <style>
-    body { font-family: 'Noto Sans Malayalam', 'Manrope', sans-serif; }
-    .custom-scroll::-webkit-scrollbar { width: 6px; }
-    .custom-scroll::-webkit-scrollbar-thumb { background: #475569; border-radius: 4px; }
-    @keyframes popZoom {
-      0% { transform: scale(0.8); opacity: 0; }
-      50% { transform: scale(1.08); opacity: 1; }
-      100% { transform: scale(1); opacity: 1; }
-    }
-    .animate-pop { animation: popZoom 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
-  </style>
-</head>
-<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col justify-between select-none">
-
-  <!-- Header -->
-  <header class="bg-slate-800/95 backdrop-blur border-b border-slate-700 px-4 sm:px-6 py-3 flex items-center justify-between sticky top-0 z-50">
-    <div class="flex items-center space-x-3">
-      <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center font-black text-lg shadow-lg text-slate-950">
-        PSC
-      </div>
-      <div>
-        <h1 class="font-bold text-sm sm:text-base text-cyan-400 leading-tight">കംപ്യൂട്ടർ സയൻസ് - സെറ്റ് 1</h1>
-        <p class="text-[11px] text-slate-400">Special Notes by Subhash Kumar | 25 ചോദ്യങ്ങൾ (25 മിനിറ്റ്)</p>
-      </div>
-    </div>
-    <div class="flex items-center space-x-3">
-      <button id="fullscreenToggleBtn" class="px-3 py-1.5 bg-slate-700 hover:bg-slate-600 text-slate-200 text-xs font-semibold rounded-lg border border-slate-600 transition flex items-center space-x-1">
-        <span>⛶ Fullscreen</span>
-      </button>
-      <div class="text-right">
-        <span id="displayUser" class="text-xs sm:text-sm font-semibold text-cyan-300">പഠിതാവ്</span>
-        <p class="text-[10px] text-emerald-400 font-mono">+1.00 / -0.33 Mark</p>
-      </div>
-    </div>
-  </header>
-
-  <main class="flex-1 flex flex-col items-center justify-center p-3 sm:p-6 w-full max-w-4xl mx-auto">
-    
-    <!-- Step 1: Motivation & Start Screen -->
-    <div id="motivationScreen" class="w-full max-w-lg bg-slate-800 border-2 border-cyan-500/60 rounded-3xl p-8 sm:p-10 shadow-2xl text-center space-y-6 animate-pop">
-      <div class="w-20 h-20 bg-gradient-to-tr from-cyan-500 to-blue-600 rounded-full flex items-center justify-center mx-auto text-4xl shadow-xl animate-bounce">
-        💻
-      </div>
-      <div>
-        <h2 id="motivateName" class="text-2xl sm:text-3xl font-black text-white">ഹലോ! ✨</h2>
-        <p class="text-cyan-400 font-extrabold text-xs sm:text-sm mt-1 uppercase tracking-widest">കംപ്യൂട്ടർ സയൻസ് പരീക്ഷയിലേക്ക് സ്വാഗതം!</p>
-      </div>
-
-      <div class="bg-slate-900/90 p-5 rounded-2xl border border-slate-700 text-slate-200 text-xs sm:text-sm leading-relaxed space-y-2 shadow-inner">
-        <p class="font-bold text-cyan-400 text-sm">"കൃത്യതയും സമഗ്രമായ അറിവുമാണ് കംപ്യൂട്ടർ സയൻസ് പരീക്ഷകളിൽ നിങ്ങളെ മുന്നിലെത്തിക്കുന്നത്."</p>
-        <p class="text-slate-300">കുറഞ്ഞത് <strong class="text-emerald-400">7 മാർക്ക്</strong> നേടിയാൽ മാത്രമേ ഔദ്യോഗിക നോട്ട്സ് PDF ഡൗൺലോഡ് ചെയ്യാൻ സാധിക്കൂ! ആത്മവിശ്വാസത്തോടെ പരീക്ഷ ആരംഭിക്കുക.</p>
-      </div>
-
-      <div class="pt-2 space-y-3">
-        <button type="button" onclick="startExamDirectly()" class="w-full py-4 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 text-slate-950 font-black rounded-2xl transition transform active:scale-95 shadow-xl text-base flex items-center justify-center space-x-2 cursor-pointer">
-          <span>പരീക്ഷ ആരംഭിക്കുക</span>
-          <span>🚀</span>
-        </button>
-        <button type="button" onclick="fetchLiveLeaderboard()" class="w-full py-2.5 bg-slate-700 hover:bg-slate-600 text-cyan-300 font-bold rounded-xl text-xs transition">
-          📊 ലൈവ് റാങ്ക് ലിസ്റ്റ് കാണുക
-        </button>
-      </div>
-    </div>
-
-    <!-- Step 2: Quiz Question Screen -->
-    <div id="quizScreen" class="w-full hidden flex-col space-y-4">
-      <div class="bg-slate-800 border border-slate-700 rounded-xl p-3 sm:p-4 flex flex-wrap items-center justify-between gap-3 shadow-md">
-        <div class="flex items-center space-x-2">
-          <span class="px-3 py-1 bg-cyan-500/20 text-cyan-300 font-bold rounded-lg text-xs sm:text-sm" id="questionBadge">ചോദ്യം 1 / 25</span>
-          <span class="text-[11px] text-slate-400" id="answeredCountTxt">പൂർത്തിയാക്കിയത്: 0/25</span>
-        </div>
-
-        <!-- Font Size Controls -->
-        <div class="flex items-center space-x-1 bg-slate-900 px-2 py-1 rounded-xl border border-slate-700 text-xs">
-          <span class="text-slate-400 text-[10px] mr-1">Font:</span>
-          <button id="fontDecrease" class="px-2 py-0.5 bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold rounded text-xs">A-</button>
-          <button id="fontReset" class="px-2 py-0.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded text-xs">Norm</button>
-          <button id="fontIncrease" class="px-2 py-0.5 bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold rounded text-xs">A+</button>
-        </div>
-
-        <div class="flex items-center space-x-2 bg-slate-900/90 border border-slate-700 px-3.5 py-1 rounded-xl shadow-inner">
-          <svg class="w-4 h-4 text-cyan-400 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-          <span class="text-xs font-semibold text-slate-400">സമയം:</span>
-          <span id="examTimer" class="font-mono text-sm font-black text-cyan-400">25:00</span>
-        </div>
-
-        <button id="finishMidBtn" class="px-3 py-1 bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/30 text-xs font-semibold rounded-lg transition">
-          ഫിനിഷ് ചെയ്യുക
-        </button>
-      </div>
-
-      <div class="bg-slate-800 border border-slate-700 rounded-2xl p-5 sm:p-8 shadow-2xl relative">
-        <div class="flex justify-end mb-2">
-          <button id="reportQuestionBtn" class="px-2.5 py-1 bg-rose-950/70 hover:bg-rose-900 border border-rose-600/60 rounded-lg text-[11px] font-bold text-rose-300 flex items-center space-x-1 transition shadow-sm">
-            <svg class="w-3.5 h-3.5 text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
-            <span>Report Question</span>
-          </button>
-        </div>
-
-        <div class="mb-5">
-          <h2 id="qText" class="font-semibold leading-relaxed text-slate-100 whitespace-pre-line transition-all duration-200"></h2>
-        </div>
-
-        <div id="optionsContainer" class="space-y-2.5 mb-6"></div>
-
-        <div class="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-slate-700">
-          <button id="prevBtn" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-slate-200 text-xs sm:text-sm font-semibold rounded-xl transition disabled:opacity-40">‹ Previous</button>
-          <div class="flex items-center space-x-2">
-            <button id="skipBtn" class="px-3.5 py-2 bg-slate-700/50 hover:bg-slate-700 text-slate-300 text-xs sm:text-sm rounded-xl border border-slate-600 transition">Skip</button>
-            <button id="nextBtn" class="px-5 py-2 bg-cyan-500 hover:bg-cyan-600 text-slate-950 font-bold text-xs sm:text-sm rounded-xl transition transform active:scale-95 shadow-md">Next ›</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="bg-slate-800/80 border border-slate-700 rounded-xl p-3">
-        <p class="text-[11px] font-semibold text-slate-400 mb-2">ചോദ്യങ്ങളിലേക്ക് നേരിട്ട് പോകാൻ ക്ലിക്ക് ചെയ്യുക:</p>
-        <div id="paletteContainer" class="flex flex-wrap gap-1.5 max-h-20 overflow-y-auto custom-scroll pr-1"></div>
-      </div>
-    </div>
-
-    <!-- Step 3: Result Screen & Interactive Reviews -->
-    <div id="resultScreen" class="w-full hidden space-y-6">
-      <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6 sm:p-8 shadow-2xl text-center space-y-5">
-        
-        <div class="flex justify-end">
-          <button type="button" onclick="returnToHomeWithData()" class="px-4 py-2 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-black rounded-xl text-xs transition shadow flex items-center space-x-1.5">
-            <span>🏠</span>
-            <span>ഹോം പേജിലേക്ക് മടങ്ങുക (Save Result)</span>
-          </button>
-        </div>
-
-        <div>
-          <h2 class="text-2xl sm:text-3xl font-black text-cyan-400 mb-1">പരീക്ഷാ ഫലം (Exam Result)</h2>
-          <p class="text-sm text-slate-400 mb-1" id="resultCandidateInfo"></p>
-          <span class="inline-block text-[11px] text-cyan-400 bg-cyan-950/60 px-3 py-1 rounded-full border border-cyan-800">
-            ✓ ഫലം പ്രൊഫൈൽ ഹിസ്റ്ററിയിൽ രേഖപ്പെടുത്തിയിട്ടുണ്ട്
-          </span>
-        </div>
-
-        <!-- Motivation Badge -->
-        <div id="scoreMotivationBadge" class="max-w-xl mx-auto p-4 rounded-2xl border text-sm leading-relaxed transition shadow-inner"></div>
-
-        <!-- Clickable Score Cards -->
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-2xl mx-auto">
-          <div class="bg-slate-900/80 p-3.5 rounded-xl border border-slate-700">
-            <span class="text-[11px] text-slate-400 block font-semibold uppercase">നെറ്റ് സ്കോർ</span>
-            <span id="finalScore" class="text-2xl sm:text-3xl font-black text-cyan-400 font-mono">0.00</span>
-            <span class="text-[10px] text-slate-500 block">25 ൽ</span>
-          </div>
-
-          <div id="filterCorrectCard" class="bg-slate-900/80 p-3.5 rounded-xl border border-emerald-800/80 hover:bg-emerald-950/40 cursor-pointer transition shadow hover:border-emerald-500 group" title="ശരിയായ ചോദ്യങ്ങൾ കാണാൻ ക്ലിക്ക് ചെയ്യുക">
-            <span class="text-[11px] text-emerald-400 block font-semibold uppercase group-hover:underline">ശരി (+1) 👆</span>
-            <span id="correctCount" class="text-xl sm:text-2xl font-bold text-emerald-400 font-mono">0</span>
-            <span class="text-[10px] text-emerald-400/60 block">കാണാൻ ക്ലിക്ക് ചെയ്യുക</span>
-          </div>
-
-          <div id="filterWrongCard" class="bg-slate-900/80 p-3.5 rounded-xl border border-rose-800/80 hover:bg-rose-950/40 cursor-pointer transition shadow hover:border-rose-500 group" title="തെറ്റിയ ചോദ്യങ്ങൾ കാണാൻ ക്ലിക്ക് ചെയ്യുക">
-            <span class="text-[11px] text-rose-400 block font-semibold uppercase group-hover:underline">തെറ്റ് (-0.33) 👆</span>
-            <span id="wrongCount" class="text-xl sm:text-2xl font-bold text-rose-400 font-mono">0</span>
-            <span class="text-[10px] text-rose-400/60 block">കാണാൻ ക്ലിക്ക് ചെയ്യുക</span>
-          </div>
-
-          <div id="filterSkippedCard" class="bg-slate-900/80 p-3.5 rounded-xl border border-slate-600/80 hover:bg-slate-700/40 cursor-pointer transition shadow hover:border-slate-400 group" title="സ്കിപ്പ് ചെയ്ത ചോദ്യങ്ങൾ കാണാൻ ക്ലിക്ക് ചെയ്യുക">
-            <span class="text-[11px] text-slate-300 block font-semibold uppercase group-hover:underline">Skip ചെയ്തവ 👆</span>
-            <span id="skipCount" class="text-xl sm:text-2xl font-bold text-slate-300 font-mono">0</span>
-            <span class="text-[10px] text-slate-400 block">കാണാൻ ക്ലിക്ക് ചെയ്യുക</span>
-          </div>
-        </div>
-
-        <div id="sheetStatus" class="text-xs text-cyan-400 animate-pulse">സ്കോർ ഗൂഗിൾ ഷീറ്റിലേക്ക് രേഖപ്പെടുത്തുന്നു...</div>
-
-        <!-- 7 Mark Cut-off Warning Box -->
-        <div id="pdfLockNotice" class="hidden max-w-md mx-auto p-3.5 bg-rose-950/40 border border-rose-800/80 rounded-xl text-xs text-rose-300">
-          ⚠️ <strong>ശ്രദ്ധിക്കുക:</strong> ഔദ്യോഗിക നോട്ടുകൾ PDF ഡൗൺലോഡ് ചെയ്യാൻ കുറഞ്ഞത് <strong>7 മാർക്ക്</strong> നേടിയിരിക്കണം. നിങ്ങളുടെ നിലവിലെ സ്കോർ 7-ൽ താഴെയാണ്.
-        </div>
-
-        <div class="flex flex-wrap items-center justify-center gap-3 pt-2">
-          <button type="button" id="downloadOriginalNoteBtn" onclick="openFeedbackModal()" class="hidden px-5 py-2.5 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 text-slate-950 font-black rounded-xl text-sm transition shadow-lg flex items-center space-x-2 cursor-pointer">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"></path></svg>
-            <span>ഔദ്യോഗിക നോട്ടുകൾ PDF ഡൗൺലോഡ് ചെയ്യുക 📥</span>
-          </button>
-
-          <button type="button" id="downloadPdfBtn" class="px-5 py-2.5 bg-rose-600 hover:bg-rose-700 text-white font-bold rounded-xl text-sm transition shadow-lg flex items-center space-x-2">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-            <span>സ്കോർകാർഡ് PDF</span>
-          </button>
-
-          <button type="button" onclick="fetchLiveLeaderboard()" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl text-sm transition shadow-lg">
-            📊 ലൈവ് റാങ്ക് ലിസ്റ്റ് കാണുക
-          </button>
-
-          <button type="button" onclick="returnToHomeWithData()" class="px-5 py-2.5 bg-slate-700 hover:bg-slate-600 text-white font-bold rounded-xl text-sm transition flex items-center space-x-1.5">
-            <span>🏠</span>
-            <span>ഹോം പോർട്ടൽ</span>
-          </button>
-        </div>
-      </div>
-
-      <!-- Filtered Question Review Area -->
-      <div id="filterReviewArea" class="hidden bg-slate-800 border-2 border-cyan-500/50 rounded-2xl p-6 sm:p-8 shadow-2xl space-y-4">
-        <div class="flex items-center justify-between border-b border-slate-700 pb-3">
-          <h3 id="filterReviewTitle" class="text-lg font-bold text-white"></h3>
-          <button type="button" id="closeFilterReviewBtn" class="text-xs bg-slate-700 hover:bg-slate-600 px-3 py-1.5 rounded-lg text-white font-semibold">ക്ലോസ് ചെയ്യുക ✕</button>
-        </div>
-        <div id="filterReviewList" class="space-y-4 max-h-[60vh] overflow-y-auto custom-scroll pr-1"></div>
-      </div>
-
-      <!-- Permanent Solutions Area at bottom -->
-      <div id="pdfExportWrapper" class="bg-slate-800 border border-slate-700 rounded-2xl p-6 sm:p-8 shadow-2xl">
-        <div class="border-b border-slate-700 pb-4 mb-6">
-          <h3 class="text-xl font-bold text-cyan-400">കംപ്യൂട്ടർ സയൻസ് (സെറ്റ് 1) - ഉത്തര സൂചിക</h3>
-          <p class="text-xs text-slate-400 mt-1" id="pdfReportCandidateSubheader">വിദ്യാർത്ഥി വിവരങ്ങൾ</p>
-        </div>
-        <div id="solutionsContainer" class="space-y-6"></div>
-      </div>
-    </div>
-
-    <!-- Leaderboard Modal -->
-    <div id="leaderboardModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-      <div class="bg-slate-800 border border-slate-700 rounded-2xl max-w-xl w-full p-6 shadow-2xl flex flex-col max-h-[85vh]">
-        <div class="flex items-center justify-between border-b border-slate-700 pb-4 mb-4">
-          <div>
-            <h3 class="text-xl font-bold text-cyan-400">ലൈവ് റാങ്ക് ലിസ്റ്റ് (Google Sheet)</h3>
-            <p class="text-xs text-slate-400">ആദ്യ ശ്രമത്തിലെ സ്കോർ അടിസ്ഥാനമാക്കി ക്രമീകരിച്ചത്</p>
-          </div>
-          <button type="button" onclick="closeLeaderboard()" class="text-slate-400 hover:text-white text-2xl font-bold">&times;</button>
-        </div>
-        <div id="leaderboardLoading" class="py-10 text-center text-sm text-slate-400">ഗൂഗിൾ ഷീറ്റിൽ നിന്നും റാങ്ക് ലിസ്റ്റ് ശേഖരിക്കുന്നു...</div>
-        <div class="flex-1 overflow-y-auto custom-scroll pr-1 hidden" id="leaderboardTableWrapper">
-          <table class="w-full text-left text-sm">
-            <thead class="text-xs uppercase bg-slate-900/80 text-slate-400 sticky top-0">
-              <tr>
-                <th class="py-2.5 px-3">റാങ്ക്</th>
-                <th class="py-2.5 px-3">പേര്</th>
-                <th class="py-2.5 px-3">മൊബൈൽ</th>
-                <th class="py-2.5 px-3 text-right">മാർക്ക്</th>
-              </tr>
-            </thead>
-            <tbody id="leaderboardBody" class="divide-y divide-slate-700"></tbody>
-          </table>
-        </div>
-        <div class="pt-4 border-t border-slate-700 mt-4 text-center">
-          <button type="button" onclick="closeLeaderboard()" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 rounded-lg text-xs font-semibold text-white">ക്ലോസ് ചെയ്യുക</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Feedback Modal -->
-    <div id="feedbackModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-      <div class="bg-slate-800 border border-slate-700 rounded-2xl max-w-sm w-full p-6 shadow-2xl text-center space-y-4">
-        <div class="w-12 h-12 rounded-full bg-cyan-500/20 text-cyan-400 flex items-center justify-center mx-auto text-2xl">🌟</div>
-        <h3 class="text-lg font-bold text-white">നിങ്ങൾക്ക് ഈ ക്വിസ് ഇഷ്ടമായോ?</h3>
-        <p class="text-xs text-slate-400">പ്രതികരണം നൽകിയ ശേഷം ഔദ്യോഗിക നോട്ട്സ് PDF ഡൗൺലോഡ് ചെയ്യാം.</p>
-        <div class="flex items-center justify-center space-x-4 pt-2">
-          <button type="button" onclick="recordFeedbackAndOpenDownload('Like')" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl text-sm transition">👍 Like</button>
-          <button type="button" onclick="recordFeedbackAndOpenDownload('Dislike')" class="px-5 py-2.5 bg-rose-600 hover:bg-rose-500 text-white font-bold rounded-xl text-sm transition">👎 Dislike</button>
-        </div>
-      </div>
-    </div>
-
-  </main>
-
-  <footer class="text-center py-3 text-[11px] text-slate-500 border-t border-slate-800">
-    കംപ്യൂട്ടർ സയൻസ്: ഇൻപുട്ട്-ഔട്ട്പുട്ട്, മെമ്മറി, സിപിയു, മദർബോർഡ് & ഇന്റർനെറ്റ് - സെറ്റ് 1 | Special Notes by Subhash Kumar[span_0](start_span)[span_0](end_span)
-  </footer>
-
-  <script>
-    let GOOGLE_SHEET_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbztE9bExjlH5a9Y_O8pU9CzVZy5zl-wzycDISurGzxqwuWB71Nxquzpg00Ocf2QR9Zb/exec";
-    const QUIZ_SHEET_NAME = "Computer_Science_Set1";
-    let ORIGINAL_PDF_URL = "https://drive.google.com/file/d/1ExampleDriveLinkHere/view?usp=sharing";
-    let examTitle = "കംപ്യൂട്ടർ സയൻസ് - സെറ്റ് 1";
-
-    const questionsData = [
-      {
-        q: "ബാങ്കുകളിൽ ചെക്കുകളിലെ അക്കങ്ങൾ വേഗത്തിൽ സ്‌കാൻ ചെയ്‌തു തിരിച്ചറിയാൻ ഉപയോഗിക്കുന്ന ഇൻപുട്ട് ഉപകരണം ഏത്?[span_1](start_span)[span_1](end_span)",
-        options: ["ഒപ്റ്റിക്കൽ മാർക്ക് റീഡർ", "മാഗ്നറ്റിക് ഇങ്ക് ക്യാരക്‌ടർ റെക്കഗ്നിഷൻ", "ബാർകോഡ് റീഡർ", "ഒപ്റ്റിക്കൽ ക്യാരക്ടർ റീഡർ"],
-        ans: 1,
-        exp: "ചെക്കുകളിൽ പ്രത്യേക കാന്തിക മഷി ഉപയോഗിച്ച് അച്ചടിച്ച കോഡുകൾ വായിക്കാൻ ഉപയോഗിക്കുന്ന ഇൻപുട്ട് ഉപകരണമാണ് MICR (Magnetic Ink Character Recognition)[span_2](start_span)[span_2](end_span)."
-      },
-      {
-        q: "കംപ്യൂട്ടറിന്റെ പ്രവർത്തനത്തിന് ആവശ്യമായ അടിസ്ഥാന പ്രോഗ്രാമുകൾ സ്ഥിരമായി സൂക്ഷിക്കുന്ന റോം (ROM) ചിപ്പ് സാധാരണയായി കാണപ്പെടുന്നത് എവിടെയാണ്?[span_3](start_span)[span_3](end_span)",
-        options: ["മദർബോർഡ്", "ഹാർഡ് ഡിസ്ക്", "ഫ്ലാഷ് ഡ്രൈവ്", "കൺട്രോൾ പാനൽ"],
-        ans: 0,
-        exp: "മദർബോർഡിൽ (Motherboard) ഉറപ്പിച്ചിരിക്കുന്ന റോം (ROM) ചിപ്പിലാണ് കംപ്യൂട്ടർ ഓൺ ചെയ്യുമ്പോൾ പ്രവർത്തിക്കുന്ന ബയോസ് (BIOS) പ്രോഗ്രാം സൂക്ഷിക്കുന്നത്[span_4](start_span)[span_4](end_span)."
-      },
-      {
-        q: "കംപ്യൂട്ടർ ഇൻപുട്ട്-ഔട്ട്പുട്ട് ഉപകരണങ്ങളെക്കുറിച്ചുള്ള താഴെ പറയുന്ന പ്രസ്താവനകളിൽ ശരിയായവ ഏവ?[span_5](start_span)[span_5](end_span)\n1. ടച്ച് സ്ക്രീനും മോഡവും ഒരേസമയം ഇൻപുട്ടായും ഔട്ട്പുട്ടായും പ്രവർത്തിക്കുന്ന ഉപകരണങ്ങളാണ്.[span_6](start_span)[span_6](end_span)\n2. സാധാരണ കീബോർഡുകളിൽ ഏറ്റവും നീളം കൂടിയ കീ സ്പേസ്ബാർ ആണ്.[span_7](start_span)[span_7](end_span)\n3. ലേസർ പ്രിന്ററുകൾ നോൺ-ഇംപാക്ട് പ്രിന്ററുകളുടെ ഗണത്തിൽ ഉൾപ്പെടുന്നു.[span_8](start_span)[span_8](end_span)",
-        options: ["1, 2 ശരിയാണ്", "2, 3 ശരിയാണ്", "1, 3 ശരിയാണ്", "1, 2, 3 പ്രസ്താവനകളും ശരിയാണ്"],
-        ans: 3,
-        exp: "ടച്ച് സ്ക്രീൻ ഇൻപുട്ടും ഡിസ്പ്ലേയും നൽകുന്നു, സ്പേസ്ബാർ ഏറ്റവും നീളമുള്ള കീയാണ്, ലേസർ പ്രിൻ്റർ നോൺ-ഇംപാക്ട് രീതിയിലാണ് പ്രവർത്തിക്കുന്നത്. മൂന്ന് പ്രസ്താവനകളും ശരിയാണ്[span_9](start_span)[span_9](end_span)."
-      },
-      {
-        q: "സിപിയുവിന്റെയും (CPU) റാമുകളുടെയും (RAM) വേഗതയിലെ വ്യത്യാസം പരിഹരിക്കാൻ അവയ്ക്കിടയിൽ പ്രവർത്തിക്കുന്ന അതിവേഗ മെമ്മറി ഏതാണ്?[span_10](start_span)[span_10](end_span)",
-        options: ["വെർച്വൽ മെമ്മറി", "ഫ്ലാഷ് മെമ്മറി", "കാഷ് മെമ്മറി", "സെക്കൻഡറി മെമ്മറി"],
-        ans: 2,
-        exp: "പ്രൊസസ്സറിൻ്റെ പ്രവർത്തനം വേഗത്തിലാക്കാൻ സിപിയുവിനും പ്രധാന മെമ്മറിക്കും ഇടയിൽ താൽക്കാലികമായി ഡാറ്റ സൂക്ഷിക്കുന്ന അതിവേഗ മെമ്മറിയാണ് കാഷ് മെമ്മറി (Cache Memory)[span_11](start_span)[span_11](end_span)."
-      },
-      {
-        q: "പ്രൈമറി മെമ്മറിയെയും സെക്കൻഡറി മെമ്മറിയെയും സംബന്ധിച്ച പ്രസ്താവനകളിൽ ശരിയായവ ഏവ?[span_12](start_span)[span_12](end_span)\n1. സെക്കൻഡറി മെമ്മറിയെ അപേക്ഷിച്ച് പ്രൈമറി മെമ്മറിക്ക് പ്രവർത്തന വേഗത വളരെ കൂടുതലാണ്.[span_13](start_span)[span_13](end_span)\n2. ഹാർഡ് ഡിസ്കും പെൻഡ്രൈവും സെക്കൻഡറി സ്റ്റോറേജ് ഉപകരണങ്ങൾക്ക് ഉദാഹരണങ്ങളാണ്.[span_14](start_span)[span_14](end_span)\n3. കംപ്യൂട്ടറിന്റെ പ്രധാന മെമ്മറിയിൽ നേരിട്ട് പ്രവേശിക്കാൻ സിപിയുവിന് സാധിക്കും.[span_15](start_span)[span_15](end_span)",
-        options: ["1, 2 ശരിയാണ്", "1, 2, 3 പ്രസ്താവനകളും ശരിയാണ്", "2, 3 ശരിയാണ്", "1, 3 ശരിയാണ്"],
-        ans: 1,
-        exp: "പ്രൈമറി മെമ്മറി (RAM) വേഗതയേറിയതാണ്, ഹാർഡ് ഡിസ്ക് സെക്കൻഡറിയാണ്, സിപിയു റാമിൽ നിന്നാണ് ഡാറ്റ നേരിട്ട് എടുക്കുന്നത്. മൂന്ന് പ്രസ്താവനകളും ശരിയാണ്[span_16](start_span)[span_16](end_span)."
-      },
-      {
-        q: "വെബ് പേജുകൾ പരസ്പരം ബന്ധിപ്പിക്കാനും ഒരു പേജിൽ നിന്ന് മറ്റൊന്നിലേക്ക് എളുപ്പത്തിൽ സഞ്ചരിക്കാനും സഹായിക്കുന്ന ലിങ്കുകൾ ഏത് പേരിൽ അറിയപ്പെടുന്നു?[span_17](start_span)[span_17](end_span)",
-        options: ["വെബ് ബ്രൗസർ", "ഡൊമൈൻ നെയിം", "ഹൈപ്പർലിങ്ക്", "പ്രോട്ടോക്കോൾ"],
-        ans: 2,
-        exp: "ഇൻ്റർനെറ്റിലെ പ്രമാണങ്ങളെയും വെബ് പേജുകളെയും തമ്മിൽ ബന്ധിപ്പിക്കുന്ന വാക്കോ ചിത്രമോ ആയ ഘടകമാണ് ഹൈപ്പർലിങ്ക് (Hyperlink)[span_18](start_span)[span_18](end_span)."
-      },
-      {
-        q: "കംപ്യൂട്ടറിലെ സിപിയുവിന്റെ പ്രവർത്തന വേഗത അളക്കുന്ന പ്രധാന മാനദണ്ഡം ഏതാണ്?[span_19](start_span)[span_19](end_span)",
-        options: ["ക്ലോക്ക് സ്പീഡ്", "ബിറ്റ് റേറ്റ്", "ബാൻഡ് വിഡ്‌ത്ത്", "പിക്സൽ ഡെൻസിറ്റി"],
-        ans: 0,
-        exp: "പ്രൊസസ്സറിൻ്റെ പ്രവർത്തന വേഗത അളക്കുന്നത് ക്ലോക്ക് സ്പീഡ് (Clock Speed) അടിസ്ഥാനമാക്കിയാണ്; ഇത് ഗിഗാഹെർട്‌സ് (GHz) അല്ലെങ്കിൽ മെഗാഹെർട്‌സ് (MHz) എന്നിവയിൽ രേഖപ്പെടുത്തുന്നു[span_20](start_span)[span_20](end_span)."
-      },
-      {
-        q: "ഇന്റർനെറ്റ് പ്രോട്ടോക്കോളുകളെക്കുറിച്ചുള്ള താഴെ പറയുന്ന പ്രസ്താവനകളിൽ ശരിയായവ ഏവ?[span_21](start_span)[span_21](end_span)\n1. ഇന്റർനെറ്റിലൂടെ വെബ് പേജുകൾ സുരക്ഷിതമായി കൈമാറാൻ HTTPS പ്രോട്ടോക്കോൾ ഉപയോഗിക്കുന്നു.[span_22](start_span)[span_22](end_span)\n2. ഇമെയിലുകൾ അയയ്ക്കുന്നതിനായി SMTP എന്ന പ്രോട്ടോക്കോൾ പ്രയോജനപ്പെടുത്തുന്നു.[span_23](start_span)[span_23](end_span)\n3. ഇന്റർനെറ്റിലെ ഡാറ്റാ പാക്കറ്റുകൾ കൃത്യമായി വിലാസത്തിൽ എത്തിക്കാൻ IP സഹായിക്കുന്നു.[span_24](start_span)[span_24](end_span)",
-        options: ["1, 2, 3 പ്രസ്താവനകളും ശരിയാണ്", "1, 2 ശരിയാണ്", "2, 3 ശരിയാണ്", "1, 3 ശരിയാണ്"],
-        ans: 0,
-        exp: "HTTPS സുരക്ഷിത വെബ് കൈമാറ്റത്തിനും, SMTP (Simple Mail Transfer Protocol) ഇമെയിൽ അയക്കലിനും, IP റൂട്ടിംഗിനും ഉപയോഗിക്കുന്നു. മൂന്ന് പ്രസ്താവനകളും ശരിയാണ്[span_25](start_span)[span_25](end_span)."
-      },
-      {
-        q: "വൈദ്യുതി നിലച്ചാൽ അതിലുള്ള വിവരങ്ങൾ പൂർണ്ണമായി നഷ്ടപ്പെടുന്ന വോളറ്റൈൽ (Volatile) മെമ്മറി ഏതാണ്?[span_26](start_span)[span_26](end_span)",
-        options: ["ഹാർഡ് ഡിസ്ക്", "റീഡ് ഒൺലി മെമ്മറി", "ഒപ്റ്റിക്കൽ ഡിസ്ക്", "റാൻഡം ആക്സസ് മെമ്മറി"],
-        ans: 3,
-        exp: "വൈദ്യുത ബന്ധം നിലച്ചാൽ ഡാറ്റ മാഞ്ഞുപോകുന്ന അസ്ഥിര മെമ്മറിയാണ് റാം (RAM - Random Access Memory)[span_27](start_span)[span_27](end_span). റോം (ROM) ഒരു നോൺ-വോളറ്റൈൽ മെമ്മറിയാണ്[span_28](start_span)[span_28](end_span)."
-      },
-      {
-        q: "മദർബോർഡിന്റെയും സിപിയു ഘടകങ്ങളുടെയും സവിശേഷതകളിൽ ശരിയായവ ഏവ?[span_29](start_span)[span_29](end_span)\n1. കംപ്യൂട്ടറിലെ എല്ലാ ആന്തരിക ഉപകരണങ്ങളെയും പരസ്പരം ബന്ധിപ്പിക്കുന്ന പ്രധാന സർക്യൂട്ട് ബോർഡാണ് മദർബോർഡ്.[span_30](start_span)[span_30](end_span)\n2. ഇൻസ്ട്രക്ഷനുകൾ ഡീകോഡ് ചെയ്യാനും ഡാറ്റാ പ്രവാഹം നിയന്ത്രിക്കാനും കൺട്രോൾ യൂണിറ്റ് സഹായിക്കുന്നു.[span_31](start_span)[span_31](end_span)\n3. കംപ്യൂട്ടർ സ്വിച്ച് ഓഫ് ചെയ്‌താലും സമയം കൃത്യമായി നിലനിർത്താൻ മദർബോർഡിലെ സിമോസ് ബാറ്ററി സഹായിക്കുന്നു.[span_32](start_span)[span_32](end_span)",
-        options: ["1, 2 ശരിയാണ്", "1, 3 ശരിയാണ്", "1, 2, 3 പ്രസ്താവനകളും ശരിയാണ്", "2, 3 ശരിയാണ്"],
-        ans: 2,
-        exp: "മദർബോർഡ് മെയിൻ ബോർഡാണ്, കൺട്രോൾ യൂണിറ്റ് ഡാറ്റാ പ്രവാഹം നിയന്ത്രിക്കുന്നു, CMOS ബാറ്ററി തീയതിയും സമയവും നിലനിർത്തുന്നു. മൂന്നും ശരിയാണ്[span_33](start_span)[span_33](end_span)."
-      },
-      {
-        q: "കംപ്യൂട്ടറിൽ തയ്യാറാക്കിയ വലിയ എഞ്ചിനീയറിംഗ് പ്ലാനുകളും ബ്ലൂപ്രിന്റുകളും കൃത്യതയോടെ കടലാസിൽ പ്രിൻ്റ് ചെയ്യാൻ ഉപയോഗിക്കുന്ന ഔട്ട്പുട്ട് ഉപകരണം ഏത്?[span_34](start_span)[span_34](end_span)",
-        options: ["പ്ലോട്ടർ", "ഡോട്ട് മാട്രിക്സ് പ്രിന്റർ", "ലേസർ പ്രിന്റർ", "സ്കാനർ"],
-        ans: 0,
-        exp: "വെക്റ്റർ ഗ്രാഫിക്സ് ഉപയോഗിച്ച് വലിയ ഡ്രോയിംഗുകളും ഫ്ലെക്സുകളും പ്ലാനുകളും പ്രിൻ്റ് ചെയ്യാൻ ഉപയോഗിക്കുന്ന വലിയ ഔട്ട്പുട്ട് ഡിവൈസാണ് പ്ലോട്ടർ (Plotter)[span_35](start_span)[span_35](end_span)."
-      },
-      {
-        q: "സിപിയുവിൽ ഗണിതക്രിയകളും താരതമ്യങ്ങളും നടത്താൻ ചുമതലപ്പെട്ട വിഭാഗം ഏതാണ്?[span_36](start_span)[span_36](end_span)",
-        options: ["കൺട്രോൾ യൂണിറ്റ്", "അരിറ്റിക് ലോജിക് യൂണിറ്റ്", "മെമ്മറി മാനേജ്മെന്റ് യൂണിറ്റ്", "രജിസ്റ്റർ അറേ"],
-        ans: 1,
-        exp: "സങ്കലനം, ഗുണനം തുടങ്ങിയ ഗണിതക്രിയകളും യുക്തിപരമായ താരതമ്യങ്ങളും നിർവ്വഹിക്കുന്നത് ALU (Arithmetic Logic Unit) ആണ്[span_37](start_span)[span_37](end_span)."
-      },
-      {
-        q: "വെബ് ബ്രൗസറുകളെയും സെർച്ച് എഞ്ചിനുകളെയും കുറിച്ചുള്ള പ്രസ്താവനകളിൽ ശരിയായവ ഏവ?[span_38](start_span)[span_38](end_span)\n1. ഇന്റർനെറ്റിലെ വിവരങ്ങൾ തിരയാൻ സഹായിക്കുന്ന സംവിധാനമാണ് സെർച്ച് എഞ്ചിൻ (ഉദാ: ഗൂഗിൾ).[span_39](start_span)[span_39](end_span)\n2. വെബ് പേജുകൾ കാണാൻ ഉപയോക്താവിനെ സഹായിക്കുന്ന ആപ്ലിക്കേഷൻ സോഫ്റ്റ്വെയറാണ് വെബ് ബ്രൗസർ.[span_40](start_span)[span_40](end_span)\n3. മോസില്ല ഫയർഫോക്സും ആപ്പിൾ സഫാരിയും പ്രമുഖ വെബ് ബ്രൗസറുകളാണ്.[span_41](start_span)[span_41](end_span)",
-        options: ["1, 2 ശരിയാണ്", "1, 2, 3 പ്രസ്താവനകളും ശരിയാണ്", "2, 3 ശരിയാണ്", "1, 3 ശരിയാണ്"],
-        ans: 1,
-        exp: "സെർച്ച്‌ എഞ്ചിനുകളുടെയും ബ്രൗസറുകളുടെയും നിർവ്വചനങ്ങളും ഉദാഹരണങ്ങളും ശരിയാണ്[span_42](start_span)[span_42](end_span)."
-      },
-      {
-        q: "ഇന്റർനെറ്റിൽ ഒരു വെബ്സൈറ്റിൻ്റെ ലൊക്കേഷൻ കൃത്യമായി തിരിച്ചറിയാൻ ഉപയോഗിക്കുന്ന വിലാസം ഏത് പേരിൽ അറിയപ്പെടുന്നു?[span_43](start_span)[span_43](end_span)",
-        options: ["മാക് വിലാസം", "ഫയൽ ട്രാൻസ്‌ഫർ കോഡ്", "പോർട്ട് നമ്പർ", "യൂണിഫോം റിസോഴ്‌സ് ലൊക്കേറ്റർ"],
-        ans: 3,
-        exp: "ഇൻ്റർനെറ്റിലെ ഒരു വെബ് പേജിൻ്റെ പൂർണ്ണമായ വിലാസമാണ് URL (Uniform Resource Locator)[span_44](start_span)[span_44](end_span)."
-      },
-      {
-        q: "കംപ്യൂട്ടർ മെമ്മറി യൂണിറ്റുകളെ സംബന്ധിച്ച പ്രസ്താവനകളിൽ തെറ്റായവ ഏവ?[span_45](start_span)[span_45](end_span)\n1. ഒരു ബൈറ്റ് (Byte) എന്നാൽ 8 ബിറ്റുകൾ ചേർന്നതാണ്.[span_46](start_span)[span_46](end_span)\n2. 1024 കിലോബൈറ്റ് ചേരുമ്പോഴാണ് ഒരു മെഗാബൈറ്റ് (MB) ഉണ്ടാകുന്നത്.[span_47](start_span)[span_47](end_span)\n3. ഒരു നിബിൾ (Nibble) എന്നാൽ 16 ബിറ്റുകൾക്ക് തുല്യമാണ്.[span_48](start_span)[span_48](end_span)",
-        options: ["1, 2 തെറ്റാണ്", "1 മാത്രം തെറ്റാണ്", "3 മാത്രം തെറ്റാണ്", "2, 3 തെറ്റാണ്"],
-        ans: 2,
-        exp: "ഒരു നിബിൾ എന്നാൽ 4 ബിറ്റുകളാണ് (16 ബിറ്റല്ല). അതിനാൽ 3-ാമത്തെ പ്രസ്താവന മാത്രം തെറ്റാണ്[span_49](start_span)[span_49](end_span)."
-      },
-      {
-        q: "മദർബോർഡിലെ വിവിധ ഇലക്ട്രോണിക് ഘടകങ്ങൾ തമ്മിൽ ഡാറ്റയും സിഗ്നലുകളും കൈമാറുന്ന ചാലക പാതകൾ ഏത് പേരിൽ അറിയപ്പെടുന്നു?[span_50](start_span)[span_50](end_span)",
-        options: ["സിസ്റ്റം ബസ്", "എക്സ്പാൻഷൻ സ്ലോട്ട്", "പോർട്ട് ഹബ്ബ്", "പവർ സപ്ലൈ കേബിൾ"],
-        ans: 0,
-        exp: "മദർബോർഡിലെ പ്രൊസസ്സറും മെമ്മറിയും അനുബന്ധ ഭാഗങ്ങളും തമ്മിൽ വിവരങ്ങൾ കൈമാറുന്ന ചാലക ശ്രേണിയാണ് സിസ്റ്റം ബസ് (System Bus)[span_51](start_span)[span_51](end_span)."
-      },
-      {
-        q: "മത്സര പരീക്ഷകളിലെ ഒബ്ജക്റ്റീവ് ഉത്തരക്കടലാസുകൾ സ്‌കാൻ ചെയ്ത് മൂല്യനിർണ്ണയം നടത്താൻ ഉപയോഗിക്കുന്ന സാങ്കേതികവിദ്യ ഏത്?[span_52](start_span)[span_52](end_span)",
-        options: ["മാഗ്നറ്റിക് സ്ട്രൈപ്പ് റീഡർ", "ഒപ്റ്റിക്കൽ മാർക്ക് റെക്കഗ്നിഷൻ", "ബാർകോഡ് സ്ക‌ാനർ", "റേഡിയോ ഫ്രീക്വൻസി റീഡർ"],
-        ans: 1,
-        exp: "പെൻസിൽ അല്ലെങ്കിൽ പേന കൊണ്ട് അടയാളപ്പെടുത്തിയ വട്ടങ്ങൾ തിരിച്ചറിയാൻ ഉപയോഗിക്കുന്ന ഉപകരണമാണ് OMR (Optical Mark Recognition)[span_53](start_span)[span_53](end_span)."
-      },
-      {
-        q: "ഇൻപുട്ട്-ഔട്ട്പുട്ട് ഉപകരണങ്ങളെക്കുറിച്ചുള്ള പ്രസ്താവനകളിൽ തെറ്റായവ ഏവ?[span_54](start_span)[span_54](end_span)\n1. സ്കാനർ ഒരു ഔട്ട്പുട്ട് ഉപകരണമാണ്.[span_55](start_span)[span_55](end_span)\n2. പ്രിന്റർ ഒരു ഔട്ട്പുട്ട് ഉപകരണമാണ്.[span_56](start_span)[span_56](end_span)\n3. വെബ്ക്യാമറ ഒരു ഇൻപുട്ട് ഉപകരണമാണ്.[span_57](start_span)[span_57](end_span)",
-        options: ["1 മാത്രം തെറ്റാണ്", "2 മാത്രം തെറ്റാണ്", "3 മാത്രം തെറ്റാണ്", "1, 3 തെറ്റാണ്"],
-        ans: 0,
-        exp: "സ്ക‌ാനർ കടലാസിലെ വിവരങ്ങൾ ഡിജിറ്റലാക്കി കംപ്യൂട്ടറിലേക്ക് നൽകുന്ന ഇൻപുട്ട് ഉപകരണമാണ് (ഔട്ട്പുട്ടല്ല). അതിനാൽ 1 മാത്രം തെറ്റാണ്[span_58](start_span)[span_58](end_span)."
-      },
-      {
-        q: "വെബ് പേജുകൾ നിർമ്മിക്കുന്നതിനായി ഉപയോഗിക്കുന്ന അടിസ്ഥാന മാർക്ക്അപ്പ് ഭാഷ ഏതാണ്?[span_59](start_span)[span_59](end_span)",
-        options: ["സി പ്ലസ് പ്ലസ്", "പൈത്തൺ", "ഹൈപ്പർടെക്സ്റ്റ് മാർക്ക്അപ്പ് ലാംഗ്വേജ്", "ജാവാ സ്ക്രിപ്റ്റ്"],
-        ans: 2,
-        exp: "വെബ് പേജുകളുടെ രൂപകൽപ്പനയ്ക്കും ഘടനയ്ക്കും ഉപയോഗിക്കുന്ന അടിസ്ഥാന ഭാഷയാണ് HTML (HyperText Markup Language)[span_60](start_span)[span_60](end_span)."
-      },
-      {
-        q: "ഇന്റർനെറ്റിന്റെയും ഡൊമൈൻ നാമങ്ങളുടെയും ഘടനയെക്കുറിച്ചുള്ള പ്രസ്താവനകളിൽ തെറ്റായവ ഏവ?[span_61](start_span)[span_61](end_span)\n1. .gov എന്നത് വിദ്യാഭ്യാസ സ്ഥാപനങ്ങൾക്കായുള്ള ഡൊമൈൻ എക്സ്റ്റൻഷനാണ്.[span_62](start_span)[span_62](end_span)\n2. .org എന്നത് വാണിജ്യേതര സംഘടനകൾ ഉപയോഗിക്കുന്ന ഡൊമൈൻ ആണ്.[span_63](start_span)[span_63](end_span)\n3. .com എന്നത് വാണിജ്യ സ്ഥാപനങ്ങൾക്കായുള്ള ഡൊമൈൻ ആണ്.[span_64](start_span)[span_64](end_span)",
-        options: ["2, 3 തെറ്റാണ്", "1 മാത്രം തെറ്റാണ്", "2 മാത്രം തെറ്റാണ്", "എല്ലാം തെറ്റാണ്"],
-        ans: 1,
-        exp: ".gov സർക്കാർ സ്ഥാപനങ്ങൾക്കാണ് നൽകുന്നത്; വിദ്യാഭ്യാസ സ്ഥാപനങ്ങൾ ഉപയോഗിക്കുന്നത് .edu അല്ലെങ്കിൽ .ac ആണ്. അതിനാൽ 1 മാത്രം തെറ്റാണ്[span_65](start_span)[span_65](end_span)."
-      },
-      {
-        q: "കംപ്യൂട്ടറിന്റെ സിപിയുവിനുള്ളിൽ ഏറ്റവും കുറഞ്ഞ സംഭരണശേഷിയുള്ളതും ഏറ്റവും വേഗതയേറിയതുമായ മെമ്മറി ഏത്?[span_66](start_span)[span_66](end_span)",
-        options: ["പ്രൈമറി റാം", "രജിസ്റ്റർ", "കാഷ് മെമ്മറി", "സോളിഡ് സ്റ്റേറ്റ് ഡ്രൈവ്"],
-        ans: 1,
-        exp: "സിപിയുവിനുള്ളിൽ നേരിട്ട് ഘടിപ്പിച്ചിട്ടുള്ള ഏറ്റവും ചെറിയതും പ്രൊസസ്സറിന്റെ അതേ വേഗതയിൽ പ്രവർത്തിക്കുന്നതുമായ മെമ്മറിയാണ് രജിസ്റ്ററുകൾ (Registers)[span_67](start_span)[span_67](end_span)."
-      },
-      {
-        q: "സിപിയുവിൻ്റെയും റാം മെമ്മറിയുടെയും പ്രത്യേകതകളെ സംബന്ധിച്ച പ്രസ്താവനകളിൽ തെറ്റായവ ഏവ?[span_68](start_span)[span_68](end_span)\n1. സിപിയുവിനെ കംപ്യൂട്ടറിന്റെ തലച്ചോറ് എന്ന് വിശേഷിപ്പിക്കുന്നു.[span_69](start_span)[span_69](end_span)\n2. കംപ്യൂട്ടറിൽ റാം (RAM) കൂടുതലുള്ളപ്പോൾ കൂടുതൽ പ്രോഗ്രാമുകൾ ഒരേസമയം പ്രവർത്തിപ്പിക്കാം.[span_70](start_span)[span_70](end_span)\n3. റാം ഒരു കാന്തിക ഡിസ്‌ക് ആയതിനാൽ കറങ്ങുന്ന ഭാഗങ്ങൾ ഉള്ള മെക്കാനിക്കൽ ഉപകരണമാണ്.[span_71](start_span)[span_71](end_span)",
-        options: ["1, 2 തെറ്റാണ്", "1 മാത്രം തെറ്റാണ്", "3 മാത്രം തെറ്റാണ്", "എല്ലാം തെറ്റാണ്"],
-        ans: 2,
-        exp: "റാം ഒരു അർദ്ധചാലക (Semiconductor) ഇലക്ട്രോണിക് ചിപ്പാണ്; ഇതിൽ കറങ്ങുന്ന കാന്തിക ഭാഗങ്ങളില്ല. അതിനാൽ 3 മാത്രം തെറ്റാണ്[span_72](start_span)[span_72](end_span)."
-      },
-      {
-        q: "ഇന്റർനെറ്റിന്റെ പിതാവ് എന്നറിയപ്പെടുന്ന പ്രമുഖ കംപ്യൂട്ടർ ശാസ്ത്രജ്ഞൻ ആര്?[span_73](start_span)[span_73](end_span)",
-        options: ["വിന്റ് സെർഫ്", "ടിം ബർണേഴ്‌സ് ലീ", "ചാൾസ് ബാബേജ്", "അലൻ ട്യൂറിംഗ്"],
-        ans: 0,
-        exp: "TCP/IP പ്രോട്ടോക്കോളിന്റെ രൂപകൽപ്പനയിൽ പങ്കുവഹിച്ച വിന്റൺ ഗ്രേ സെർഫ് (Vint Cerf) ആണ് ഇൻ്റർനെറ്റിൻ്റെ പിതാവ് എന്നറിയപ്പെടുന്നത്[span_74](start_span)[span_74](end_span)."
-      },
-      {
-        q: "കംപ്യൂട്ടർ സ്ക്രീനിലെ ദൃശ്യങ്ങളുടെ വ്യക്തത നിർണ്ണയിക്കുന്ന ഏറ്റവും ചെറിയ ബിന്ദുക്കൾ ഏത് പേരിൽ അറിയപ്പെടുന്നു?[span_75](start_span)[span_75](end_span)",
-        options: ["ബിറ്റുകൾ", "ഡ്രോപ്പുകൾ", "പിക്സലുകൾ", "ഫോണ്ടുകൾ"],
-        ans: 2,
-        exp: "മോണിറ്റർ ഡിസ്പ്ലേയിലെ ചിത്രം നിർമ്മിക്കപ്പെടുന്ന അടിസ്ഥാന ദൃശ്യ ബിന്ദുക്കളെയാണ് പിക്സലുകൾ (Pixels - Picture Elements) എന്ന് വിളിക്കുന്നത്[span_76](start_span)[span_76](end_span)."
-      },
-      {
-        q: "ലോകത്ത് ആദ്യമായി രൂപംകൊണ്ട കംപ്യൂട്ടർ നെറ്റ‌്വർക്കായ ആർപാനെറ്റ് (ARPANET) വികസിപ്പിച്ച രാജ്യം ഏത്?[span_77](start_span)[span_77](end_span)",
-        options: ["സോവിയറ്റ് യൂണിയൻ", "യുണൈറ്റഡ് കിംഗ്‌ഡം", "ജർമ്മനി", "യുണൈറ്റഡ് സ്റ്റേറ്റ്സ് ഓഫ് അമേരിക്ക"],
-        ans: 3,
-        exp: "1969-ൽ അമേരിക്കൻ പ്രതിരോധ വകുപ്പിൻ്റെ അഡ്വാൻസ്‌ഡ് റിസർച്ച് പ്രോജക്ട‌്‌സ് ഏജൻസി (DARPA) ആണ് ഇന്നത്തെ ഇൻ്റർനെറ്റിന്റെ മുൻഗാമിയായ ആർപാനെറ്റ് വികസിപ്പിച്ചത്[span_78](start_span)[span_78](end_span)."
-      }
-    ];
-
-    let currentUser = { name: "പഠിതാവ്", phone: "0000000000" };
-    let currentIndex = 0;
-    let userAnswers = new Array(questionsData.length).fill(null);
-    let wrongQuestionsList = [];
-    let currentFontSizeLevel = 1;
-
-    const fontSizes = [
-      { q: "text-sm sm:text-base" },
-      { text: "text-base sm:text-lg" },
-      { text: "text-lg sm:text-xl" },
-      { text: "text-xl sm:text-2xl" }
-    ];
-
-    let timeLeft = 25 * 60;
-    let timerInterval = null;
-
-    const motivationScreen = document.getElementById('motivationScreen');
-    const quizScreen = document.getElementById('quizScreen');
-    const resultScreen = document.getElementById('resultScreen');
-
-    window.addEventListener('DOMContentLoaded', () => {
-      const urlParams = new URLSearchParams(window.location.search);
-      const passedName = urlParams.get('name');
-      const passedPhone = urlParams.get('phone');
-      const passedTitle = urlParams.get('title');
-      const passedSheet = urlParams.get('sheetUrl');
-      const passedPdf = urlParams.get('pdfUrl');
-
-      if (passedName && passedName.trim() !== '') {
-        currentUser.name = decodeURIComponent(passedName).trim();
-      } else {
-        try {
-          const storedUser = localStorage.getItem('sk_user_name');
-          if (storedUser && storedUser.trim() !== '') {
-            currentUser.name = storedUser.trim();
-          }
-        } catch (e) {}
-      }
-
-      if (passedPhone) currentUser.phone = decodeURIComponent(passedPhone);
-      if (passedTitle) examTitle = decodeURIComponent(passedTitle);
-      if (passedSheet) GOOGLE_SHEET_WEBAPP_URL = decodeURIComponent(passedSheet);
-      if (passedPdf) ORIGINAL_PDF_URL = decodeURIComponent(passedPdf);
-
-      const displayElem = document.getElementById('displayUser');
-      if (displayElem) {
-        displayElem.innerText = (currentUser.phone && currentUser.phone !== "0000000000")
-          ? `${currentUser.name} (+91 ${currentUser.phone})`
-          : currentUser.name;
-      }
-
-      const motElem = document.getElementById('motivateName');
-      if (motElem) {
-        motElem.innerText = `ഹലോ, ${currentUser.name}! ✨`;
-      }
-    });
-
-    document.getElementById('fullscreenToggleBtn').onclick = () => {
-      if (!document.fullscreenElement) {
-        document.documentElement.requestFullscreen().catch(err => {
-          alert(`Error: ${err.message}`);
-        });
-      } else {
-        if (document.exitFullscreen) { document.exitFullscreen(); }
-      }
-    };
-
-    document.getElementById('fontDecrease').onclick = () => {
-      if (currentFontSizeLevel > 0) { currentFontSizeLevel--; updateFontSize(); }
-    };
-    document.getElementById('fontReset').onclick = () => {
-      currentFontSizeLevel = 1; updateFontSize();
-    };
-    document.getElementById('fontIncrease').onclick = () => {
-      if (currentFontSizeLevel < fontSizes.length - 1) { currentFontSizeLevel++; updateFontSize(); }
-    };
-
-    function updateFontSize() {
-      const qElem = document.getElementById('qText');
-      qElem.className = `${fontSizes[currentFontSizeLevel].q} font-semibold leading-relaxed text-slate-100 whitespace-pre-line transition-all duration-200`;
-    }
-
-    function startExamDirectly() {
-      motivationScreen.classList.add('hidden');
-      quizScreen.classList.remove('hidden');
-      quizScreen.classList.add('flex');
-      buildPalette();
-      renderQuestion(0);
-      startTimer();
-    }
-
-    function startTimer() {
-      const timerDisplay = document.getElementById('examTimer');
-      timerInterval = setInterval(() => {
-        if (timeLeft <= 0) {
-          clearInterval(timerInterval);
-          alert('അനുവദിച്ച 25 മിനിറ്റ് സമയം പൂർത്തിയായിരിക്കുന്നു! പരീക്ഷ തനിയെ സബ്മിറ്റ് ചെയ്യുന്നു.');
-          finishExam();
-          return;
-        }
-
-        timeLeft--;
-        const minutes = Math.floor(timeLeft / 60);
-        const seconds = timeLeft % 60;
-        const mStr = minutes < 10 ? '0' + minutes : minutes;
-        const sStr = seconds < 10 ? '0' + seconds : seconds;
-        timerDisplay.innerText = `${mStr}:${sStr}`;
-
-        if (timeLeft <= 180) {
-          timerDisplay.classList.remove('text-cyan-400');
-          timerDisplay.classList.add('text-rose-500', 'animate-pulse');
-        }
-      }, 1000);
-    }
-
-    function renderQuestion(index) {
-      const q = questionsData[index];
-      currentIndex = index;
-      document.getElementById('questionBadge').innerText = `ചോദ്യം ${index + 1} / ${questionsData.length}`;
-      document.getElementById('qText').innerText = `${index + 1}. ${q.q}`;
-
-      const optionsDiv = document.getElementById('optionsContainer');
-      optionsDiv.innerHTML = '';
-      const letters = ['A', 'B', 'C', 'D'];
-
-      q.options.forEach((opt, idx) => {
-        const isSelected = userAnswers[index] === idx;
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.className = `w-full text-left p-3.5 rounded-xl border transition flex items-start space-x-3 ${
-          isSelected 
-            ? 'bg-cyan-500/20 border-cyan-500 text-cyan-200 ring-1 ring-cyan-500' 
-            : 'bg-slate-900/60 border-slate-700 hover:bg-slate-700/50 text-slate-200'
-        }`;
-        btn.innerHTML = `
-          <span class="w-6 h-6 rounded-lg flex items-center justify-center text-xs font-bold ${
-            isSelected ? 'bg-cyan-500 text-slate-950 font-black' : 'bg-slate-800 text-slate-400'
-          }">${letters[idx]}</span>
-          <span class="text-xs sm:text-sm leading-relaxed mt-0.5">${opt}</span>
-        `;
-        btn.onclick = () => {
-          userAnswers[index] = idx;
-          renderQuestion(index);
-        };
-        optionsDiv.appendChild(btn);
-      });
-
-      document.getElementById('prevBtn').disabled = (index === 0);
-      document.getElementById('nextBtn').innerText = (index === questionsData.length - 1) ? "സബ്മിറ്റ് ചെയ്യുക ✓" : "Next ›";
-      const answered = userAnswers.filter(a => a !== null).length;
-      document.getElementById('answeredCountTxt').innerText = `പൂർത്തിയാക്കിയത്: ${answered}/${questionsData.length}`;
-      updatePalette();
-    }
-
-    document.getElementById('reportQuestionBtn').addEventListener('click', () => {
-      handleReportQuestion(currentIndex + 1);
-    });
-
-    function handleReportQuestion(qNum) {
-      const reason = prompt(`ചോദ്യം ${qNum} ൽ എന്തെങ്കിലും തെറ്റുകൾ ഉണ്ടെങ്കിൽ ദയവായി താഴെ രേഖപ്പെടുത്തുക:`);
-      if (reason && reason.trim()) {
-        sendReportQuestionToGoogleSheet(qNum, reason.trim());
-        alert(`നന്ദി! ചോദ്യം ${qNum} ലെ സംശയം വിജയകരമായി റിപ്പോർട്ട് ചെയ്തിരിക്കുന്നു.`);
-      }
-    }
-
-    function buildPalette() {
-      const pal = document.getElementById('paletteContainer');
-      pal.innerHTML = '';
-      for (let i = 0; i < questionsData.length; i++) {
-        const b = document.createElement('button');
-        b.id = `pal-${i}`;
-        b.innerText = i + 1;
-        b.className = 'w-7 h-7 rounded text-[11px] font-bold flex items-center justify-center border transition';
-        b.onclick = () => { currentIndex = i; renderQuestion(currentIndex); };
-        pal.appendChild(b);
-      }
-      updatePalette();
-    }
-
-    function updatePalette() {
-      for (let i = 0; i < questionsData.length; i++) {
-        const b = document.getElementById(`pal-${i}`);
-        if (!b) continue;
-        if (i === currentIndex) {
-          b.className = 'w-7 h-7 rounded text-[11px] font-black border border-cyan-400 bg-cyan-400 text-slate-950';
-        } else if (userAnswers[i] !== null) {
-          b.className = 'w-7 h-7 rounded text-[11px] font-semibold border border-emerald-500/50 bg-emerald-950/60 text-emerald-400';
-        } else {
-          b.className = 'w-7 h-7 rounded text-[11px] font-medium border border-slate-700 bg-slate-900 text-slate-400';
-        }
-      }
-    }
-
-    document.getElementById('nextBtn').onclick = () => {
-      if (currentIndex < questionsData.length - 1) {
-        currentIndex++;
-        renderQuestion(currentIndex);
-      } else {
-        finishExam();
-      }
-    };
-
-    document.getElementById('prevBtn').onclick = () => {
-      if (currentIndex > 0) { currentIndex--; renderQuestion(currentIndex); }
-    };
-
-    document.getElementById('skipBtn').onclick = () => {
-      userAnswers[currentIndex] = null;
-      if (currentIndex < questionsData.length - 1) {
-        currentIndex++;
-        renderQuestion(currentIndex);
-      } else {
-        finishExam();
-      }
-    };
-
-    document.getElementById('finishMidBtn').onclick = () => {
-      const answered = userAnswers.filter(a => a !== null).length;
-      if (confirm(`നിങ്ങൾ 25-ൽ ${answered} ചോദ്യങ്ങൾക്ക് മാത്രമാണ് ഉത്തരം നൽകിയത്. ഇപ്പോൾ പരീക്ഷ അവസാനിപ്പിക്കണമെന്നുറപ്പാണോ?`)) {
-        finishExam();
-      }
-    };
-
-    function finishExam() {
-      if (timerInterval) clearInterval(timerInterval);
-
-      let correct = 0, wrong = 0, skipped = 0;
-      wrongQuestionsList = [];
-
-      for (let i = 0; i < questionsData.length; i++) {
-        if (userAnswers[i] === null) {
-          skipped++;
-        } else if (userAnswers[i] === questionsData[i].ans) {
-          correct++;
-        } else {
-          wrong++;
-          wrongQuestionsList.push(i + 1);
-        }
-      }
-
-      let netScore = (correct * 1.0) - (wrong * 0.33333333);
-      if (netScore < 0) netScore = 0;
-      const formattedScore = netScore.toFixed(2);
-      const scoreNum = parseFloat(formattedScore);
-
-      document.getElementById('finalScore').innerText = formattedScore;
-      document.getElementById('correctCount').innerText = correct;
-      document.getElementById('wrongCount').innerText = wrong;
-      document.getElementById('skipCount').innerText = skipped;
-      document.getElementById('resultCandidateInfo').innerText = `വിദ്യാർത്ഥി: ${currentUser.name} | മൊബൈൽ: ${currentUser.phone}`;
-      document.getElementById('pdfReportCandidateSubheader').innerText = `വിദ്യാർത്ഥി: ${currentUser.name} (${currentUser.phone}) | സ്കോർ: ${formattedScore} / 25 | ശരി: ${correct} | തെറ്റ്: ${wrong} | Skip: ${skipped}`;
-
-      const badge = document.getElementById('scoreMotivationBadge');
-      if (scoreNum >= 20) {
-        badge.className = "max-w-xl mx-auto p-4 rounded-2xl border border-emerald-500/60 bg-emerald-950/40 text-emerald-300";
-        badge.innerHTML = `🌟 <strong>അത്യുജ്ജ്വല പ്രകടനം!</strong> കംപ്യൂട്ടർ സയൻസ് വിഭാഗത്തിൽ നിങ്ങൾ മികച്ച അറിവ് തെളിയിച്ചിരിക്കുന്നു. ഇതേ ആത്മവിശ്വാസം നിലനിർത്തുക!`;
-      } else if (scoreNum >= 14) {
-        badge.className = "max-w-xl mx-auto p-4 rounded-2xl border border-cyan-500/60 bg-cyan-950/40 text-cyan-300";
-        badge.innerHTML = `👍 <strong>മികച്ച പ്രകടനം!</strong> ചെറിയ ചില തെറ്റുകൾ തിരുത്തിയാൽ പൂർണ്ണ മാർക്കിലേക്ക് എത്താം. വിശദീകരണങ്ങൾ നന്നായി മനസ്സിലാക്കുക!`;
-      } else if (scoreNum >= 7) {
-        badge.className = "max-w-xl mx-auto p-4 rounded-2xl border border-amber-500/60 bg-amber-950/40 text-amber-300";
-        badge.innerHTML = `📖 <strong>നല്ലൊരു ശ്രമം!</strong> ഇനിയും കൂടുതൽ വായനയും റിവിഷനും ആവശ്യമാണ്. തെറ്റിയ ചോദ്യങ്ങളും വിശദീകരണങ്ങളും പരിശീലിച്ച് സ്കോർ ഉയർത്തുക.`;
-      } else {
-        badge.className = "max-w-xl mx-auto p-4 rounded-2xl border border-rose-500/60 bg-rose-950/40 text-rose-300";
-        badge.innerHTML = `💪 <strong>തളരരുത്!</strong> ഇതൊരു തുടക്കം മാത്രമാണ്. നോട്ട്സുകൾ കൂടുതൽ ആഴത്തിൽ പഠിച്ച് വീണ്ടും പരിശീലിക്കുക, വിജയം സുനിശ്ചിതമാണ്!`;
-      }
-
-      try {
-        if (currentUser && currentUser.phone && currentUser.phone !== "0000000000") {
-          const historyKey = `sk_history_${currentUser.phone}`;
-          let history = JSON.parse(localStorage.getItem(historyKey) || '[]');
-          history.push({
-            title: examTitle,
-            score: formattedScore,
-            correct: correct,
-            wrong: wrong,
-            skipped: skipped,
-            date: new Date().toLocaleDateString('ml-IN', { day: 'numeric', month: 'short', year: 'numeric' })
-          });
-          localStorage.setItem(historyKey, JSON.stringify(history));
-        }
-      } catch (err) {}
-
-      const downloadBtn = document.getElementById('downloadOriginalNoteBtn');
-      const lockNotice = document.getElementById('pdfLockNotice');
-
-      if (scoreNum >= 7.0 && ORIGINAL_PDF_URL) {
-        downloadBtn.classList.remove('hidden');
-        lockNotice.classList.add('hidden');
-      } else {
-        downloadBtn.classList.add('hidden');
-        if (ORIGINAL_PDF_URL) lockNotice.classList.remove('hidden');
-      }
-
-      renderSolutions();
-      setupClickableReviewCards();
-
-      quizScreen.classList.add('hidden');
-      quizScreen.classList.remove('flex');
-      resultScreen.classList.remove('hidden');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-
-      sendResultToGoogleSheet({
-        name: currentUser.name,
-        phone: currentUser.phone,
-        score: formattedScore,
-        correct: correct,
-        wrong: wrong,
-        skipped: skipped,
-        wrongQuestions: wrongQuestionsList
-      });
-    }
-
-    function setupClickableReviewCards() {
-      document.getElementById('filterCorrectCard').onclick = () => renderFilteredQuestions('correct');
-      document.getElementById('filterWrongCard').onclick = () => renderFilteredQuestions('wrong');
-      document.getElementById('filterSkippedCard').onclick = () => renderFilteredQuestions('skipped');
-    }
-
-    function renderFilteredQuestions(type) {
-      const area = document.getElementById('filterReviewArea');
-      const title = document.getElementById('filterReviewTitle');
-      const list = document.getElementById('filterReviewList');
-      const letters = ['A', 'B', 'C', 'D'];
-
-      list.innerHTML = '';
-      area.classList.remove('hidden');
-
-      if (type === 'correct') {
-        title.innerHTML = `✅ നിങ്ങൾ ശരിയാക്കിയ ചോദ്യങ്ങൾ (Correct Answers)`;
-        title.className = "text-lg font-bold text-emerald-400";
-      } else if (type === 'wrong') {
-        title.innerHTML = `❌ നിങ്ങൾക്ക് തെറ്റിയ ചോദ്യങ്ങൾ (Wrong Answers)`;
-        title.className = "text-lg font-bold text-rose-400";
-      } else {
-        title.innerHTML = `⏭️ നിങ്ങൾ ഒഴിവാക്കിയ ചോദ്യങ്ങൾ (Skipped Questions)`;
-        title.className = "text-lg font-bold text-slate-300";
-      }
-
-      let count = 0;
-      questionsData.forEach((q, idx) => {
-        const uAns = userAnswers[idx];
-        const isCorrect = uAns === q.ans;
-        const isWrong = uAns !== null && !isCorrect;
-        const isSkipped = uAns === null;
-
-        if ((type === 'correct' && isCorrect) || (type === 'wrong' && isWrong) || (type === 'skipped' && isSkipped)) {
-          count++;
-          const card = document.createElement('div');
-          card.className = "p-4 rounded-xl border border-slate-700 bg-slate-900/90 space-y-2 text-xs sm:text-sm";
-          
-          let optsMarkup = '<div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-2">';
-          q.options.forEach((opt, oIdx) => {
-            let optClass = 'p-2 rounded-lg border flex items-center space-x-2 text-xs ';
-            if (oIdx === q.ans) {
-              optClass += 'border-emerald-500 bg-emerald-950/40 text-emerald-300 font-semibold';
-            } else if (oIdx === uAns && !isCorrect) {
-              optClass += 'border-rose-500 bg-rose-950/40 text-rose-300 line-through';
-            } else {
-              optClass += 'border-slate-800 text-slate-400';
-            }
-            optsMarkup += `<div class="${optClass}"><span>${letters[oIdx]})</span><span>${opt}</span></div>`;
-          });
-          optsMarkup += '</div>';
-
-          let statusBadge = isCorrect 
-            ? '<span class="text-emerald-400 font-bold">+1.00 Mark</span>' 
-            : isWrong 
-            ? '<span class="text-rose-400 font-bold">-0.33 Mark</span>' 
-            : '<span class="text-slate-400 font-bold">Skipped (0 Mark)</span>';
-
-          card.innerHTML = `
-            <div class="flex items-center justify-between">
-              <span class="font-bold text-cyan-400">ചോദ്യം ${idx + 1}</span>
-              <div class="flex items-center space-x-2">
-                ${statusBadge}
-                <button onclick="handleReportQuestion(${idx + 1})" class="px-2 py-0.5 bg-rose-950 border border-rose-700 text-[10px] font-bold text-rose-300 rounded hover:bg-rose-900 transition">Report 🚩</button>
-              </div>
-            </div>
-            <p class="text-slate-200 font-medium">${q.q}</p>
-            ${optsMarkup}
-            <div class="bg-slate-800 p-2.5 rounded-lg border border-slate-700 mt-2 text-xs leading-relaxed">
-              <span class="font-bold text-cyan-400">വിശദീകരണം:</span>
-              <span class="text-slate-300 ml-1">${q.exp}</span>
-            </div>
-          `;
-          list.appendChild(card);
-        }
-      });
-
-      if (count === 0) {
-        list.innerHTML = `<p class="py-4 text-center text-slate-400 text-xs">ഈ വിഭാഗത്തിൽ ചോദ്യങ്ങൾ ഒന്നുമില്ല.</p>`;
-      }
-
-      area.scrollIntoView({ behavior: 'smooth' });
-    }
-
-    document.getElementById('closeFilterReviewBtn').onclick = () => {
-      document.getElementById('filterReviewArea').classList.add('hidden');
-    };
-
-    function openFeedbackModal() {
-      document.getElementById('feedbackModal').classList.remove('hidden');
-    }
-
-    function recordFeedbackAndOpenDownload(feedbackVal) {
-      document.getElementById('feedbackModal').classList.add('hidden');
-      sendFeedbackToGoogleSheet(currentUser.phone, feedbackVal);
-      window.open(ORIGINAL_PDF_URL, '_blank');
-    }
-
-    function sendResultToGoogleSheet(payload) {
-      const statusDiv = document.getElementById('sheetStatus');
-      if (!GOOGLE_SHEET_WEBAPP_URL || GOOGLE_SHEET_WEBAPP_URL.includes("YOUR_APPS_SCRIPT_WEBAPP_URL_HERE")) {
-        statusDiv.innerText = "Google Sheet ലിങ്ക് നൽകിയിട്ടില്ല (മാർക്ക് മുകളിൽ ലഭ്യമാണ്).";
-        statusDiv.classList.remove('animate-pulse');
-        return;
-      }
-
-      payload.sheetName = QUIZ_SHEET_NAME;
-
-      fetch(GOOGLE_SHEET_WEBAPP_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      })
-      .then(() => {
-        statusDiv.innerText = `✓ മാർക്ക് '${QUIZ_SHEET_NAME}' എന്ന ഷീറ്റ് ടാബിലേക്ക് രേഖപ്പെടുത്തി!`;
-        statusDiv.className = "text-xs text-cyan-400 mb-4";
-      })
-      .catch(() => {
-        statusDiv.innerText = "ഡാറ്റ സേവ് ചെയ്യുന്നതിൽ ചെറിയ തടസ്സം നേരിട്ടു.";
-        statusDiv.className = "text-xs text-rose-400 mb-4";
-      });
-    }
-
-    function sendReportQuestionToGoogleSheet(qNum, reason) {
-      if (!GOOGLE_SHEET_WEBAPP_URL || GOOGLE_SHEET_WEBAPP_URL.includes("YOUR_APPS_SCRIPT_WEBAPP_URL_HERE")) return;
-      fetch(GOOGLE_SHEET_WEBAPP_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          action: "report_question",
-          sheetName: QUIZ_SHEET_NAME,
-          questionNumber: qNum,
-          reason: reason
-        })
-      });
-    }
-
-    function sendFeedbackToGoogleSheet(phone, feedback) {
-      if (!GOOGLE_SHEET_WEBAPP_URL || GOOGLE_SHEET_WEBAPP_URL.includes("YOUR_APPS_SCRIPT_WEBAPP_URL_HERE")) return;
-      fetch(GOOGLE_SHEET_WEBAPP_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          action: "submit_feedback",
-          sheetName: QUIZ_SHEET_NAME,
-          phone: phone,
-          feedback: feedback
-        })
-      });
-    }
-
-    function renderSolutions() {
-      const cont = document.getElementById('solutionsContainer');
-      cont.innerHTML = '';
-      const letters = ['A', 'B', 'C', 'D'];
-
-      questionsData.forEach((q, idx) => {
-        const uAns = userAnswers[idx];
-        const isCorrect = uAns === q.ans;
-        const isSkipped = uAns === null;
-
-        let badge = isSkipped 
-          ? '<span class="px-2 py-0.5 rounded text-xs bg-slate-700 text-slate-300">Skipped (മാർക്ക് മാറ്റമില്ല)</span>' 
-          : isCorrect 
-          ? '<span class="px-2 py-0.5 rounded text-xs bg-emerald-950 text-emerald-400 border border-emerald-800 font-bold">+1.00 Mark (ശരിയുത്തരം)</span>' 
-          : '<span class="px-2 py-0.5 rounded text-xs bg-rose-950 text-rose-400 border border-rose-800 font-bold">-0.33 Mark (തെറ്റ്)</span>';
-
-        let optsHtml = '<div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-2">';
-        q.options.forEach((opt, oIdx) => {
-          let c = 'p-2.5 rounded-lg text-xs flex items-center space-x-2 border ';
-          if (oIdx === q.ans) c += 'border-emerald-500 bg-emerald-950/40 text-emerald-300 font-semibold';
-          else if (oIdx === uAns && !isCorrect) c += 'border-rose-500 bg-rose-950/40 text-rose-300 line-through';
-          else c += 'border-slate-800 text-slate-400';
-
-          optsHtml += `
-            <div class="${c}">
-              <span class="font-bold">${letters[oIdx]})</span>
-              <span>${opt}</span>
-              ${oIdx === q.ans ? '<span class="ml-auto text-emerald-400 font-bold">✓ ശരി</span>' : ''}
-              ${oIdx === uAns && !isCorrect ? '<span class="ml-auto text-rose-400 font-bold">✗ നിങ്ങൾ തിരഞ്ഞെടുത്തത്</span>' : ''}
-            </div>
-          `;
-        });
-        optsHtml += '</div>';
-
-        const item = document.createElement('div');
-        item.className = 'p-4 rounded-xl border border-slate-700 bg-slate-900/70 space-y-2';
-        item.innerHTML = `
-          <div class="flex justify-between items-start gap-2">
-            <span class="font-bold text-cyan-400 text-sm">ചോദ്യം ${idx + 1}</span>
-            <div class="flex items-center space-x-2">
-              <div>${badge}</div>
-              <button type="button" onclick="handleReportQuestion(${idx + 1})" class="px-2 py-0.5 bg-rose-950 border border-rose-700 text-[10px] font-bold text-rose-300 rounded hover:bg-rose-900 transition flex items-center space-x-1">
-                <span>Report 🚩</span>
-              </button>
-            </div>
-          </div>
-          <p class="text-sm font-medium text-slate-200 whitespace-pre-line">${q.q}</p>
-          ${optsHtml}
-          <div class="bg-slate-800 p-2.5 rounded-lg border border-slate-700 mt-2 text-xs leading-relaxed">
-            <span class="font-bold text-cyan-400">വിശദീകരണം:</span>
-            <span class="text-slate-300 ml-1">${q.exp}</span>
-          </div>
-        `;
-        cont.appendChild(item);
-      });
-    }
-
-    document.getElementById('downloadPdfBtn').addEventListener('click', () => {
-      const element = document.getElementById('pdfExportWrapper');
-      const opt = {
-        margin:       [10, 10, 10, 10],
-        filename:     `${currentUser.name}_Computer_Science_Set1_Scorecard.pdf`,
-        image:        { type: 'jpeg', quality: 0.98 },
-        html2canvas:  { scale: 2, useCORS: true, backgroundColor: '#1e293b' },
-        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
-      };
-
-      const btn = document.getElementById('downloadPdfBtn');
-      btn.innerText = 'PDF തയ്യാറാക്കുന്നു...';
-      btn.disabled = true;
-
-      html2pdf().set(opt).from(element).save().then(() => {
-        btn.innerHTML = `
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-          <span>PDF ഡൗൺലോഡ് ആയി!</span>
-        `;
-        setTimeout(() => {
-          btn.innerHTML = `
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-            <span>സ്കോർകാർഡ് PDF</span>
-          `;
-          btn.disabled = false;
-        }, 3000);
-      });
-    });
-
-    function fetchLiveLeaderboard() {
-      const modal = document.getElementById('leaderboardModal');
-      const loader = document.getElementById('leaderboardLoading');
-      const wrapper = document.getElementById('leaderboardTableWrapper');
-      const tbody = document.getElementById('leaderboardBody');
-
-      modal.classList.remove('hidden');
-      loader.classList.remove('hidden');
-      wrapper.classList.add('hidden');
-      tbody.innerHTML = '';
-
-      if (!GOOGLE_SHEET_WEBAPP_URL || GOOGLE_SHEET_WEBAPP_URL.includes("YOUR_APPS_SCRIPT_WEBAPP_URL_HERE")) {
-        loader.innerText = "Google Apps Script URL സെറ്റ് ചെയ്തിട്ടില്ല.";
-        return;
-      }
-
-      fetch(`${GOOGLE_SHEET_WEBAPP_URL}?sheet=${encodeURIComponent(QUIZ_SHEET_NAME)}`)
-        .then(res => res.json())
-        .then(data => {
-          loader.classList.add('hidden');
-          wrapper.classList.remove('hidden');
-
-          const list = Array.isArray(data) ? data : (data.leaderboard || []);
-
-          if (!list || list.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="4" class="py-6 text-center text-slate-500">ഇതുവരെ ആരും പരീക്ഷ പൂർത്തിയാക്കിയിട്ടില്ല.</td></tr>';
-            return;
-          }
-
-          list.sort((a, b) => b.score - a.score || b.correct - a.correct);
-
-          list.forEach((entry, idx) => {
-            const masked = entry.phone ? String(entry.phone).substring(0, 5) + '*****' : '---';
-            const row = document.createElement('tr');
-            row.className = 'hover:bg-slate-700/30 text-slate-300';
-            row.innerHTML = `
-              <td class="py-2.5 px-3 font-mono font-bold">${idx + 1}</td>
-              <td class="py-2.5 px-3 font-medium">${entry.name}</td>
-              <td class="py-2.5 px-3 font-mono text-xs text-slate-400">${masked}</td>
-              <td class="py-2.5 px-3 text-right font-mono font-bold text-cyan-400">${Number(entry.score).toFixed(2)}</td>
-            `;
-            tbody.appendChild(row);
-          });
-        })
-        .catch(() => {
-          loader.innerText = "റാങ്ക് ലിസ്റ്റ് ലോഡ് ചെയ്യാൻ കഴിഞ്ഞില്ല. ദയവായി അല്പം കഴിഞ്ഞ് ശ്രമിക്കുക.";
-        });
-    }
-
-    function closeLeaderboard() {
-      document.getElementById('leaderboardModal').classList.add('hidden');
-    }
-
-    function returnToHomeWithData() {
-      const homePortalUrl = "https://subhash-kumar00.github.io/PSC-EXAMS/";
-      const score = document.getElementById('finalScore').innerText;
-      const correct = document.getElementById('correctCount').innerText;
-      const wrong = document.getElementById('wrongCount').innerText;
-      const skipped = document.getElementById('skipCount').innerText;
-
-      window.location.href = `${homePortalUrl}?completed=true&title=${encodeURIComponent(examTitle)}&score=${score}&correct=${correct}&wrong=${wrong}&skipped=${skipped}`;
-    }
-  </script>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="ml">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>കംപ്യൂട്ടർ സയൻസ് സെറ്റ് 1 - മോഡൽ എക്സാം</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Noto+Sans+Malayalam:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -1334,154 +281,154 @@
 
     const questionsData = [
       {
-        q: "ബാങ്കുകളിൽ ചെക്കുകളിലെ അക്കങ്ങൾ വേഗത്തിൽ സ്‌കാൻ ചെയ്‌തു തിരിച്ചറിയാൻ ഉപയോഗിക്കുന്ന ഇൻപുട്ട് ഉപകരണം ഏത്?[span_1](start_span)[span_1](end_span)",
+        q: "ബാങ്കുകളിൽ ചെക്കുകളിലെ അക്കങ്ങൾ വേഗത്തിൽ സ്‌കാൻ ചെയ്‌തു തിരിച്ചറിയാൻ ഉപയോഗിക്കുന്ന ഇൻപുട്ട് ഉപകരണം ഏത്?",
         options: ["ഒപ്റ്റിക്കൽ മാർക്ക് റീഡർ", "മാഗ്നറ്റിക് ഇങ്ക് ക്യാരക്‌ടർ റെക്കഗ്നിഷൻ", "ബാർകോഡ് റീഡർ", "ഒപ്റ്റിക്കൽ ക്യാരക്ടർ റീഡർ"],
         ans: 1,
-        exp: "ചെക്കുകളിൽ പ്രത്യേക കാന്തിക മഷി ഉപയോഗിച്ച് അച്ചടിച്ച കോഡുകൾ വായിക്കാൻ ഉപയോഗിക്കുന്ന ഇൻപുട്ട് ഉപകരണമാണ് MICR (Magnetic Ink Character Recognition)[span_2](start_span)[span_2](end_span)."
+        exp: "ചെക്കുകളിൽ പ്രത്യേക കാന്തിക മഷി ഉപയോഗിച്ച് അച്ചടിച്ച കോഡുകൾ വായിക്കാൻ ഉപയോഗിക്കുന്ന ഇൻപുട്ട് ഉപകരണമാണ് MICR (Magnetic Ink Character Recognition).[span_1](start_span)"[span_1](end_span)
       },
       {
-        q: "കംപ്യൂട്ടറിന്റെ പ്രവർത്തനത്തിന് ആവശ്യമായ അടിസ്ഥാന പ്രോഗ്രാമുകൾ സ്ഥിരമായി സൂക്ഷിക്കുന്ന റോം (ROM) ചിപ്പ് സാധാരണയായി കാണപ്പെടുന്നത് എവിടെയാണ്?[span_3](start_span)[span_3](end_span)",
+        q: "കംപ്യൂട്ടറിന്റെ പ്രവർത്തനത്തിന് ആവശ്യമായ അടിസ്ഥാന പ്രോഗ്രാമുകൾ സ്ഥിരമായി സൂക്ഷിക്കുന്ന റോം (ROM) ചിപ്പ് സാധാരണയായി കാണപ്പെടുന്നത് എവിടെയാണ്?",
         options: ["മദർബോർഡ്", "ഹാർഡ് ഡിസ്ക്", "ഫ്ലാഷ് ഡ്രൈവ്", "കൺട്രോൾ പാനൽ"],
         ans: 0,
-        exp: "മദർബോർഡിൽ (Motherboard) ഉറപ്പിച്ചിരിക്കുന്ന റോം (ROM) ചിപ്പിലാണ് കംപ്യൂട്ടർ ഓൺ ചെയ്യുമ്പോൾ പ്രവർത്തിക്കുന്ന ബയോസ് (BIOS) പ്രോഗ്രാം സൂക്ഷിക്കുന്നത്[span_4](start_span)[span_4](end_span)."
+        exp: "മദർബോർഡിൽ (Motherboard) ഉറപ്പിച്ചിരിക്കുന്ന റോം (ROM) ചിപ്പിലാണ് കംപ്യൂട്ടർ ഓൺ ചെയ്യുമ്പോൾ പ്രവർത്തിക്കുന്ന ബയോസ് (BIOS) പ്രോഗ്രാം സൂക്ഷിക്കുന്നത്.[span_2](start_span)"[span_2](end_span)
       },
       {
-        q: "കംപ്യൂട്ടർ ഇൻപുട്ട്-ഔട്ട്പുട്ട് ഉപകരണങ്ങളെക്കുറിച്ചുള്ള താഴെ പറയുന്ന പ്രസ്താവനകളിൽ ശരിയായവ ഏവ?[span_5](start_span)[span_5](end_span)\n1. ടച്ച് സ്ക്രീനും മോഡവും ഒരേസമയം ഇൻപുട്ടായും ഔട്ട്പുട്ടായും പ്രവർത്തിക്കുന്ന ഉപകരണങ്ങളാണ്.[span_6](start_span)[span_6](end_span)\n2. സാധാരണ കീബോർഡുകളിൽ ഏറ്റവും നീളം കൂടിയ കീ സ്പേസ്ബാർ ആണ്.[span_7](start_span)[span_7](end_span)\n3. ലേസർ പ്രിന്ററുകൾ നോൺ-ഇംപാക്ട് പ്രിന്ററുകളുടെ ഗണത്തിൽ ഉൾപ്പെടുന്നു.[span_8](start_span)[span_8](end_span)",
+        q: "കംപ്യൂട്ടർ ഇൻപുട്ട്-ഔട്ട്പുട്ട് ഉപകരണങ്ങളെക്കുറിച്ചുള്ള താഴെ പറയുന്ന പ്രസ്താവനകളിൽ ശരിയായവ ഏവ?\n1. ടച്ച് സ്ക്രീനും മോഡവും ഒരേസമയം ഇൻപുട്ടായും ഔട്ട്പുട്ടായും പ്രവർത്തിക്കുന്ന ഉപകരണങ്ങളാണ്.\n2. സാധാരണ കീബോർഡുകളിൽ ഏറ്റവും നീളം കൂടിയ കീ സ്പേസ്ബാർ ആണ്.\n3. ലേസർ പ്രിന്ററുകൾ നോൺ-ഇംപാക്ട് പ്രിന്ററുകളുടെ ഗണത്തിൽ ഉൾപ്പെടുന്നു.",
         options: ["1, 2 ശരിയാണ്", "2, 3 ശരിയാണ്", "1, 3 ശരിയാണ്", "1, 2, 3 പ്രസ്താവനകളും ശരിയാണ്"],
         ans: 3,
-        exp: "ടച്ച് സ്ക്രീൻ ഇൻപുട്ടും ഡിസ്പ്ലേയും നൽകുന്നു, സ്പേസ്ബാർ ഏറ്റവും നീളമുള്ള കീയാണ്, ലേസർ പ്രിൻ്റർ നോൺ-ഇംപാക്ട് രീതിയിലാണ് പ്രവർത്തിക്കുന്നത്. മൂന്ന് പ്രസ്താവനകളും ശരിയാണ്[span_9](start_span)[span_9](end_span)."
+        exp: "ടച്ച് സ്ക്രീൻ ഇൻപുട്ടും ഡിസ്പ്ലേയും നൽകുന്നു, സ്പേസ്ബാർ ഏറ്റവും നീളമുള്ള കീയാണ്, ലേസർ പ്രിൻ്റർ നോൺ-ഇംപാക്ട് രീതിയിലാണ് പ്രവർത്തിക്കുന്നത്. മൂന്ന് പ്രസ്താവനകളും ശരിയാണ്.[span_3](start_span)"[span_3](end_span)
       },
       {
-        q: "സിപിയുവിന്റെയും (CPU) റാമുകളുടെയും (RAM) വേഗതയിലെ വ്യത്യാസം പരിഹരിക്കാൻ അവയ്ക്കിടയിൽ പ്രവർത്തിക്കുന്ന അതിവേഗ മെമ്മറി ഏതാണ്?[span_10](start_span)[span_10](end_span)",
+        q: "സിപിയുവിന്റെയും (CPU) റാമുകളുടെയും (RAM) വേഗതയിലെ വ്യത്യാസം പരിഹരിക്കാൻ അവയ്ക്കിടയിൽ പ്രവർത്തിക്കുന്ന അതിവേഗ മെമ്മറി ഏതാണ്?",
         options: ["വെർച്വൽ മെമ്മറി", "ഫ്ലാഷ് മെമ്മറി", "കാഷ് മെമ്മറി", "സെക്കൻഡറി മെമ്മറി"],
         ans: 2,
-        exp: "പ്രൊസസ്സറിൻ്റെ പ്രവർത്തനം വേഗത്തിലാക്കാൻ സിപിയുവിനും പ്രധാന മെമ്മറിക്കും ഇടയിൽ താൽക്കാലികമായി ഡാറ്റ സൂക്ഷിക്കുന്ന അതിവേഗ മെമ്മറിയാണ് കാഷ് മെമ്മറി (Cache Memory)[span_11](start_span)[span_11](end_span)."
+        exp: "പ്രൊസസ്സറിൻ്റെ പ്രവർത്തനം വേഗത്തിലാക്കാൻ സിപിയുവിനും പ്രധാന മെമ്മറിക്കും ഇടയിൽ താൽക്കാലികമായി ഡാറ്റ സൂക്ഷിക്കുന്ന അതിവേഗ മെമ്മറിയാണ് കാഷ് മെമ്മറി (Cache Memory).[span_4](start_span)"[span_4](end_span)
       },
       {
-        q: "പ്രൈമറി മെമ്മറിയെയും സെക്കൻഡറി മെമ്മറിയെയും സംബന്ധിച്ച പ്രസ്താവനകളിൽ ശരിയായവ ഏവ?[span_12](start_span)[span_12](end_span)\n1. സെക്കൻഡറി മെമ്മറിയെ അപേക്ഷിച്ച് പ്രൈമറി മെമ്മറിക്ക് പ്രവർത്തന വേഗത വളരെ കൂടുതലാണ്.[span_13](start_span)[span_13](end_span)\n2. ഹാർഡ് ഡിസ്കും പെൻഡ്രൈവും സെക്കൻഡറി സ്റ്റോറേജ് ഉപകരണങ്ങൾക്ക് ഉദാഹരണങ്ങളാണ്.[span_14](start_span)[span_14](end_span)\n3. കംപ്യൂട്ടറിന്റെ പ്രധാന മെമ്മറിയിൽ നേരിട്ട് പ്രവേശിക്കാൻ സിപിയുവിന് സാധിക്കും.[span_15](start_span)[span_15](end_span)",
+        q: "പ്രൈമറി മെമ്മറിയെയും സെക്കൻഡറി മെമ്മറിയെയും സംബന്ധിച്ച പ്രസ്താവനകളിൽ ശരിയായവ ഏവ?\n1. സെക്കൻഡറി മെമ്മറിയെ അപേക്ഷിച്ച് പ്രൈമറി മെമ്മറിക്ക് പ്രവർത്തന വേഗത വളരെ കൂടുതലാണ്.\n2. ഹാർഡ് ഡിസ്കും പെൻഡ്രൈവും സെക്കൻഡറി സ്റ്റോറേജ് ഉപകരണങ്ങൾക്ക് ഉദാഹരണങ്ങളാണ്.\n3. കംപ്യൂട്ടറിന്റെ പ്രധാന മെമ്മറിയിൽ നേരിട്ട് പ്രവേശിക്കാൻ സിപിയുവിന് സാധിക്കും.",
         options: ["1, 2 ശരിയാണ്", "1, 2, 3 പ്രസ്താവനകളും ശരിയാണ്", "2, 3 ശരിയാണ്", "1, 3 ശരിയാണ്"],
         ans: 1,
-        exp: "പ്രൈമറി മെമ്മറി (RAM) വേഗതയേറിയതാണ്, ഹാർഡ് ഡിസ്ക് സെക്കൻഡറിയാണ്, സിപിയു റാമിൽ നിന്നാണ് ഡാറ്റ നേരിട്ട് എടുക്കുന്നത്. മൂന്ന് പ്രസ്താവനകളും ശരിയാണ്[span_16](start_span)[span_16](end_span)."
+        exp: "പ്രൈമറി മെമ്മറി (RAM) വേഗതയേറിയതാണ്, ഹാർഡ് ഡിസ്ക് സെക്കൻഡറിയാണ്, സിപിയു റാമിൽ നിന്നാണ് ഡാറ്റ നേരിട്ട് എടുക്കുന്നത്. മൂന്ന് പ്രസ്താവനകളും ശരിയാണ്.[span_5](start_span)"[span_5](end_span)
       },
       {
-        q: "വെബ് പേജുകൾ പരസ്പരം ബന്ധിപ്പിക്കാനും ഒരു പേജിൽ നിന്ന് മറ്റൊന്നിലേക്ക് എളുപ്പത്തിൽ സഞ്ചരിക്കാനും സഹായിക്കുന്ന ലിങ്കുകൾ ഏത് പേരിൽ അറിയപ്പെടുന്നു?[span_17](start_span)[span_17](end_span)",
+        q: "വെബ് പേജുകൾ പരസ്പരം ബന്ധിപ്പിക്കാനും ഒരു പേജിൽ നിന്ന് മറ്റൊന്നിലേക്ക് എളുപ്പത്തിൽ സഞ്ചരിക്കാനും സഹായിക്കുന്ന ലിങ്കുകൾ ഏത് പേരിൽ അറിയപ്പെടുന്നു?",
         options: ["വെബ് ബ്രൗസർ", "ഡൊമൈൻ നെയിം", "ഹൈപ്പർലിങ്ക്", "പ്രോട്ടോക്കോൾ"],
         ans: 2,
-        exp: "ഇൻ്റർനെറ്റിലെ പ്രമാണങ്ങളെയും വെബ് പേജുകളെയും തമ്മിൽ ബന്ധിപ്പിക്കുന്ന വാക്കോ ചിത്രമോ ആയ ഘടകമാണ് ഹൈപ്പർലിങ്ക് (Hyperlink)[span_18](start_span)[span_18](end_span)."
+        exp: "ഇൻ്റർനെറ്റിലെ പ്രമാണങ്ങളെയും വെബ് പേജുകളെയും തമ്മിൽ ബന്ധിപ്പിക്കുന്ന വാക്കോ ചിത്രമോ ആയ ഘടകമാണ് ഹൈപ്പർലിങ്ക് (Hyperlink).[span_6](start_span)"[span_6](end_span)
       },
       {
-        q: "കംപ്യൂട്ടറിലെ സിപിയുവിന്റെ പ്രവർത്തന വേഗത അളക്കുന്ന പ്രധാന മാനദണ്ഡം ഏതാണ്?[span_19](start_span)[span_19](end_span)",
+        q: "കംപ്യൂട്ടറിലെ സിപിയുവിന്റെ പ്രവർത്തന വേഗത അളക്കുന്ന പ്രധാന മാനദണ്ഡം ഏതാണ്?",
         options: ["ക്ലോക്ക് സ്പീഡ്", "ബിറ്റ് റേറ്റ്", "ബാൻഡ് വിഡ്‌ത്ത്", "പിക്സൽ ഡെൻസിറ്റി"],
         ans: 0,
-        exp: "പ്രൊസസ്സറിൻ്റെ പ്രവർത്തന വേഗത അളക്കുന്നത് ക്ലോക്ക് സ്പീഡ് (Clock Speed) അടിസ്ഥാനമാക്കിയാണ്; ഇത് ഗിഗാഹെർട്‌സ് (GHz) അല്ലെങ്കിൽ മെഗാഹെർട്‌സ് (MHz) എന്നിവയിൽ രേഖപ്പെടുത്തുന്നു[span_20](start_span)[span_20](end_span)."
+        exp: "പ്രൊസസ്സറിൻ്റെ പ്രവർത്തന വേഗത അളക്കുന്നത് ക്ലോക്ക് സ്പീഡ് (Clock Speed) അടിസ്ഥാനമാക്കിയാണ്; ഇത് ഗിഗാഹെർട്‌സ് (GHz) അല്ലെങ്കിൽ മെഗാഹെർട്‌സ് (MHz) എന്നിവയിൽ രേഖപ്പെടുത്തുന്നു.[span_7](start_span)"[span_7](end_span)
       },
       {
-        q: "ഇന്റർനെറ്റ് പ്രോട്ടോക്കോളുകളെക്കുറിച്ചുള്ള താഴെ പറയുന്ന പ്രസ്താവനകളിൽ ശരിയായവ ഏവ?[span_21](start_span)[span_21](end_span)\n1. ഇന്റർനെറ്റിലൂടെ വെബ് പേജുകൾ സുരക്ഷിതമായി കൈമാറാൻ HTTPS പ്രോട്ടോക്കോൾ ഉപയോഗിക്കുന്നു.[span_22](start_span)[span_22](end_span)\n2. ഇമെയിലുകൾ അയയ്ക്കുന്നതിനായി SMTP എന്ന പ്രോട്ടോക്കോൾ പ്രയോജനപ്പെടുത്തുന്നു.[span_23](start_span)[span_23](end_span)\n3. ഇന്റർനെറ്റിലെ ഡാറ്റാ പാക്കറ്റുകൾ കൃത്യമായി വിലാസത്തിൽ എത്തിക്കാൻ IP സഹായിക്കുന്നു.[span_24](start_span)[span_24](end_span)",
+        q: "ഇന്റർനെറ്റ് പ്രോട്ടോക്കോളുകളെക്കുറിച്ചുള്ള താഴെ പറയുന്ന പ്രസ്താവനകളിൽ ശരിയായവ ഏവ?\n1. ഇന്റർനെറ്റിലൂടെ വെബ് പേജുകൾ സുരക്ഷിതമായി കൈമാറാൻ HTTPS പ്രോട്ടോക്കോൾ ഉപയോഗിക്കുന്നു.\n2. ഇമെയിലുകൾ അയയ്ക്കുന്നതിനായി SMTP എന്ന പ്രോട്ടോക്കോൾ പ്രയോജനപ്പെടുത്തുന്നു.\n3. ഇന്റർനെറ്റിലെ ഡാറ്റാ പാക്കറ്റുകൾ കൃത്യമായി വിലാസത്തിൽ എത്തിക്കാൻ IP സഹായിക്കുന്നു.",
         options: ["1, 2, 3 പ്രസ്താവനകളും ശരിയാണ്", "1, 2 ശരിയാണ്", "2, 3 ശരിയാണ്", "1, 3 ശരിയാണ്"],
         ans: 0,
-        exp: "HTTPS സുരക്ഷിത വെബ് കൈമാറ്റത്തിനും, SMTP (Simple Mail Transfer Protocol) ഇമെയിൽ അയക്കലിനും, IP റൂട്ടിംഗിനും ഉപയോഗിക്കുന്നു. മൂന്ന് പ്രസ്താവനകളും ശരിയാണ്[span_25](start_span)[span_25](end_span)."
+        exp: "HTTPS സുരക്ഷിത വെബ് കൈമാറ്റത്തിനും, SMTP (Simple Mail Transfer Protocol) ഇമെയിൽ അയക്കലിനും, IP റൂട്ടിംഗിനും ഉപയോഗിക്കുന്നു. മൂന്ന് പ്രസ്താവനകളും ശരിയാണ്.[span_8](start_span)"[span_8](end_span)
       },
       {
-        q: "വൈദ്യുതി നിലച്ചാൽ അതിലുള്ള വിവരങ്ങൾ പൂർണ്ണമായി നഷ്ടപ്പെടുന്ന വോളറ്റൈൽ (Volatile) മെമ്മറി ഏതാണ്?[span_26](start_span)[span_26](end_span)",
+        q: "വൈദ്യുതി നിലച്ചാൽ അതിലുള്ള വിവരങ്ങൾ പൂർണ്ണമായി നഷ്ടപ്പെടുന്ന വോളറ്റൈൽ (Volatile) മെമ്മറി ഏതാണ്?",
         options: ["ഹാർഡ് ഡിസ്ക്", "റീഡ് ഒൺലി മെമ്മറി", "ഒപ്റ്റിക്കൽ ഡിസ്ക്", "റാൻഡം ആക്സസ് മെമ്മറി"],
         ans: 3,
-        exp: "വൈദ്യുത ബന്ധം നിലച്ചാൽ ഡാറ്റ മാഞ്ഞുപോകുന്ന അസ്ഥിര മെമ്മറിയാണ് റാം (RAM - Random Access Memory)[span_27](start_span)[span_27](end_span). റോം (ROM) ഒരു നോൺ-വോളറ്റൈൽ മെമ്മറിയാണ്[span_28](start_span)[span_28](end_span)."
+        exp: "വൈദ്യുത ബന്ധം നിലച്ചാൽ ഡാറ്റ മാഞ്ഞുപോകുന്ന അസ്ഥിര മെമ്മറിയാണ് റാം (RAM - Random Access Memory). റോം (ROM) ഒരു നോൺ-വോളറ്റൈൽ മെമ്മറിയാണ്.[span_9](start_span)"[span_9](end_span)
       },
       {
-        q: "മദർബോർഡിന്റെയും സിപിയു ഘടകങ്ങളുടെയും സവിശേഷതകളിൽ ശരിയായവ ഏവ?[span_29](start_span)[span_29](end_span)\n1. കംപ്യൂട്ടറിലെ എല്ലാ ആന്തരിക ഉപകരണങ്ങളെയും പരസ്പരം ബന്ധിപ്പിക്കുന്ന പ്രധാന സർക്യൂട്ട് ബോർഡാണ് മദർബോർഡ്.[span_30](start_span)[span_30](end_span)\n2. ഇൻസ്ട്രക്ഷനുകൾ ഡീകോഡ് ചെയ്യാനും ഡാറ്റാ പ്രവാഹം നിയന്ത്രിക്കാനും കൺട്രോൾ യൂണിറ്റ് സഹായിക്കുന്നു.[span_31](start_span)[span_31](end_span)\n3. കംപ്യൂട്ടർ സ്വിച്ച് ഓഫ് ചെയ്‌താലും സമയം കൃത്യമായി നിലനിർത്താൻ മദർബോർഡിലെ സിമോസ് ബാറ്ററി സഹായിക്കുന്നു.[span_32](start_span)[span_32](end_span)",
+        q: "മദർബോർഡിന്റെയും സിപിയു ഘടകങ്ങളുടെയും സവിശേഷതകളിൽ ശരിയായവ ഏവ?\n1. കംപ്യൂട്ടറിലെ എല്ലാ ആന്തരിക ഉപകരണങ്ങളെയും പരസ്പരം ബന്ധിപ്പിക്കുന്ന പ്രധാന സർക്യൂട്ട് ബോർഡാണ് മദർബോർഡ്.\n2. ഇൻസ്ട്രക്ഷനുകൾ ഡീകോഡ് ചെയ്യാനും ഡാറ്റാ പ്രവാഹം നിയന്ത്രിക്കാനും കൺട്രോൾ യൂണിറ്റ് സഹായിക്കുന്നു.\n3. കംപ്യൂട്ടർ സ്വിച്ച് ഓഫ് ചെയ്‌താലും സമയം കൃത്യമായി നിലനിർത്താൻ മദർബോർഡിലെ സിമോസ് ബാറ്ററി സഹായിക്കുന്നു.",
         options: ["1, 2 ശരിയാണ്", "1, 3 ശരിയാണ്", "1, 2, 3 പ്രസ്താവനകളും ശരിയാണ്", "2, 3 ശരിയാണ്"],
         ans: 2,
-        exp: "മദർബോർഡ് മെയിൻ ബോർഡാണ്, കൺട്രോൾ യൂണിറ്റ് ഡാറ്റാ പ്രവാഹം നിയന്ത്രിക്കുന്നു, CMOS ബാറ്ററി തീയതിയും സമയവും നിലനിർത്തുന്നു. മൂന്നും ശരിയാണ്[span_33](start_span)[span_33](end_span)."
+        exp: "മദർബോർഡ് മെയിൻ ബോർഡാണ്, കൺട്രോൾ യൂണിറ്റ് ഡാറ്റാ പ്രവാഹം നിയന്ത്രിക്കുന്നു, CMOS ബാറ്ററി തീയതിയും സമയവും നിലനിർത്തുന്നു. മൂന്നും ശരിയാണ്.[span_10](start_span)"[span_10](end_span)
       },
       {
-        q: "കംപ്യൂട്ടറിൽ തയ്യാറാക്കിയ വലിയ എഞ്ചിനീയറിംഗ് പ്ലാനുകളും ബ്ലൂപ്രിന്റുകളും കൃത്യതയോടെ കടലാസിൽ പ്രിൻ്റ് ചെയ്യാൻ ഉപയോഗിക്കുന്ന ഔട്ട്പുട്ട് ഉപകരണം ഏത്?[span_34](start_span)[span_34](end_span)",
+        q: "കംപ്യൂട്ടറിൽ തയ്യാറാക്കിയ വലിയ എഞ്ചിനീയറിംഗ് പ്ലാനുകളും ബ്ലൂപ്രിന്റുകളും കൃത്യതയോടെ കടലാസിൽ പ്രിൻ്റ് ചെയ്യാൻ ഉപയോഗിക്കുന്ന ഔട്ട്പുട്ട് ഉപകരണം ഏത്?",
         options: ["പ്ലോട്ടർ", "ഡോട്ട് മാട്രിക്സ് പ്രിന്റർ", "ലേസർ പ്രിന്റർ", "സ്കാനർ"],
         ans: 0,
-        exp: "വെക്റ്റർ ഗ്രാഫിക്സ് ഉപയോഗിച്ച് വലിയ ഡ്രോയിംഗുകളും ഫ്ലെക്സുകളും പ്ലാനുകളും പ്രിൻ്റ് ചെയ്യാൻ ഉപയോഗിക്കുന്ന വലിയ ഔട്ട്പുട്ട് ഡിവൈസാണ് പ്ലോട്ടർ (Plotter)[span_35](start_span)[span_35](end_span)."
+        exp: "വെക്റ്റർ ഗ്രാഫിക്സ് ഉപയോഗിച്ച് വലിയ ഡ്രോയിംഗുകളും ഫ്ലെക്സുകളും പ്ലാനുകളും പ്രിൻ്റ് ചെയ്യാൻ ഉപയോഗിക്കുന്ന വലിയ ഔട്ട്പുട്ട് ഡിവൈസാണ് പ്ലോട്ടർ (Plotter).[span_11](start_span)"[span_11](end_span)
       },
       {
-        q: "സിപിയുവിൽ ഗണിതക്രിയകളും താരതമ്യങ്ങളും നടത്താൻ ചുമതലപ്പെട്ട വിഭാഗം ഏതാണ്?[span_36](start_span)[span_36](end_span)",
+        q: "സിപിയുവിൽ ഗണിതക്രിയകളും താരതമ്യങ്ങളും നടത്താൻ ചുമതലപ്പെട്ട വിഭാഗം ഏതാണ്?",
         options: ["കൺട്രോൾ യൂണിറ്റ്", "അരിറ്റിക് ലോജിക് യൂണിറ്റ്", "മെമ്മറി മാനേജ്മെന്റ് യൂണിറ്റ്", "രജിസ്റ്റർ അറേ"],
         ans: 1,
-        exp: "സങ്കലനം, ഗുണനം തുടങ്ങിയ ഗണിതക്രിയകളും യുക്തിപരമായ താരതമ്യങ്ങളും നിർവ്വഹിക്കുന്നത് ALU (Arithmetic Logic Unit) ആണ്[span_37](start_span)[span_37](end_span)."
+        exp: "സങ്കലനം, ഗുണനം തുടങ്ങിയ ഗണിതക്രിയകളും യുക്തിപരമായ താരതമ്യങ്ങളും നിർവ്വഹിക്കുന്നത് ALU (Arithmetic Logic Unit) ആണ്.[span_12](start_span)"[span_12](end_span)
       },
       {
-        q: "വെബ് ബ്രൗസറുകളെയും സെർച്ച് എഞ്ചിനുകളെയും കുറിച്ചുള്ള പ്രസ്താവനകളിൽ ശരിയായവ ഏവ?[span_38](start_span)[span_38](end_span)\n1. ഇന്റർനെറ്റിലെ വിവരങ്ങൾ തിരയാൻ സഹായിക്കുന്ന സംവിധാനമാണ് സെർച്ച് എഞ്ചിൻ (ഉദാ: ഗൂഗിൾ).[span_39](start_span)[span_39](end_span)\n2. വെബ് പേജുകൾ കാണാൻ ഉപയോക്താവിനെ സഹായിക്കുന്ന ആപ്ലിക്കേഷൻ സോഫ്റ്റ്വെയറാണ് വെബ് ബ്രൗസർ.[span_40](start_span)[span_40](end_span)\n3. മോസില്ല ഫയർഫോക്സും ആപ്പിൾ സഫാരിയും പ്രമുഖ വെബ് ബ്രൗസറുകളാണ്.[span_41](start_span)[span_41](end_span)",
+        q: "വെബ് ബ്രൗസറുകളെയും സെർച്ച് എഞ്ചിനുകളെയും കുറിച്ചുള്ള പ്രസ്താവനകളിൽ ശരിയായവ ഏവ?\n1. ഇന്റർനെറ്റിലെ വിവരങ്ങൾ തിരയാൻ സഹായിക്കുന്ന സംവിധാനമാണ് സെർച്ച് എഞ്ചിൻ (ഉദാ: ഗൂഗിൾ).\n2. വെബ് പേജുകൾ കാണാൻ ഉപയോക്താവിനെ സഹായിക്കുന്ന ആപ്ലിക്കേഷൻ സോഫ്റ്റ്വെയറാണ് വെബ് ബ്രൗസർ.\n3. മോസില്ല ഫയർഫോക്സും ആപ്പിൾ സഫാരിയും പ്രമുഖ വെബ് ബ്രൗസറുകളാണ്.",
         options: ["1, 2 ശരിയാണ്", "1, 2, 3 പ്രസ്താവനകളും ശരിയാണ്", "2, 3 ശരിയാണ്", "1, 3 ശരിയാണ്"],
         ans: 1,
-        exp: "സെർച്ച്‌ എഞ്ചിനുകളുടെയും ബ്രൗസറുകളുടെയും നിർവ്വചനങ്ങളും ഉദാഹരണങ്ങളും ശരിയാണ്[span_42](start_span)[span_42](end_span)."
+        exp: "സെർച്ച്‌ എഞ്ചിനുകളുടെയും ബ്രൗസറുകളുടെയും നിർവ്വചനങ്ങളും ഉദാഹരണങ്ങളും ശരിയാണ്.[span_13](start_span)"[span_13](end_span)
       },
       {
-        q: "ഇന്റർനെറ്റിൽ ഒരു വെബ്സൈറ്റിൻ്റെ ലൊക്കേഷൻ കൃത്യമായി തിരിച്ചറിയാൻ ഉപയോഗിക്കുന്ന വിലാസം ഏത് പേരിൽ അറിയപ്പെടുന്നു?[span_43](start_span)[span_43](end_span)",
+        q: "ഇന്റർനെറ്റിൽ ഒരു വെബ്സൈറ്റിൻ്റെ ലൊക്കേഷൻ കൃത്യമായി തിരിച്ചറിയാൻ ഉപയോഗിക്കുന്ന വിലാസം ഏത് പേരിൽ അറിയപ്പെടുന്നു?",
         options: ["മാക് വിലാസം", "ഫയൽ ട്രാൻസ്‌ഫർ കോഡ്", "പോർട്ട് നമ്പർ", "യൂണിഫോം റിസോഴ്‌സ് ലൊക്കേറ്റർ"],
         ans: 3,
-        exp: "ഇൻ്റർനെറ്റിലെ ഒരു വെബ് പേജിൻ്റെ പൂർണ്ണമായ വിലാസമാണ് URL (Uniform Resource Locator)[span_44](start_span)[span_44](end_span)."
+        exp: "ഇൻ്റർനെറ്റിലെ ഒരു വെബ് പേജിൻ്റെ പൂർണ്ണമായ വിലാസമാണ് URL (Uniform Resource Locator).[span_14](start_span)"[span_14](end_span)
       },
       {
-        q: "കംപ്യൂട്ടർ മെമ്മറി യൂണിറ്റുകളെ സംബന്ധിച്ച പ്രസ്താവനകളിൽ തെറ്റായവ ഏവ?[span_45](start_span)[span_45](end_span)\n1. ഒരു ബൈറ്റ് (Byte) എന്നാൽ 8 ബിറ്റുകൾ ചേർന്നതാണ്.[span_46](start_span)[span_46](end_span)\n2. 1024 കിലോബൈറ്റ് ചേരുമ്പോഴാണ് ഒരു മെഗാബൈറ്റ് (MB) ഉണ്ടാകുന്നത്.[span_47](start_span)[span_47](end_span)\n3. ഒരു നിബിൾ (Nibble) എന്നാൽ 16 ബിറ്റുകൾക്ക് തുല്യമാണ്.[span_48](start_span)[span_48](end_span)",
+        q: "കംപ്യൂട്ടർ മെമ്മറി യൂണിറ്റുകളെ സംബന്ധിച്ച പ്രസ്താവനകളിൽ തെറ്റായവ ഏവ?\n1. ഒരു ബൈറ്റ് (Byte) എന്നാൽ 8 ബിറ്റുകൾ ചേർന്നതാണ്.\n2. 1024 കിലോബൈറ്റ് ചേരുമ്പോഴാണ് ഒരു മെഗാബൈറ്റ് (MB) ഉണ്ടാകുന്നത്.\n3. ഒരു നിബിൾ (Nibble) എന്നാൽ 16 ബിറ്റുകൾക്ക് തുല്യമാണ്.",
         options: ["1, 2 തെറ്റാണ്", "1 മാത്രം തെറ്റാണ്", "3 മാത്രം തെറ്റാണ്", "2, 3 തെറ്റാണ്"],
         ans: 2,
-        exp: "ഒരു നിബിൾ എന്നാൽ 4 ബിറ്റുകളാണ് (16 ബിറ്റല്ല). അതിനാൽ 3-ാമത്തെ പ്രസ്താവന മാത്രം തെറ്റാണ്[span_49](start_span)[span_49](end_span)."
+        exp: "ഒരു നിബിൾ എന്നാൽ 4 ബിറ്റുകളാണ് (16 ബിറ്റല്ല). അതിനാൽ 3-ാമത്തെ പ്രസ്താവന മാത്രം തെറ്റാണ്.[span_15](start_span)"[span_15](end_span)
       },
       {
-        q: "മദർബോർഡിലെ വിവിധ ഇലക്ട്രോണിക് ഘടകങ്ങൾ തമ്മിൽ ഡാറ്റയും സിഗ്നലുകളും കൈമാറുന്ന ചാലക പാതകൾ ഏത് പേരിൽ അറിയപ്പെടുന്നു?[span_50](start_span)[span_50](end_span)",
+        q: "മദർബോർഡിലെ വിവിധ ഇലക്ട്രോണിക് ഘടകങ്ങൾ തമ്മിൽ ഡാറ്റയും സിഗ്നലുകളും കൈമാറുന്ന ചാലക പാതകൾ ഏത് പേരിൽ അറിയപ്പെടുന്നു?",
         options: ["സിസ്റ്റം ബസ്", "എക്സ്പാൻഷൻ സ്ലോട്ട്", "പോർട്ട് ഹബ്ബ്", "പവർ സപ്ലൈ കേബിൾ"],
         ans: 0,
-        exp: "മദർബോർഡിലെ പ്രൊസസ്സറും മെമ്മറിയും അനുബന്ധ ഭാഗങ്ങളും തമ്മിൽ വിവരങ്ങൾ കൈമാറുന്ന ചാലക ശ്രേണിയാണ് സിസ്റ്റം ബസ് (System Bus)[span_51](start_span)[span_51](end_span)."
+        exp: "മദർബോർഡിലെ പ്രൊസസ്സറും മെമ്മറിയും അനുബന്ധ ഭാഗങ്ങളും തമ്മിൽ വിവരങ്ങൾ കൈമാറുന്ന ചാലക ശ്രേണിയാണ് സിസ്റ്റം ബസ് (System Bus).[span_16](start_span)"[span_16](end_span)
       },
       {
-        q: "മത്സര പരീക്ഷകളിലെ ഒബ്ജക്റ്റീവ് ഉത്തരക്കടലാസുകൾ സ്‌കാൻ ചെയ്ത് മൂല്യനിർണ്ണയം നടത്താൻ ഉപയോഗിക്കുന്ന സാങ്കേതികവിദ്യ ഏത്?[span_52](start_span)[span_52](end_span)",
+        q: "മത്സര പരീക്ഷകളിലെ ഒബ്ജക്റ്റീവ് ഉത്തരക്കടലാസുകൾ സ്‌കാൻ ചെയ്ത് മൂല്യനിർണ്ണയം നടത്താൻ ഉപയോഗിക്കുന്ന സാങ്കേതികവിദ്യ ഏത്?",
         options: ["മാഗ്നറ്റിക് സ്ട്രൈപ്പ് റീഡർ", "ഒപ്റ്റിക്കൽ മാർക്ക് റെക്കഗ്നിഷൻ", "ബാർകോഡ് സ്ക‌ാനർ", "റേഡിയോ ഫ്രീക്വൻസി റീഡർ"],
         ans: 1,
-        exp: "പെൻസിൽ അല്ലെങ്കിൽ പേന കൊണ്ട് അടയാളപ്പെടുത്തിയ വട്ടങ്ങൾ തിരിച്ചറിയാൻ ഉപയോഗിക്കുന്ന ഉപകരണമാണ് OMR (Optical Mark Recognition)[span_53](start_span)[span_53](end_span)."
+        exp: "പെൻസിൽ അല്ലെങ്കിൽ പേന കൊണ്ട് അടയാളപ്പെടുത്തിയ വട്ടങ്ങൾ തിരിച്ചറിയാൻ ഉപയോഗിക്കുന്ന ഉപകരണമാണ് OMR (Optical Mark Recognition).[span_17](start_span)"[span_17](end_span)
       },
       {
-        q: "ഇൻപുട്ട്-ഔട്ട്പുട്ട് ഉപകരണങ്ങളെക്കുറിച്ചുള്ള പ്രസ്താവനകളിൽ തെറ്റായവ ഏവ?[span_54](start_span)[span_54](end_span)\n1. സ്കാനർ ഒരു ഔട്ട്പുട്ട് ഉപകരണമാണ്.[span_55](start_span)[span_55](end_span)\n2. പ്രിന്റർ ഒരു ഔട്ട്പുട്ട് ഉപകരണമാണ്.[span_56](start_span)[span_56](end_span)\n3. വെബ്ക്യാമറ ഒരു ഇൻപുട്ട് ഉപകരണമാണ്.[span_57](start_span)[span_57](end_span)",
+        q: "ഇൻപുട്ട്-ഔട്ട്പുട്ട് ഉപകരണങ്ങളെക്കുറിച്ചുള്ള പ്രസ്താവനകളിൽ തെറ്റായവ ഏവ?\n1. സ്കാനർ ഒരു ഔട്ട്പുട്ട് ഉപകരണമാണ്.\n2. പ്രിന്റർ ഒരു ഔട്ട്പുട്ട് ഉപകരണമാണ്.\n3. വെബ്ക്യാമറ ഒരു ഇൻപുട്ട് ഉപകരണമാണ്.",
         options: ["1 മാത്രം തെറ്റാണ്", "2 മാത്രം തെറ്റാണ്", "3 മാത്രം തെറ്റാണ്", "1, 3 തെറ്റാണ്"],
         ans: 0,
-        exp: "സ്ക‌ാനർ കടലാസിലെ വിവരങ്ങൾ ഡിജിറ്റലാക്കി കംപ്യൂട്ടറിലേക്ക് നൽകുന്ന ഇൻപുട്ട് ഉപകരണമാണ് (ഔട്ട്പുട്ടല്ല). അതിനാൽ 1 മാത്രം തെറ്റാണ്[span_58](start_span)[span_58](end_span)."
+        exp: "സ്ക‌ാനർ കടലാസിലെ വിവരങ്ങൾ ഡിജിറ്റലാക്കി കംപ്യൂട്ടറിലേക്ക് നൽകുന്ന ഇൻപുട്ട് ഉപകരണമാണ് (ഔട്ട്പുട്ടല്ല). അതിനാൽ 1 മാത്രം തെറ്റാണ്.[span_18](start_span)"[span_18](end_span)
       },
       {
-        q: "വെബ് പേജുകൾ നിർമ്മിക്കുന്നതിനായി ഉപയോഗിക്കുന്ന അടിസ്ഥാന മാർക്ക്അപ്പ് ഭാഷ ഏതാണ്?[span_59](start_span)[span_59](end_span)",
+        q: "വെബ് പേജുകൾ നിർമ്മിക്കുന്നതിനായി ഉപയോഗിക്കുന്ന അടിസ്ഥാന മാർക്ക്അപ്പ് ഭാഷ ഏതാണ്?",
         options: ["സി പ്ലസ് പ്ലസ്", "പൈത്തൺ", "ഹൈപ്പർടെക്സ്റ്റ് മാർക്ക്അപ്പ് ലാംഗ്വേജ്", "ജാവാ സ്ക്രിപ്റ്റ്"],
         ans: 2,
-        exp: "വെബ് പേജുകളുടെ രൂപകൽപ്പനയ്ക്കും ഘടനയ്ക്കും ഉപയോഗിക്കുന്ന അടിസ്ഥാന ഭാഷയാണ് HTML (HyperText Markup Language)[span_60](start_span)[span_60](end_span)."
+        exp: "വെബ് പേജുകളുടെ രൂപകൽപ്പനയ്ക്കും ഘടനയ്ക്കും ഉപയോഗിക്കുന്ന അടിസ്ഥാന ഭാഷയാണ് HTML (HyperText Markup Language).[span_19](start_span)"[span_19](end_span)
       },
       {
-        q: "ഇന്റർനെറ്റിന്റെയും ഡൊമൈൻ നാമങ്ങളുടെയും ഘടനയെക്കുറിച്ചുള്ള പ്രസ്താവനകളിൽ തെറ്റായവ ഏവ?[span_61](start_span)[span_61](end_span)\n1. .gov എന്നത് വിദ്യാഭ്യാസ സ്ഥാപനങ്ങൾക്കായുള്ള ഡൊമൈൻ എക്സ്റ്റൻഷനാണ്.[span_62](start_span)[span_62](end_span)\n2. .org എന്നത് വാണിജ്യേതര സംഘടനകൾ ഉപയോഗിക്കുന്ന ഡൊമൈൻ ആണ്.[span_63](start_span)[span_63](end_span)\n3. .com എന്നത് വാണിജ്യ സ്ഥാപനങ്ങൾക്കായുള്ള ഡൊമൈൻ ആണ്.[span_64](start_span)[span_64](end_span)",
+        q: "ഇന്റർനെറ്റിന്റെയും ഡൊമൈൻ നാമങ്ങളുടെയും ഘടനയെക്കുറിച്ചുള്ള പ്രസ്താവനകളിൽ തെറ്റായവ ഏവ?\n1. .gov എന്നത് വിദ്യാഭ്യാസ സ്ഥാപനങ്ങൾക്കായുള്ള ഡൊമൈൻ എക്സ്റ്റൻഷനാണ്.\n2. .org എന്നത് വാണിജ്യേതര സംഘടനകൾ ഉപയോഗിക്കുന്ന ഡൊമൈൻ ആണ്.\n3. .com എന്നത് വാണിജ്യ സ്ഥാപനങ്ങൾക്കായുള്ള ഡൊമൈൻ ആണ്.",
         options: ["2, 3 തെറ്റാണ്", "1 മാത്രം തെറ്റാണ്", "2 മാത്രം തെറ്റാണ്", "എല്ലാം തെറ്റാണ്"],
         ans: 1,
-        exp: ".gov സർക്കാർ സ്ഥാപനങ്ങൾക്കാണ് നൽകുന്നത്; വിദ്യാഭ്യാസ സ്ഥാപനങ്ങൾ ഉപയോഗിക്കുന്നത് .edu അല്ലെങ്കിൽ .ac ആണ്. അതിനാൽ 1 മാത്രം തെറ്റാണ്[span_65](start_span)[span_65](end_span)."
+        exp: ".gov സർക്കാർ സ്ഥാപനങ്ങൾക്കാണ് നൽകുന്നത്; വിദ്യാഭ്യാസ സ്ഥാപനങ്ങൾ ഉപയോഗിക്കുന്നത് .edu അല്ലെങ്കിൽ .ac ആണ്. അതിനാൽ 1 മാത്രം തെറ്റാണ്.[span_20](start_span)"[span_20](end_span)
       },
       {
-        q: "കംപ്യൂട്ടറിന്റെ സിപിയുവിനുള്ളിൽ ഏറ്റവും കുറഞ്ഞ സംഭരണശേഷിയുള്ളതും ഏറ്റവും വേഗതയേറിയതുമായ മെമ്മറി ഏത്?[span_66](start_span)[span_66](end_span)",
+        q: "കംപ്യൂട്ടറിന്റെ സിപിയുവിനുള്ളിൽ ഏറ്റവും കുറഞ്ഞ സംഭരണശേഷിയുള്ളതും ഏറ്റവും വേഗതയേറിയതുമായ മെമ്മറി ഏത്?",
         options: ["പ്രൈമറി റാം", "രജിസ്റ്റർ", "കാഷ് മെമ്മറി", "സോളിഡ് സ്റ്റേറ്റ് ഡ്രൈവ്"],
         ans: 1,
-        exp: "സിപിയുവിനുള്ളിൽ നേരിട്ട് ഘടിപ്പിച്ചിട്ടുള്ള ഏറ്റവും ചെറിയതും പ്രൊസസ്സറിന്റെ അതേ വേഗതയിൽ പ്രവർത്തിക്കുന്നതുമായ മെമ്മറിയാണ് രജിസ്റ്ററുകൾ (Registers)[span_67](start_span)[span_67](end_span)."
+        exp: "സിപിയുവിനുള്ളിൽ നേരിട്ട് ഘടിപ്പിച്ചിട്ടുള്ള ഏറ്റവും ചെറിയതും പ്രൊസസ്സറിന്റെ അതേ വേഗതയിൽ പ്രവർത്തിക്കുന്നതുമായ മെമ്മറിയാണ് രജിസ്റ്ററുകൾ (Registers).[span_21](start_span)"[span_21](end_span)
       },
       {
-        q: "സിപിയുവിൻ്റെയും റാം മെമ്മറിയുടെയും പ്രത്യേകതകളെ സംബന്ധിച്ച പ്രസ്താവനകളിൽ തെറ്റായവ ഏവ?[span_68](start_span)[span_68](end_span)\n1. സിപിയുവിനെ കംപ്യൂട്ടറിന്റെ തലച്ചോറ് എന്ന് വിശേഷിപ്പിക്കുന്നു.[span_69](start_span)[span_69](end_span)\n2. കംപ്യൂട്ടറിൽ റാം (RAM) കൂടുതലുള്ളപ്പോൾ കൂടുതൽ പ്രോഗ്രാമുകൾ ഒരേസമയം പ്രവർത്തിപ്പിക്കാം.[span_70](start_span)[span_70](end_span)\n3. റാം ഒരു കാന്തിക ഡിസ്‌ക് ആയതിനാൽ കറങ്ങുന്ന ഭാഗങ്ങൾ ഉള്ള മെക്കാനിക്കൽ ഉപകരണമാണ്.[span_71](start_span)[span_71](end_span)",
+        q: "സിപിയുവിൻ്റെയും റാം മെമ്മറിയുടെയും പ്രത്യേകതകളെ സംബന്ധിച്ച പ്രസ്താവനകളിൽ തെറ്റായവ ഏവ?\n1. സിപിയുവിനെ കംപ്യൂട്ടറിന്റെ തലച്ചോറ് എന്ന് വിശേഷിപ്പിക്കുന്നു.\n2. കംപ്യൂട്ടറിൽ റാം (RAM) കൂടുതലുള്ളപ്പോൾ കൂടുതൽ പ്രോഗ്രാമുകൾ ഒരേസമയം പ്രവർത്തിപ്പിക്കാം.\n3. റാം ഒരു കാന്തിക ഡിസ്‌ക് ആയതിനാൽ കറങ്ങുന്ന ഭാഗങ്ങൾ ഉള്ള മെക്കാനിക്കൽ ഉപകരണമാണ്.",
         options: ["1, 2 തെറ്റാണ്", "1 മാത്രം തെറ്റാണ്", "3 മാത്രം തെറ്റാണ്", "എല്ലാം തെറ്റാണ്"],
         ans: 2,
-        exp: "റാം ഒരു അർദ്ധചാലക (Semiconductor) ഇലക്ട്രോണിക് ചിപ്പാണ്; ഇതിൽ കറങ്ങുന്ന കാന്തിക ഭാഗങ്ങളില്ല. അതിനാൽ 3 മാത്രം തെറ്റാണ്[span_72](start_span)[span_72](end_span)."
+        exp: "റാം ഒരു അർദ്ധചാലക (Semiconductor) ഇലക്ട്രോണിക് ചിപ്പാണ്; ഇതിൽ കറങ്ങുന്ന കാന്തിക ഭാഗങ്ങളില്ല. അതിനാൽ 3 മാത്രം തെറ്റാണ്.[span_22](start_span)"[span_22](end_span)
       },
       {
-        q: "ഇന്റർനെറ്റിന്റെ പിതാവ് എന്നറിയപ്പെടുന്ന പ്രമുഖ കംപ്യൂട്ടർ ശാസ്ത്രജ്ഞൻ ആര്?[span_73](start_span)[span_73](end_span)",
+        q: "ഇന്റർനെറ്റിന്റെ പിതാവ് എന്നറിയപ്പെടുന്ന പ്രമുഖ കംപ്യൂട്ടർ ശാസ്ത്രജ്ഞൻ ആര്?",
         options: ["വിന്റ് സെർഫ്", "ടിം ബർണേഴ്‌സ് ലീ", "ചാൾസ് ബാബേജ്", "അലൻ ട്യൂറിംഗ്"],
         ans: 0,
-        exp: "TCP/IP പ്രോട്ടോക്കോളിന്റെ രൂപകൽപ്പനയിൽ പങ്കുവഹിച്ച വിന്റൺ ഗ്രേ സെർഫ് (Vint Cerf) ആണ് ഇൻ്റർനെറ്റിൻ്റെ പിതാവ് എന്നറിയപ്പെടുന്നത്[span_74](start_span)[span_74](end_span)."
+        exp: "TCP/IP പ്രോട്ടോക്കോളിന്റെ രൂപകൽപ്പനയിൽ പങ്കുവഹിച്ച വിന്റൺ ഗ്രേ സെർഫ് (Vint Cerf) ആണ് ഇൻ്റർനെറ്റിൻ്റെ പിതാവ് എന്നറിയപ്പെടുന്നത്.[span_23](start_span)"[span_23](end_span)
       },
       {
-        q: "കംപ്യൂട്ടർ സ്ക്രീനിലെ ദൃശ്യങ്ങളുടെ വ്യക്തത നിർണ്ണയിക്കുന്ന ഏറ്റവും ചെറിയ ബിന്ദുക്കൾ ഏത് പേരിൽ അറിയപ്പെടുന്നു?[span_75](start_span)[span_75](end_span)",
+        q: "കംപ്യൂട്ടർ സ്ക്രീനിലെ ദൃശ്യങ്ങളുടെ വ്യക്തത നിർണ്ണയിക്കുന്ന ഏറ്റവും ചെറിയ ബിന്ദുക്കൾ ഏത് പേരിൽ അറിയപ്പെടുന്നു?",
         options: ["ബിറ്റുകൾ", "ഡ്രോപ്പുകൾ", "പിക്സലുകൾ", "ഫോണ്ടുകൾ"],
         ans: 2,
-        exp: "മോണിറ്റർ ഡിസ്പ്ലേയിലെ ചിത്രം നിർമ്മിക്കപ്പെടുന്ന അടിസ്ഥാന ദൃശ്യ ബിന്ദുക്കളെയാണ് പിക്സലുകൾ (Pixels - Picture Elements) എന്ന് വിളിക്കുന്നത്[span_76](start_span)[span_76](end_span)."
+        exp: "മോണിറ്റർ ഡിസ്പ്ലേയിലെ ചിത്രം നിർമ്മിക്കപ്പെടുന്ന അടിസ്ഥാന ദൃശ്യ ബിന്ദുക്കളെയാണ് പിക്സലുകൾ (Pixels - Picture Elements) എന്ന് വിളിക്കുന്നത്.[span_24](start_span)"[span_24](end_span)
       },
       {
-        q: "ലോകത്ത് ആദ്യമായി രൂപംകൊണ്ട കംപ്യൂട്ടർ നെറ്റ‌്വർക്കായ ആർപാനെറ്റ് (ARPANET) വികസിപ്പിച്ച രാജ്യം ഏത്?[span_77](start_span)[span_77](end_span)",
+        q: "ലോകത്ത് ആദ്യമായി രൂപംകൊണ്ട കംപ്യൂട്ടർ നെറ്റ‌്വർക്കായ ആർപാനെറ്റ് (ARPANET) വികസിപ്പിച്ച രാജ്യം ഏത്?",
         options: ["സോവിയറ്റ് യൂണിയൻ", "യുണൈറ്റഡ് കിംഗ്‌ഡം", "ജർമ്മനി", "യുണൈറ്റഡ് സ്റ്റേറ്റ്സ് ഓഫ് അമേരിക്ക"],
         ans: 3,
-        exp: "1969-ൽ അമേരിക്കൻ പ്രതിരോധ വകുപ്പിൻ്റെ അഡ്വാൻസ്‌ഡ് റിസർച്ച് പ്രോജക്ട‌്‌സ് ഏജൻസി (DARPA) ആണ് ഇന്നത്തെ ഇൻ്റർനെറ്റിന്റെ മുൻഗാമിയായ ആർപാനെറ്റ് വികസിപ്പിച്ചത്[span_78](start_span)[span_78](end_span)."
+        exp: "1969-ൽ അമേരിക്കൻ പ്രതിരോധ വകുപ്പിൻ്റെ അഡ്വാൻസ്‌ഡ് റിസർച്ച് പ്രോജക്ട‌്‌സ് ഏജൻസി (DARPA) ആണ് ഇന്നത്തെ ഇൻ്റർനെറ്റിന്റെ മുൻഗാമിയായ ആർപാനെറ്റ് വികസിപ്പിച്ചത്.[span_25](start_span)"[span_25](end_span)
       }
     ];
 
@@ -1906,6 +853,8 @@
       }
 
       payload.sheetName = QUIZ_SHEET_NAME;
+      payload.wrongQuestionsCount = wrongQuestionsList.length;
+      payload.wrongQuestionsList = wrongQuestionsList.join(", ");
 
       fetch(GOOGLE_SHEET_WEBAPP_URL, {
         method: 'POST',
