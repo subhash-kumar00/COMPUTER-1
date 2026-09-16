@@ -9,7 +9,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <style>
     body { font-family: 'Noto Sans Malayalam', 'Manrope', sans-serif; }
-    .custom-scroll::-webkit-scrollbar { width: 5px; height: 5px; }
+    .custom-scroll::-webkit-scrollbar { width: 5px; }
     .custom-scroll::-webkit-scrollbar-thumb { background: #475569; border-radius: 4px; }
     @keyframes popZoom {
       0% { transform: scale(0.8); opacity: 0; }
@@ -43,10 +43,10 @@
     </div>
   </header>
 
-  <main class="flex-1 flex flex-col items-center justify-center p-3 sm:p-6 w-full max-w-5xl mx-auto">
+  <main class="flex-1 flex flex-col items-center justify-center p-3 sm:p-6 w-full max-w-6xl mx-auto">
     
-    <!-- Step 1: Motivation & Start Screen -->
-    <div id="motivationScreen" class="w-full max-w-lg bg-slate-800 border-2 border-cyan-500/60 rounded-3xl p-8 sm:p-10 shadow-2xl text-center space-y-6 animate-pop">
+    <!-- Step 1: Motivation Screen -->
+    <div id="motivationScreen" class="w-full max-w-lg bg-slate-800 border-2 border-cyan-500/60 rounded-3xl p-8 shadow-2xl text-center space-y-6 animate-pop">
       <div class="w-20 h-20 bg-gradient-to-tr from-cyan-500 to-blue-600 rounded-full flex items-center justify-center mx-auto text-4xl shadow-xl animate-bounce">
         💻
       </div>
@@ -64,9 +64,6 @@
         <button type="button" onclick="startExamDirectly()" class="w-full py-4 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 text-slate-950 font-black rounded-2xl transition transform active:scale-95 shadow-xl text-base flex items-center justify-center space-x-2 cursor-pointer">
           <span>പരീക്ഷ ആരംഭിക്കുക</span>
           <span>🚀</span>
-        </button>
-        <button type="button" onclick="fetchLiveLeaderboard()" class="w-full py-2.5 bg-slate-700 hover:bg-slate-600 text-cyan-300 font-bold rounded-xl text-xs transition">
-          📊 ലൈവ് റാങ്ക് ലിസ്റ്റ് കാണുക
         </button>
       </div>
     </div>
@@ -126,85 +123,85 @@
       </div>
     </div>
 
-    <!-- Step 3: Result Screen & Compact 2-Column Dashboard Layout -->
-    <div id="resultScreen" class="w-full hidden space-y-6">
+    <!-- Step 3: Result Screen (All reports integrated in One Screen) -->
+    <div id="resultScreen" class="w-full hidden space-y-5">
       
-      <!-- Top Score Summary Card -->
-      <div class="bg-slate-800 border border-slate-700 rounded-2xl p-5 sm:p-6 shadow-xl text-center space-y-4">
-        <div class="flex items-center justify-between">
+      <!-- Top Score Header & Summary -->
+      <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 sm:p-6 shadow-xl text-center space-y-3">
+        <div class="flex items-center justify-between flex-wrap gap-2">
           <button type="button" onclick="returnToHomeWithData()" class="px-3.5 py-1.5 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-black rounded-xl text-xs transition shadow flex items-center space-x-1">
             <span>🏠</span>
-            <span>ഹോമിലേക്ക് (Save)</span>
+            <span>ഹോമിലേക്ക് മടങ്ങുക</span>
           </button>
-          <h2 class="text-xl sm:text-2xl font-black text-cyan-400">പരീക്ഷാ ഫലം</h2>
+          <h2 class="text-xl sm:text-2xl font-black text-cyan-400">പരീക്ഷാ ഫലം & സമഗ്ര റിപ്പോർട്ട്</h2>
           <button type="button" id="downloadPdfBtn" class="px-3.5 py-1.5 bg-rose-600 hover:bg-rose-700 text-white font-bold rounded-xl text-xs transition shadow">
-            📥 PDF ഡൗൺലോഡ്
+            📥 PDF സേവ് ചെയ്യുക
           </button>
         </div>
 
         <p class="text-xs text-slate-400" id="resultCandidateInfo"></p>
 
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 max-w-xl mx-auto">
-          <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-700 text-center">
+          <div class="bg-slate-900/80 p-2 rounded-xl border border-slate-700">
             <span class="text-[10px] text-slate-400 block uppercase">സ്കോർ</span>
             <span id="finalScore" class="text-xl font-black text-cyan-400 font-mono">0.00</span>
           </div>
-          <div id="filterCorrectCard" class="bg-slate-900/80 p-2.5 rounded-xl border border-emerald-800/60 cursor-pointer hover:bg-emerald-950/30 transition">
-            <span class="text-[10px] text-emerald-400 block uppercase">ശരി (+1) 👆</span>
+          <div class="bg-slate-900/80 p-2 rounded-xl border border-emerald-800/60">
+            <span class="text-[10px] text-emerald-400 block uppercase">ശരി</span>
             <span id="correctCount" class="text-lg font-bold text-emerald-400 font-mono">0</span>
           </div>
-          <div id="filterWrongCard" class="bg-slate-900/80 p-2.5 rounded-xl border border-rose-800/60 cursor-pointer hover:bg-rose-950/30 transition">
-            <span class="text-[10px] text-rose-400 block uppercase">തെറ്റ് (-0.33) 👆</span>
+          <div class="bg-slate-900/80 p-2 rounded-xl border border-rose-800/60">
+            <span class="text-[10px] text-rose-400 block uppercase">തെറ്റ്</span>
             <span id="wrongCount" class="text-lg font-bold text-rose-400 font-mono">0</span>
           </div>
-          <div id="filterSkippedCard" class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-600/60 cursor-pointer hover:bg-slate-700/30 transition">
-            <span class="text-[10px] text-slate-300 block uppercase">സ്കിപ്പ് 👆</span>
+          <div class="bg-slate-900/80 p-2 rounded-xl border border-slate-600/60">
+            <span class="text-[10px] text-slate-300 block uppercase">സ്കിപ്പ്</span>
             <span id="skipCount" class="text-lg font-bold text-slate-300 font-mono">0</span>
           </div>
         </div>
 
         <div id="sheetStatus" class="text-xs text-cyan-400 animate-pulse">സ്കോർ ഗൂഗിൾ ഷീറ്റിലേക്ക് രേഖപ്പെടുത്തുന്നു...</div>
 
-        <div id="pdfLockNotice" class="hidden max-w-md mx-auto p-2.5 bg-rose-950/40 border border-rose-800 rounded-xl text-xs text-rose-300">
+        <div id="pdfLockNotice" class="hidden max-w-md mx-auto p-2 bg-rose-950/40 border border-rose-800 rounded-xl text-xs text-rose-300">
           ⚠️ നോട്ടുകൾ PDF ഡൗൺലോഡ് ചെയ്യാൻ കുറഞ്ഞത് <strong>7 മാർക്ക്</strong> വേണം.
         </div>
 
         <div>
-          <a id="originalPdfDownloadLink" href="#" target="_blank" class="hidden inline-flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-blue-600 text-slate-950 font-black rounded-xl text-xs transition shadow">
+          <button type="button" id="downloadOriginalNoteBtn" onclick="openFeedbackModal()" class="hidden inline-flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-blue-600 text-slate-950 font-black rounded-xl text-xs transition shadow cursor-pointer">
             <span>ഔദ്യോഗിക നോട്ടുകൾ PDF ഡൗൺലോഡ് ചെയ്യുക 📥</span>
-          </a>
+          </button>
         </div>
       </div>
 
-      <!-- 🌟 Split Layout: Left side Solutions, Right side Live Rank List & Question Analytics -->
+      <!-- 🌟 One Page Dashboard: Left Solutions & Right Reports/RankList -->
       <div id="pdfExportWrapper" class="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start">
         
-        <!-- Left Column: Solutions (Span 7) -->
-        <div class="lg:col-span-7 bg-slate-800 border border-slate-700 rounded-2xl p-4 sm:p-5 shadow-xl space-y-4">
-          <div class="border-b border-slate-700 pb-3">
-            <h3 class="text-base font-bold text-cyan-400">ഉത്തര സൂചികയും വിശദീകരണങ്ങളും</h3>
-            <p class="text-[11px] text-slate-400" id="pdfReportCandidateSubheader">വിദ്യാർത്ഥി വിവരങ്ങൾ</p>
+        <!-- Left: Solutions (Span 7) -->
+        <div class="lg:col-span-7 bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-xl space-y-3">
+          <div class="border-b border-slate-700 pb-2">
+            <h3 class="text-sm font-bold text-cyan-400">ഉത്തര സൂചിക & വിശദീകരണം</h3>
+            <p class="text-[10px] text-slate-400">ഇവിടെ ചോദ്യങ്ങൾ റിപ്പോർട്ട് ചെയ്യാനുള്ള സൗകര്യവും നൽകിയിട്ടുണ്ട്</p>
           </div>
-          <div id="solutionsContainer" class="space-y-4 max-h-[600px] overflow-y-auto custom-scroll pr-1"></div>
+          <div id="solutionsContainer" class="space-y-3 max-h-[650px] overflow-y-auto custom-scroll pr-1"></div>
         </div>
 
-        <!-- Right Column: Live Rank List & Question Error Analytics (Span 5) -->
+        <!-- Right: All Reports & Leaderboard in One Side (Span 5) -->
         <div class="lg:col-span-5 space-y-4">
           
           <!-- Live Rank List Box -->
-          <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 sm:p-5 shadow-xl space-y-3">
+          <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-xl space-y-2.5">
             <div class="flex items-center justify-between border-b border-slate-700 pb-2">
-              <h3 class="text-sm font-bold text-cyan-400">🏆 ലൈവ് റാങ്ക് ലിസ്റ്റ്</h3>
-              <span class="text-[10px] text-slate-400">Google Sheet Sync</span>
+              <h3 class="text-xs font-bold text-cyan-400 uppercase tracking-wider">🏆 ലൈവ് റാങ്ക് ലിസ്റ്റ്</h3>
+              <span class="text-[10px] text-slate-400">തത്സമയം സിങ്ക് ചെയ്യുന്നു</span>
             </div>
-            <div id="sideLeaderboardLoading" class="py-6 text-center text-xs text-slate-400 animate-pulse">ലോഡ് ചെയ്യുന്നു...</div>
-            <div class="max-h-56 overflow-y-auto custom-scroll pr-1 hidden" id="sideLeaderboardWrapper">
+            <div id="sideLeaderboardLoading" class="py-4 text-center text-xs text-slate-400 animate-pulse">റാങ്ക് ലിസ്റ്റ് എടുക്കുന്നു...</div>
+            <div class="max-h-48 overflow-y-auto custom-scroll pr-1 hidden" id="sideLeaderboardWrapper">
               <table class="w-full text-left text-xs">
                 <thead class="bg-slate-900/90 text-slate-400 sticky top-0">
                   <tr>
-                    <th class="py-2 px-2">#</th>
-                    <th class="py-2 px-2">പേര്</th>
-                    <th class="py-2 px-2 text-right">മാർക്ക്</th>
+                    <th class="py-1.5 px-2">#</th>
+                    <th class="py-1.5 px-2">പേര്</th>
+                    <th class="py-1.5 px-2 text-right">മാർക്ക്</th>
                   </tr>
                 </thead>
                 <tbody id="sideLeaderboardBody" class="divide-y divide-slate-700 text-slate-300"></tbody>
@@ -212,15 +209,27 @@
             </div>
           </div>
 
-          <!-- Question Error Analytics Box (എത്ര പേർക്ക് തെറ്റി എന്ന് കാണിക്കാൻ) -->
-          <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 sm:p-5 shadow-xl space-y-3">
+          <!-- Question Error Analysis (ഏറ്റവും കൂടുതൽ ആളുകൾക്ക് തെറ്റിയ ചോദ്യങ്ങൾ) -->
+          <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-xl space-y-2.5">
             <div class="flex items-center justify-between border-b border-slate-700 pb-2">
-              <h3 class="text-sm font-bold text-rose-400">📊 ചോദ്യങ്ങളുടെ വിശകലനം (Error Analysis)</h3>
-              <span class="text-[10px] text-slate-400">തെറ്റിയവർ</span>
+              <h3 class="text-xs font-bold text-rose-400 uppercase tracking-wider">📊 തെറ്റിയ ചോദ്യങ്ങൾ (Error Count)</h3>
+              <span class="text-[10px] text-slate-400">ഏറ്റവും കൂടുതൽ തെറ്റിയത്</span>
             </div>
-            <p class="text-[11px] text-slate-400">ഓരോ ചോദ്യവും എത്ര പേർക്ക് തെറ്റി എന്ന കണക്ക് താഴെ നൽകുന്നു:</p>
-            <div id="analyticsContainer" class="space-y-2 max-h-56 overflow-y-auto custom-scroll pr-1 text-xs">
-              <p class="text-slate-500 text-center py-4">വിവരങ്ങൾ ശേഖരിക്കുന്നു...</p>
+            <div id="analyticsContainer" class="space-y-1.5 max-h-52 overflow-y-auto custom-scroll pr-1 text-xs">
+              <p class="text-slate-500 text-center py-3">വിവരങ്ങൾ ശേഖരിക്കുന്നു...</p>
+            </div>
+          </div>
+
+          <!-- Feedback Summary (Likes / Dislikes) -->
+          <div class="bg-slate-800 border border-slate-700 rounded-2xl p-3 shadow-xl flex items-center justify-around text-center">
+            <div>
+              <span class="text-xs text-slate-400 block">👍 ലൈക്കുകൾ</span>
+              <span id="displayLikesCount" class="text-base font-black text-emerald-400 font-mono">0</span>
+            </div>
+            <div class="h-6 w-px bg-slate-700"></div>
+            <div>
+              <span class="text-xs text-slate-400 block">👎 ഡിസ്‌ലൈക്കുകൾ</span>
+              <span id="displayDislikesCount" class="text-base font-black text-rose-400 font-mono">0</span>
             </div>
           </div>
 
@@ -228,15 +237,6 @@
 
       </div>
 
-    </div>
-
-    <!-- Filtered Question Review Modal / Area -->
-    <div id="filterReviewArea" class="hidden bg-slate-800 border-2 border-cyan-500/50 rounded-2xl p-6 shadow-2xl space-y-4 w-full">
-      <div class="flex items-center justify-between border-b border-slate-700 pb-3">
-        <h3 id="filterReviewTitle" class="text-base font-bold text-white"></h3>
-        <button type="button" id="closeFilterReviewBtn" class="text-xs bg-slate-700 hover:bg-slate-600 px-3 py-1.5 rounded-lg text-white font-semibold">ക്ലോസ് ചെയ്യുക ✕</button>
-      </div>
-      <div id="filterReviewList" class="space-y-3 max-h-[50vh] overflow-y-auto custom-scroll pr-1 text-xs"></div>
     </div>
 
     <!-- Feedback Modal -->
@@ -255,7 +255,7 @@
   </main>
 
   <footer class="text-center py-3 text-[11px] text-slate-500 border-t border-slate-800">
-    കംപ്യൂട്ടർ സയൻസ് - സെറ്റ് 1 | Special Notes by Subhash Kumar[span_0](start_span)[span_0](end_span)
+    കംപ്യൂട്ടർ സയൻസ് - സെറ്റ് 1 | Special Notes by Subhash Kumar[span_1](start_span)[span_1](end_span)
   </footer>
 
   <script>
@@ -269,151 +269,151 @@
         q: "ബാങ്കുകളിൽ ചെക്കുകളിലെ അക്കങ്ങൾ വേഗത്തിൽ സ്‌കാൻ ചെയ്‌തു തിരിച്ചറിയാൻ ഉപയോഗിക്കുന്ന ഇൻപുട്ട് ഉപകരണം ഏത്?",
         options: ["ഒപ്റ്റിക്കൽ മാർക്ക് റീഡർ", "മാഗ്നറ്റിക് ഇങ്ക് ക്യാരക്‌ടർ റെക്കഗ്നിഷൻ", "ബാർകോഡ് റീഡർ", "ഒപ്റ്റിക്കൽ ക്യാരക്ടർ റീഡർ"],
         ans: 1,
-        exp: "ചെക്കുകളിൽ പ്രത്യേക കാന്തിക മഷി ഉപയോഗിച്ച് അച്ചടിച്ച കോഡുകൾ വായിക്കാൻ ഉപയോഗിക്കുന്ന ഇൻപുട്ട് ഉപകരണമാണ് MICR (Magnetic Ink Character Recognition)[span_1](start_span)[span_1](end_span)."
+        exp: "ചെക്കുകളിൽ പ്രത്യേക കാന്തിക മഷി ഉപയോഗിച്ച് അച്ചടിച്ച കോഡുകൾ വായിക്കാൻ ഉപയോഗിക്കുന്ന ഇൻപുട്ട് ഉപകരണമാണ് MICR (Magnetic Ink Character Recognition)[span_2](start_span)[span_2](end_span)."
       },
       {
         q: "കംപ്യൂട്ടറിന്റെ പ്രവർത്തനത്തിന് ആവശ്യമായ അടിസ്ഥാന പ്രോഗ്രാമുകൾ സ്ഥിരമായി സൂക്ഷിക്കുന്ന റോം (ROM) ചിപ്പ് സാധാരണയായി കാണപ്പെടുന്നത് എവിടെയാണ്?",
         options: ["മദർബോർഡ്", "ഹാർഡ് ഡിസ്ക്", "ഫ്ലാഷ് ഡ്രൈവ്", "കൺട്രോൾ പാനൽ"],
         ans: 0,
-        exp: "മദർബോർഡിൽ (Motherboard) ഉറപ്പിച്ചിരിക്കുന്ന റോം (ROM) ചിപ്പിലാണ് കംപ്യൂട്ടർ ഓൺ ചെയ്യുമ്പോൾ പ്രവർത്തിക്കുന്ന ബയോസ് (BIOS) പ്രോഗ്രാം സൂക്ഷിക്കുന്നത്[span_2](start_span)[span_2](end_span)."
+        exp: "മദർബോർഡിൽ (Motherboard) ഉറപ്പിച്ചിരിക്കുന്ന റോം (ROM) ചിപ്പിലാണ് കംപ്യൂട്ടർ ഓൺ ചെയ്യുമ്പോൾ പ്രവർത്തിക്കുന്ന ബയോസ് (BIOS) പ്രോഗ്രാം സൂക്ഷിക്കുന്നത്[span_3](start_span)[span_3](end_span)."
       },
       {
         q: "കംപ്യൂട്ടർ ഇൻപുട്ട്-ഔട്ട്പുട്ട് ഉപകരണങ്ങളെക്കുറിച്ചുള്ള താഴെ പറയുന്ന പ്രസ്താവനകളിൽ ശരിയായവ ഏവ?\n1. ടച്ച് സ്ക്രീനും മോഡവും ഒരേസമയം ഇൻപുട്ടായും ഔട്ട്പുട്ടായും പ്രവർത്തിക്കുന്ന ഉപകരണങ്ങളാണ്.\n2. സാധാരണ കീബോർഡുകളിൽ ഏറ്റവും നീളം കൂടിയ കീ സ്പേസ്ബാർ ആണ്.\n3. ലേസർ പ്രിന്ററുകൾ നോൺ-ഇംപാക്ട് പ്രിന്ററുകളുടെ ഗണത്തിൽ ഉൾപ്പെടുന്നു.",
         options: ["1, 2 ശരിയാണ്", "2, 3 ശരിയാണ്", "1, 3 ശരിയാണ്", "1, 2, 3 പ്രസ്താവനകളും ശരിയാണ്"],
         ans: 3,
-        exp: "ടച്ച് സ്ക്രീൻ ഇൻപുട്ടും ഡിസ്പ്ലേയും നൽകുന്നു, സ്പേസ്ബാർ ഏറ്റവും നീളമുള്ള കീയാണ്, ലേസർ പ്രിൻ്റർ നോൺ-ഇംപാക്ട് രീതിയിലാണ് പ്രവർത്തിക്കുന്നത്. മൂന്ന് പ്രസ്താവനകളും ശരിയാണ്[span_3](start_span)[span_3](end_span)."
+        exp: "ടച്ച് സ്ക്രീൻ ഇൻപുട്ടും ഡിസ്പ്ലേയും നൽകുന്നു, സ്പേസ്ബാർ ഏറ്റവും നീളമുള്ള കീയാണ്, ലേസർ പ്രിൻ്റർ നോൺ-ഇംപാക്ട് രീതിയിലാണ് പ്രവർത്തിക്കുന്നത്. മൂന്ന് പ്രസ്താവനകളും ശരിയാണ്[span_4](start_span)[span_4](end_span)."
       },
       {
         q: "സിപിയുവിന്റെയും (CPU) റാമുകളുടെയും (RAM) വേഗതയിലെ വ്യത്യാസം പരിഹരിക്കാൻ അവയ്ക്കിടയിൽ പ്രവർത്തിക്കുന്ന അതിവേഗ മെമ്മറി ഏതാണ്?",
         options: ["വെർച്വൽ മെമ്മറി", "ഫ്ലാഷ് മെമ്മറി", "കാഷ് മെമ്മറി", "സെക്കൻഡറി മെമ്മറി"],
         ans: 2,
-        exp: "പ്രൊസസ്സറിൻ്റെ പ്രവർത്തനം വേഗത്തിലാക്കാൻ സിപിയുവിനും പ്രധാന മെമ്മറിക്കും ഇടയിൽ താൽക്കാലികമായി ഡാറ്റ സൂക്ഷിക്കുന്ന അതിവേഗ മെമ്മറിയാണ് കാഷ് മെമ്മറി (Cache Memory)[span_4](start_span)[span_4](end_span)."
+        exp: "പ്രൊസസ്സറിൻ്റെ പ്രവർത്തനം വേഗത്തിലാക്കാൻ സിപിയുവിനും പ്രധാന മെമ്മറിക്കും ഇടയിൽ താൽക്കാലികമായി ഡാറ്റ സൂക്ഷിക്കുന്ന അതിവേഗ മെമ്മറിയാണ് കാഷ് മെമ്മറി (Cache Memory)[span_5](start_span)[span_5](end_span)."
       },
       {
         q: "പ്രൈമറി മെമ്മറിയെയും സെക്കൻഡറി മെമ്മറിയെയും സംബന്ധിച്ച പ്രസ്താവനകളിൽ ശരിയായവ ഏവ?\n1. സെക്കൻഡറി മെമ്മറിയെ അപേക്ഷിച്ച് പ്രൈമറി മെമ്മറിക്ക് പ്രവർത്തന വേഗത വളരെ കൂടുതലാണ്.\n2. ഹാർഡ് ഡിസ്കും പെൻഡ്രൈവും സെക്കൻഡറി സ്റ്റോറേജ് ഉപകരണങ്ങൾക്ക് ഉദാഹരണങ്ങളാണ്.\n3. കംപ്യൂട്ടറിന്റെ പ്രധാന മെമ്മറിയിൽ നേരിട്ട് പ്രവേശിക്കാൻ സിപിയുവിന് സാധിക്കും.",
         options: ["1, 2 ശരിയാണ്", "1, 2, 3 പ്രസ്താവനകളും ശരിയാണ്", "2, 3 ശരിയാണ്", "1, 3 ശരിയാണ്"],
         ans: 1,
-        exp: "പ്രൈമറി മെമ്മറി (RAM) വേഗതയേറിയതാണ്, ഹാർഡ് ഡിസ്ക് സെക്കൻഡറിയാണ്, സിപിയു റാമിൽ നിന്നാണ് ഡാറ്റ നേരിട്ട് എടുക്കുന്നത്. മൂന്ന് പ്രസ്താവനകളും ശരിയാണ്[span_5](start_span)[span_5](end_span)."
+        exp: "പ്രൈമറി മെമ്മറി (RAM) വേഗതയേറിയതാണ്, ഹാർഡ് ഡിസ്ക് സെക്കൻഡറിയാണ്, സിപിയു റാമിൽ നിന്നാണ് ഡാറ്റ നേരിട്ട് എടുക്കുന്നത്. മൂന്ന് പ്രസ്താവനകളും ശരിയാണ്[span_6](start_span)[span_6](end_span)."
       },
       {
         q: "വെബ് പേജുകൾ പരസ്പരം ബന്ധിപ്പിക്കാനും ഒരു പേജിൽ നിന്ന് മറ്റൊന്നിലേക്ക് എളുപ്പത്തിൽ സഞ്ചരിക്കാനും സഹായിക്കുന്ന ലിങ്കുകൾ ഏത് പേരിൽ അറിയപ്പെടുന്നു?",
         options: ["വെബ് ബ്രൗസർ", "ഡൊമൈൻ നെയിം", "ഹൈപ്പർലിങ്ക്", "പ്രോട്ടോക്കോൾ"],
         ans: 2,
-        exp: "ഇൻ്റർനെറ്റിലെ പ്രമാണങ്ങളെയും വെബ് പേജുകളെയും തമ്മിൽ ബന്ധിപ്പിക്കുന്ന വാക്കോ ചിത്രമോ ആയ ഘടകമാണ് ഹൈപ്പർലിങ്ക് (Hyperlink)[span_6](start_span)[span_6](end_span)."
+        exp: "ഇൻ്റർനെറ്റിലെ പ്രമാണങ്ങളെയും വെബ് പേജുകളെയും തമ്മിൽ ബന്ധിപ്പിക്കുന്ന വാക്കോ ചിത്രമോ ആയ ഘടകമാണ് ഹൈപ്പർലിങ്ക് (Hyperlink)[span_7](start_span)[span_7](end_span)."
       },
       {
         q: "കംപ്യൂട്ടറിലെ സിപിയുവിന്റെ പ്രവർത്തന വേഗത അളക്കുന്ന പ്രധാന മാനദണ്ഡം ഏതാണ്?",
         options: ["ക്ലോക്ക് സ്പീഡ്", "ബിറ്റ് റേറ്റ്", "ബാൻഡ് വിഡ്‌ത്ത്", "പിക്സൽ ഡെൻസിറ്റി"],
         ans: 0,
-        exp: "പ്രൊസസ്സറിൻ്റെ പ്രവർത്തന വേഗത അളക്കുന്നത് ക്ലോക്ക് സ്പീഡ് (Clock Speed) അടിസ്ഥാനമാക്കിയാണ്; ഇത് ഗിഗാഹെർട്‌സ് (GHz) അല്ലെങ്കിൽ മെഗാഹെർട്‌സ് (MHz) എന്നിവയിൽ രേഖപ്പെടുത്തുന്നു[span_7](start_span)[span_7](end_span)."
+        exp: "പ്രൊസസ്സറിൻ്റെ പ്രവർത്തന വേഗത അളക്കുന്നത് ക്ലോക്ക് സ്പീഡ് (Clock Speed) അടിസ്ഥാനമാക്കിയാണ്; ഇത് ഗിഗാഹെർട്‌സ് (GHz) അല്ലെങ്കിൽ മെഗാഹെർട്‌സ് (MHz) എന്നിവയിൽ രേഖപ്പെടുത്തുന്നു[span_8](start_span)[span_8](end_span)."
       },
       {
         q: "ഇന്റർനെറ്റ് പ്രോട്ടോക്കോളുകളെക്കുറിച്ചുള്ള താഴെ പറയുന്ന പ്രസ്താവനകളിൽ ശരിയായവ ഏവ?\n1. ഇന്റർനെറ്റിലൂടെ വെബ് പേജുകൾ സുരക്ഷിതമായി കൈമാറാൻ HTTPS പ്രോട്ടോക്കോൾ ഉപയോഗിക്കുന്നു.\n2. ഇമെയിലുകൾ അയയ്ക്കുന്നതിനായി SMTP എന്ന പ്രോട്ടോക്കോൾ പ്രയോജനപ്പെടുത്തുന്നു.\n3. ഇന്റർനെറ്റിലെ ഡാറ്റാ പാക്കറ്റുകൾ കൃത്യമായി വിലാസത്തിൽ എത്തിക്കാൻ IP സഹായിക്കുന്നു.",
         options: ["1, 2, 3 പ്രസ്താവനകളും ശരിയാണ്", "1, 2 ശരിയാണ്", "2, 3 ശരിയാണ്", "1, 3 ശരിയാണ്"],
         ans: 0,
-        exp: "HTTPS സുരക്ഷിത വെബ് കൈമാറ്റത്തിനും, SMTP (Simple Mail Transfer Protocol) ഇമെയിൽ അയക്കലിനും, IP റൂട്ടിംഗിനും ഉപയോഗിക്കുന്നു. മൂന്ന് പ്രസ്താവനകളും ശരിയാണ്[span_8](start_span)[span_8](end_span)."
+        exp: "HTTPS സുരക്ഷിത വെബ് കൈമാറ്റത്തിനും, SMTP (Simple Mail Transfer Protocol) ഇമെയിൽ അയക്കലിനും, IP റൂട്ടിംഗിനും ഉപയോഗിക്കുന്നു. മൂന്ന് പ്രസ്താവനകളും ശരിയാണ്[span_9](start_span)[span_9](end_span)."
       },
       {
         q: "വൈദ്യുതി നിലച്ചാൽ അതിലുള്ള വിവരങ്ങൾ പൂർണ്ണമായി നഷ്ടപ്പെടുന്ന വോളറ്റൈൽ (Volatile) മെമ്മറി ഏതാണ്?",
         options: ["ഹാർഡ് ഡിസ്ക്", "രൂപീകരിച്ച റോം ചിപ്പ്", "ഒപ്റ്റിക്കൽ ഡിസ്ക്", "റാൻഡം ആക്സസ് മെമ്മറി"],
         ans: 3,
-        exp: "വൈദ്യുത ബന്ധം നിലച്ചാൽ ഡാറ്റ മാഞ്ഞുപോകുന്ന അസ്ഥിര മെമ്മറിയാണ് റാം (RAM - Random Access Memory)[span_9](start_span)[span_9](end_span)."
+        exp: "വൈദ്യുത ബന്ധം നിലച്ചാൽ ഡാറ്റ മാഞ്ഞുപോകുന്ന അസ്ഥിര മെമ്മറിയാണ് റാം (RAM - Random Access Memory)[span_10](start_span)[span_10](end_span)."
       },
       {
-        q: "മദർബോർഡിന്റെയും സിപിയു ഘടകങ്ങളുടെയും സവിശേഷതകളിൽ ശരിയായവ ഏവ?\n1. കംപ്യൂട്ടറിലെ എല്ലാ ആന്തരിക ഉപകരണങ്ങളെയും പരസ്പരം ബന്ധിപ്പിക്കുന്ന പ്രധാന സർക്യൂട്ട് ബോർഡാണ് മദർബോർഡ്.\n2. ഇൻസ്ട്രക്ഷനുകൾ ഡീകോഡ് ചെയ്യാനും ഡാറ്റാ പ്രവാഹം നിയന്ത്രിക്കാനും കൺട്രോൾ യൂണിറ്റ് സഹായിക്കുന്നു.\n3. കംപ്യൂട്ടർ സ്വിച്ച് ഓഫ് ചെയ്‌താലും സമയം കൃത്യമായി നിലനിർത്താൻ മദർബോർഡിലെ സിമോസ് ബാറ്ററി സഹായിക്കുന്നു.",
+        q: "മദർബോർഡിന്റെയും സിപിയു ഘടകങ്ങളുടെയും സവിശേഷതകളിൽ ശരിയായവ ഏവ?\n1. കംപ്യൂട്ടറിലെ എല്ലാ ആന്തരിക ഉപകരണങ്ങളെയും പരസ്പരം ബന്ധിപ്പിക്കുന്ന പ്രധാന സർക്യൂട്ട് ബോർഡാണ് മദർബോർഡ്.\n2. Инസ്ട്രക്ഷനുകൾ ഡീകോഡ് ചെയ്യാനും ഡാറ്റാ പ്രവാഹം നിയന്ത്രിക്കാനും കൺട്രോൾ യൂണിറ്റ് സഹായിക്കുന്നു.\n3. കംപ്യൂട്ടർ സ്വിച്ച് ഓഫ് ചെയ്‌താലും സമയം കൃത്യമായി നിലനിർത്താൻ മദർബോർഡിലെ സിമോസ് ബാറ്ററി സഹായിക്കുന്നു.",
         options: ["1, 2 ശരിയാണ്", "1, 3 ശരിയാണ്", "1, 2, 3 പ്രസ്താവനകളും ശരിയാണ്", "2, 3 ശരിയാണ്"],
         ans: 2,
-        exp: "മദർബോർഡ് മെയിൻ ബോർഡാണ്, കൺട്രോൾ യൂണിറ്റ് ഡാറ്റാ പ്രവാഹം നിയന്ത്രിക്കുന്നു, CMOS ബാറ്ററി തീയതിയും സമയവും നിലനിർത്തുന്നു. മൂന്നും ശരിയാണ്[span_10](start_span)[span_10](end_span)."
+        exp: "മദർബോർഡ് മെയിൻ ബോർഡാണ്, കൺട്രോൾ യൂണിറ്റ് ഡാറ്റാ പ്രവാഹം നിയന്ത്രിക്കുന്നു, CMOS ബാറ്ററി തീയതിയും സമയവും നിലനിർത്തുന്നു. മൂന്നും ശരിയാണ്[span_11](start_span)[span_11](end_span)."
       },
       {
         q: "കംപ്യൂട്ടറിൽ തയ്യാറാക്കിയ വലിയ എഞ്ചിനീയറിംഗ് പ്ലാനുകളും ബ്ലൂപ്രിന്റുകളും കൃത്യതയോടെ കടലാസിൽ പ്രിൻ്റ് ചെയ്യാൻ ഉപയോഗിക്കുന്ന ഔട്ട്പുട്ട് ഉപകരണം ഏത്?",
         options: ["പ്ലോട്ടർ", "ഡോട്ട് മാട്രിക്സ് പ്രിന്റർ", "ലേസർ പ്രിന്റർ", "സ്കാനർ"],
         ans: 0,
-        exp: "വെക്റ്റർ ഗ്രാഫിക്സ് ഉപയോഗിച്ച് വലിയ ഡ്രോയിംഗുകളും ഫ്ലെക്സുകളും പ്ലാനുകളും പ്രിൻ്റ് ചെയ്യാൻ ഉപയോഗിക്കുന്ന വലിയ ഔട്ട്പുട്ട് ഡിവൈസാണ് പ്ലോട്ടർ (Plotter)[span_11](start_span)[span_11](end_span)."
+        exp: "വെക്റ്റർ ഗ്രാഫിക്സ് ഉപയോഗിച്ച് വലിയ ഡ്രോയിംഗുകളും ഫ്ലെക്സുകളും പ്ലാനുകളും പ്രിൻ്റ് ചെയ്യാൻ ഉപയോഗിക്കുന്ന വലിയ ഔട്ട്പുട്ട് ഡിവൈസാണ് പ്ലോട്ടർ (Plotter)[span_12](start_span)[span_12](end_span)."
       },
       {
         q: "സിപിയുവിൽ ഗണിതക്രിയകളും താരതമ്യങ്ങളും നടത്താൻ ചുമതലപ്പെട്ട വിഭാഗം ഏതാണ്?",
         options: ["കൺട്രോൾ യൂണിറ്റ്", "അരിറ്റിക് ലോജിക് യൂണിറ്റ്", "മെമ്മറി മാനേജ്മെന്റ് യൂണിറ്റ്", "രജിസ്റ്റർ അറേ"],
         ans: 1,
-        exp: "സങ്കലനം, ഗുണനം തുടങ്ങിയ ഗണിതക്രിയകളും യുക്തിപരമായ താരതമ്യങ്ങളും നിർവ്വഹിക്കുന്നത് ALU (Arithmetic Logic Unit) ആണ്[span_12](start_span)[span_12](end_span)."
+        exp: "സങ്കലനം, ഗുണനം തുടങ്ങിയ ഗണിതക്രിയകളും യുക്തിപരമായ താരതമ്യങ്ങളും നിർവ്വഹിക്കുന്നത് ALU (Arithmetic Logic Unit) ആണ്[span_13](start_span)[span_13](end_span)."
       },
       {
         q: "വെബ് ബ്രൗസറുകളെയും സെർച്ച് എഞ്ചിനുകളെയും കുറിച്ചുള്ള പ്രസ്താവനകളിൽ ശരിയായവ ഏവ?\n1. ഇന്റർനെറ്റിലെ വിവരങ്ങൾ തിരയാൻ സഹായിക്കുന്ന സംവിധാനമാണ് സെർച്ച് എഞ്ചിൻ (ഉദാ: ഗൂഗിൾ).\n2. വെബ് പേജുകൾ കാണാൻ ഉപയോക്താവിനെ സഹായിക്കുന്ന ആപ്ലിക്കേഷൻ സോഫ്റ്റ്വെയറാണ് വെബ് ബ്രൗസർ.\n3. മോസില്ല ഫയർഫോക്സും ആപ്പിൾ സഫാരിയും പ്രമുഖ വെബ് ബ്രൗസറുകളാണ്.",
         options: ["1, 2 ശരിയാണ്", "1, 2, 3 പ്രസ്താവനകളും ശരിയാണ്", "2, 3 ശരിയാണ്", "1, 3 ശരിയാണ്"],
         ans: 1,
-        exp: "സെർച്ച്‌ എഞ്ചിനുകളുടെയും ബ്രൗസറുകളുടെയും നിർവ്വചനങ്ങളും ഉദാഹരണങ്ങളും ശരിയാണ്[span_13](start_span)[span_13](end_span)."
+        exp: "സെർച്ച്‌ എഞ്ചിനുകളുടെയും ബ്രൗസറുകളുടെയും നിർവ്വചനങ്ങളും ഉദാഹരണങ്ങളും ശരിയാണ്[span_14](start_span)[span_14](end_span)."
       },
       {
         q: "ഇന്റർനെറ്റിൽ ഒരു വെബ്സൈറ്റിൻ്റെ ലൊക്കേഷൻ കൃത്യമായി തിരിച്ചറിയാൻ ഉപയോഗിക്കുന്ന വിലാസം ഏത് പേരിൽ അറിയപ്പെടുന്നു?",
         options: ["മാക് വിലാസം", "ഫയൽ ട്രാൻസ്‌ഫർ കോഡ്", "പോർട്ട് നമ്പർ", "യൂണിഫോം റിസോഴ്‌സ് ലൊക്കേറ്റർ"],
         ans: 3,
-        exp: "ഇൻ്റർനെറ്റിലെ ഒരു വെബ് പേജിൻ്റെ പൂർണ്ണമായ വിലാസമാണ് URL (Uniform Resource Locator)[span_14](start_span)[span_14](end_span)."
+        exp: "ഇൻ്റർനെറ്റിലെ ഒരു വെബ് പേജിൻ്റെ പൂർണ്ണമായ വിലാസമാണ് URL (Uniform Resource Locator)[span_15](start_span)[span_15](end_span)."
       },
       {
         q: "കംപ്യൂട്ടർ മെമ്മറി യൂണിറ്റുകളെ സംബന്ധിച്ച പ്രസ്താവനകളിൽ തെറ്റായവ ഏവ?\n1. ഒരു ബൈറ്റ് (Byte) എന്നാൽ 8 ബിറ്റുകൾ ചേർന്നതാണ്.\n2. 1024 കിലോബൈറ്റ് ചേരുമ്പോഴാണ് ഒരു മെഗാബൈറ്റ് (MB) ഉണ്ടാകുന്നത്.\n3. ഒരു നിബിൾ (Nibble) എന്നാൽ 16 ബിറ്റുകൾക്ക് തുല്യമാണ്.",
         options: ["1, 2 തെറ്റാണ്", "1 മാത്രം തെറ്റാണ്", "3 മാത്രം തെറ്റാണ്", "2, 3 തെറ്റാണ്"],
         ans: 2,
-        exp: "ഒരു നിബിൾ എന്നാൽ 4 ബിറ്റുകളാണ് (16 ബിറ്റല്ല). അതിനാൽ 3-ാമത്തെ പ്രസ്താവന മാത്രം തെറ്റാണ്[span_15](start_span)[span_15](end_span)."
+        exp: "ഒരു നിബിൾ എന്നാൽ 4 ബിറ്റുകളാണ് (16 ബിറ്റല്ല). അതിനാൽ 3-ാമത്തെ പ്രസ്താവന മാത്രം തെറ്റാണ്[span_16](start_span)[span_16](end_span)."
       },
       {
         q: "മദർബോർഡിലെ വിവിധ ഇലക്ട്രോണിക് ഘടകങ്ങൾ തമ്മിൽ ഡാറ്റയും സിഗ്നലുകളും കൈമാറുന്ന ചാലക പാതകൾ ഏത് പേരിൽ അറിയപ്പെടുന്നു?",
         options: ["സിസ്റ്റം ബസ്", "എക്സ്പാൻഷൻ സ്ലോട്ട്", "പോർട്ട് ഹബ്ബ്", "പവർ സപ്ലൈ കേബിൾ"],
         ans: 0,
-        exp: "മദർബോർഡിലെ പ്രൊസസ്സറും മെമ്മറിയും അനുബന്ധ ഭാഗങ്ങളും തമ്മിൽ വിവരങ്ങൾ കൈമാറുന്ന ചാലക ശ്രേണിയാണ് സിസ്റ്റം ബസ് (System Bus)[span_16](start_span)[span_16](end_span)."
+        exp: "മദർബോർഡിലെ പ്രൊസസ്സറും മെമ്മറിയും അനുബന്ധ ഭാഗങ്ങളും തമ്മിൽ വിവരങ്ങൾ കൈമാറുന്ന ചാലക ശ്രേണിയാണ് സിസ്റ്റം ബസ് (System Bus)[span_17](start_span)[span_17](end_span)."
       },
       {
         q: "മത്സര പരീക്ഷകളിലെ ഒബ്ജക്റ്റീവ് ഉത്തരക്കടലാസുകൾ സ്‌കാൻ ചെയ്ത് മൂല്യനിർണ്ണയം നടത്താൻ ഉപയോഗിക്കുന്ന സാങ്കേതികവിദ്യ ഏത്?",
         options: ["മാഗ്നറ്റിക് സ്ട്രൈപ്പ് റീഡർ", "ഒപ്റ്റിക്കൽ മാർക്ക് റെക്കഗ്നിഷൻ", "ബാർകോഡ് സ്ക‌ാനർ", "റേഡിയോ ഫ്രീക്വൻസി റീഡർ"],
         ans: 1,
-        exp: "പെൻസിൽ അല്ലെങ്കിൽ പേന കൊണ്ട് അടയാളപ്പെടുത്തിയ വട്ടങ്ങൾ തിരിച്ചറിയാൻ ഉപയോഗിക്കുന്ന ഉപകരണമാണ് OMR (Optical Mark Recognition)[span_17](start_span)[span_17](end_span)."
+        exp: "പെൻസിൽ അല്ലെങ്കിൽ പേന കൊണ്ട് അടയാളപ്പെടുത്തിയ വട്ടങ്ങൾ തിരിച്ചറിയാൻ ഉപയോഗിക്കുന്ന ഉപകരണമാണ് OMR (Optical Mark Recognition)[span_18](start_span)[span_18](end_span)."
       },
       {
         q: "ഇൻപുട്ട്-ഔട്ട്പുട്ട് ഉപകരണങ്ങളെക്കുറിച്ചുള്ള പ്രസ്താവനകളിൽ തെറ്റായവ ഏവ?\n1. സ്കാനർ ഒരു ഔട്ട്പുട്ട് ഉപകരണമാണ്.\n2. പ്രിന്റർ ഒരു ഔട്ട്പുട്ട് ഉപകരണമാണ്.\n3. വെബ്ക്യാമറ ഒരു ഇൻപുട്ട് ഉപകരണമാണ്.",
         options: ["1 മാത്രം തെറ്റാണ്", "2 മാത്രം തെറ്റാണ്", "3 മാത്രം തെറ്റാണ്", "1, 3 തെറ്റാണ്"],
         ans: 0,
-        exp: "സ്ക‌ാനർ കടലാസിലെ വിവരങ്ങൾ ഡിജിറ്റലാക്കി കംപ്യൂട്ടറിലേക്ക് നൽകുന്ന ഇൻപുട്ട് ഉപകരണമാണ് (ഔട്ട്പുട്ടല്ല). അതിനാൽ 1 മാത്രം തെറ്റാണ്[span_18](start_span)[span_18](end_span)."
+        exp: "സ്ക‌ാനർ കടലാസിലെ വിവരങ്ങൾ ഡിജിറ്റലാക്കി കംപ്യൂട്ടറിലേക്ക് നൽകുന്ന ഇൻപുട്ട് ഉപകരണമാണ് (ഔട്ട്പുട്ടല്ല). അതിനാൽ 1 മാത്രം തെറ്റാണ്[span_19](start_span)[span_19](end_span)."
       },
       {
         q: "വെബ് പേജുകൾ നിർമ്മിക്കുന്നതിനായി ഉപയോഗിക്കുന്ന അടിസ്ഥാന മാർക്ക്അപ്പ് ഭാഷ ഏതാണ്?",
         options: ["സി പ്ലസ് പ്ലസ്", "പൈത്തൺ", "ഹൈപ്പർടെക്സ്റ്റ് മാർക്ക്അപ്പ് ലാംഗ്വേജ്", "ജാവാ സ്ക്രിപ്റ്റ്"],
         ans: 2,
-        exp: "വെബ് പേജുകളുടെ രൂപകൽപ്പനയ്ക്കും ഘടനയ്ക്കും ഉപയോഗിക്കുന്ന അടിസ്ഥാന ഭാഷയാണ് HTML (HyperText Markup Language)[span_19](start_span)[span_19](end_span)."
+        exp: "വെബ് പേജുകളുടെ രൂപകൽപ്പനയ്ക്കും ഘടനയ്ക്കും ഉപയോഗിക്കുന്ന അടിസ്ഥാന ഭാഷയാണ് HTML (HyperText Markup Language)[span_20](start_span)[span_20](end_span)."
       },
       {
         q: "ഇന്റർനെറ്റിന്റെയും ഡൊമൈൻ നാമങ്ങളുടെയും ഘടനയെക്കുറിച്ചുള്ള പ്രസ്താവനകളിൽ തെറ്റായവ ഏവ?\n1. .gov എന്നത് വിദ്യാഭ്യാസ സ്ഥാപനങ്ങൾക്കായുള്ള ഡൊമൈൻ എക്സ്റ്റൻഷനാണ്.\n2. .org എന്നത് വാണിജ്യേതര സംഘടനകൾ ഉപയോഗിക്കുന്ന ഡൊമൈൻ ആണ്.\n3. .com എന്നത് വാണിജ്യ സ്ഥാപനങ്ങൾക്കായുള്ള ഡൊമൈൻ ആണ്.",
         options: ["2, 3 തെറ്റാണ്", "1 മാത്രം തെറ്റാണ്", "2 മാത്രം തെറ്റാണ്", "എല്ലാം തെറ്റാണ്"],
         ans: 1,
-        exp: ".gov സർക്കാർ സ്ഥാപനങ്ങൾക്കാണ് നൽകുന്നത്; വിദ്യാഭ്യാസ സ്ഥാപനങ്ങൾ ഉപയോഗിക്കുന്നത് .edu അല്ലെങ്കിൽ .ac ആണ്. അതിനാൽ 1 മാത്രം തെറ്റാണ്[span_20](start_span)[span_20](end_span)."
+        exp: ".gov സർക്കാർ സ്ഥാപനങ്ങൾക്കാണ് നൽകുന്നത്; വിദ്യാഭ്യാസ സ്ഥാപനങ്ങൾ ഉപയോഗിക്കുന്നത് .edu അല്ലെങ്കിൽ .ac ആണ്. അതിനാൽ 1 മാത്രം തെറ്റാണ്[span_21](start_span)[span_21](end_span)."
       },
       {
         q: "കംപ്യൂട്ടറിന്റെ സിപിയുവിനുള്ളിൽ ഏറ്റവും കുറഞ്ഞ സംഭരണശേഷിയുള്ളതും ഏറ്റവും വേഗതയേറിയതുമായ മെമ്മറി ഏത്?",
         options: ["പ്രൈമറി റാം", "രജിസ്റ്റർ", "കാഷ് മെമ്മറി", "സോളിഡ് സ്റ്റേറ്റ് ഡ്രൈവ്"],
         ans: 1,
-        exp: "സിപിയുവിനുള്ളിൽ നേരിട്ട് ഘടിപ്പിച്ചിട്ടുള്ള ഏറ്റവും ചെറിയതും പ്രൊസസ്സറിന്റെ അതേ വേഗതയിൽ പ്രവർത്തിക്കുന്നതുമായ മെമ്മറിയാണ് രജിസ്റ്ററുകൾ (Registers)[span_21](start_span)[span_21](end_span)."
+        exp: "സിപിയുവിനുള്ളിൽ നേരിട്ട് ഘടിപ്പിച്ചിട്ടുള്ള ഏറ്റവും ചെറിയതും പ്രൊസസ്സറിന്റെ അതേ വേഗതയിൽ പ്രവർത്തിക്കുന്നതുമായ മെമ്മറിയാണ് രജിസ്റ്ററുകൾ (Registers)[span_22](start_span)[span_22](end_span)."
       },
       {
         q: "സിപിയുവിൻ്റെയും റാം മെമ്മറിയുടെയും പ്രത്യേകതകളെ സംബന്ധിച്ച പ്രസ്താവനകളിൽ തെറ്റായവ ഏവ?\n1. സിപിയുവിനെ കംപ്യൂട്ടറിന്റെ തലച്ചോറ് എന്ന് വിശേഷിപ്പിക്കുന്നു.\n2. കംപ്യൂട്ടറിൽ റാം (RAM) കൂടുതലുള്ളപ്പോൾ കൂടുതൽ പ്രോഗ്രാമുകൾ ഒരേസമയം പ്രവർത്തിപ്പിക്കാം.\n3. റാം ഒരു കാന്തിക ഡിസ്‌ക് ആയതിനാൽ കറങ്ങുന്ന ഭാഗങ്ങൾ ഉള്ള മെക്കാനിക്കൽ ഉപകരണമാണ്.",
         options: ["1, 2 തെറ്റാണ്", "1 മാത്രം തെറ്റാണ്", "3 മാത്രം തെറ്റാണ്", "എല്ലാം തെറ്റാണ്"],
         ans: 2,
-        exp: "റാം ഒരു അർദ്ധചാലക (Semiconductor) ഇലക്ട്രോണിക് ചിപ്പാണ്; ഇതിൽ കറങ്ങുന്ന കാന്തിക ഭാഗങ്ങളില്ല. അതിനാൽ 3 മാത്രം തെറ്റാണ്[span_22](start_span)[span_22](end_span)."
+        exp: "റാം ഒരു അർദ്ധചാലക (Semiconductor) ഇലക്ട്രോണിക് ചിപ്പാണ്; ഇതിൽ കറങ്ങുന്ന കാന്തിക ഭാഗങ്ങളില്ല. അതിനാൽ 3 മാത്രം തെറ്റാണ്[span_23](start_span)[span_23](end_span)."
       },
       {
         q: "ഇന്റർനെറ്റിന്റെ പിതാവ് എന്നറിയപ്പെടുന്ന പ്രമുഖ കംപ്യൂട്ടർ ശാസ്ത്രജ്ഞൻ ആര്?",
         options: ["വിന്റ് സെർഫ്", "ടിം ബർണേഴ്‌സ് ലീ", "ചാൾസ് ബാബേജ്", "അലൻ ട്യൂറിംഗ്"],
         ans: 0,
-        exp: "TCP/IP പ്രോട്ടോക്കോളിന്റെ രൂപകൽപ്പനയിൽ പങ്കുവഹിച്ച വിന്റൺ ഗ്രേ സെർഫ് (Vint Cerf) ആണ് ഇൻ്റർനെറ്റിൻ്റെ പിതാവ് എന്നറിയപ്പെടുന്നത്[span_23](start_span)[span_23](end_span)."
+        exp: "TCP/IP പ്രോട്ടോക്കോളിന്റെ രൂപകൽപ്പനയിൽ പങ്കുവഹിച്ച വിന്റൺ ഗ്രേ സെർഫ് (Vint Cerf) ആണ് ഇൻ്റർനെറ്റിൻ്റെ പിതാവ് എന്നറിയപ്പെടുന്നത്[span_24](start_span)[span_24](end_span)."
       },
       {
         q: "കംപ്യൂട്ടർ സ്ക്രീനിലെ ദൃശ്യങ്ങളുടെ വ്യക്തത നിർണ്ണയിക്കുന്ന ഏറ്റവും ചെറിയ ബിന്ദുക്കൾ ഏത് പേരിൽ അറിയപ്പെടുന്നു?",
         options: ["ബിറ്റുകൾ", "ഡ്രോപ്പുകൾ", "പിക്സലുകൾ", "ഫോണ്ടുകൾ"],
         ans: 2,
-        exp: "മോണിറ്റർ ഡിസ്പ്ലേയിലെ ചിത്രം നിർമ്മിക്കപ്പെടുന്ന അടിസ്ഥാന ദൃശ്യ ബിന്ദുക്കളെയാണ് പിക്സലുകൾ (Pixels - Picture Elements) എന്ന് വിളിക്കുന്നത്[span_24](start_span)[span_24](end_span)."
+        exp: "മോണിറ്റർ ഡിസ്പ്ലേയിലെ ചിത്രം നിർമ്മിക്കപ്പെടുന്ന അടിസ്ഥാന ദൃശ്യ ബിന്ദുക്കളെയാണ് പിക്സലുകൾ (Pixels - Picture Elements) എന്ന് വിളിക്കുന്നത്[span_25](start_span)[span_25](end_span)."
       },
       {
         q: "ലോകത്ത് ആദ്യമായി രൂപംകൊണ്ട കംപ്യൂട്ടർ നെറ്റ‌്വർക്കായ ആർപാനെറ്റ് (ARPANET) വികസിപ്പിച്ച രാജ്യം ഏത്?",
         options: ["സോവിയറ്റ് യൂണിയൻ", "യുണൈറ്റഡ് കിംഗ്‌ഡം", "ജർമ്മനി", "യുണൈറ്റഡ് സ്റ്റേറ്റ്സ് ഓഫ് അമേരിക്ക"],
         ans: 3,
-        exp: "1969-ൽ അമേരിക്കൻ പ്രതിരോധ വകുപ്പിൻ്റെ അഡ്വാൻസ്‌ഡ് റിസർച്ച് പ്രോജക്ട‌്‌സ് ഏജൻസി (DARPA) ആണ് ഇന്നത്തെ ഇൻ്റർനെറ്റിന്റെ മുൻഗാമിയായ ആർപാനെറ്റ് വികസിപ്പിച്ചത്[span_25](start_span)[span_25](end_span)."
+        exp: "1969-ൽ അമേരിക്കൻ പ്രതിരോധ വകുപ്പിൻ്റെ അഡ്വാൻസ്‌ഡ് റിസർച്ച് പ്രോജക്ട‌്‌സ് ഏജൻസി (DARPA) ആണ് ഇന്നത്തെ ഇൻ്റർനെറ്റിന്റെ മുൻഗാമിയായ ആർപാനെറ്റ് വികസിപ്പിച്ചത്[span_26](start_span)[span_26](end_span)."
       }
     ];
 
@@ -479,7 +479,7 @@
     document.getElementById('fullscreenToggleBtn').onclick = () => {
       if (!document.fullscreenElement) {
         document.documentElement.requestFullscreen().catch(err => {
-          alert(`Error attempting full-screen: ${err.message}`);
+          alert(`Error: ${err.message}`);
         });
       } else {
         if (document.exitFullscreen) { document.exitFullscreen(); }
@@ -672,7 +672,7 @@
       document.getElementById('resultCandidateInfo').innerText = `വിദ്യാർത്ഥി: ${currentUser.name} | മൊബൈൽ: ${currentUser.phone}`;
       document.getElementById('pdfReportCandidateSubheader').innerText = `വിദ്യാർത്ഥി: ${currentUser.name} (${currentUser.phone}) | സ്കോർ: ${formattedScore} / 25`;
 
-      const downloadBtn = document.getElementById('originalPdfDownloadLink');
+      const downloadBtn = document.getElementById('downloadOriginalNoteBtn');
       const lockNotice = document.getElementById('pdfLockNotice');
 
       if (scoreNum >= 7.0 && ORIGINAL_PDF_URL) {
@@ -684,7 +684,6 @@
       }
 
       renderSolutions();
-      setupClickableReviewCards();
 
       quizScreen.classList.add('hidden');
       quizScreen.classList.remove('flex');
@@ -701,86 +700,9 @@
         wrongQuestions: wrongQuestionsList
       });
 
-      // ഫലം വന്ന ഉടൻ തന്നെ സൈഡ് റാങ്ക് ലിസ്റ്റും ചോദ്യങ്ങളുടെ അനാലിസിസും ഫെച്ച് ചെയ്യുന്നു
+      // ഫലം വന്ന ഉടൻ തന്നെ സൈഡ് റാങ്ക് ലിസ്റ്റും എറർ അനാലിസിസും ലൈക്കുകളും സിങ്ക് ചെയ്യുന്നു
       fetchSideLeaderboardAndAnalytics();
     }
-
-    function setupClickableReviewCards() {
-      document.getElementById('filterCorrectCard').onclick = () => renderFilteredQuestions('correct');
-      document.getElementById('filterWrongCard').onclick = () => renderFilteredQuestions('wrong');
-      document.getElementById('filterSkippedCard').onclick = () => renderFilteredQuestions('skipped');
-    }
-
-    function renderFilteredQuestions(type) {
-      const area = document.getElementById('filterReviewArea');
-      const title = document.getElementById('filterReviewTitle');
-      const list = document.getElementById('filterReviewList');
-      const letters = ['A', 'B', 'C', 'D'];
-
-      list.innerHTML = '';
-      area.classList.remove('hidden');
-
-      if (type === 'correct') {
-        title.innerHTML = `✅ നിങ്ങൾ ശരിയാക്കിയ ചോദ്യങ്ങൾ (Correct Answers)`;
-        title.className = "text-sm font-bold text-emerald-400";
-      } else if (type === 'wrong') {
-        title.innerHTML = `❌ നിങ്ങൾക്ക് തെറ്റിയ ചോദ്യങ്ങൾ (Wrong Answers)`;
-        title.className = "text-sm font-bold text-rose-400";
-      } else {
-        title.innerHTML = `⏭️ നിങ്ങൾ ഒഴിവാക്കിയ ചോദ്യങ്ങൾ (Skipped Questions)`;
-        title.className = "text-sm font-bold text-slate-300";
-      }
-
-      let count = 0;
-      questionsData.forEach((q, idx) => {
-        const uAns = userAnswers[idx];
-        const isCorrect = uAns === q.ans;
-        const isWrong = uAns !== null && !isCorrect;
-        const isSkipped = uAns === null;
-
-        if ((type === 'correct' && isCorrect) || (type === 'wrong' && isWrong) || (type === 'skipped' && isSkipped)) {
-          count++;
-          const card = document.createElement('div');
-          card.className = "p-3 rounded-xl border border-slate-700 bg-slate-900/90 space-y-2 text-xs";
-          
-          let optsMarkup = '<div class="grid grid-cols-1 sm:grid-cols-2 gap-1.5 mt-2">';
-          q.options.forEach((opt, oIdx) => {
-            let optClass = 'p-2 rounded-lg border flex items-center space-x-2 text-[11px] ';
-            if (oIdx === q.ans) {
-              optClass += 'border-emerald-500 bg-emerald-950/40 text-emerald-300 font-semibold';
-            } else if (oIdx === uAns && !isCorrect) {
-              optClass += 'border-rose-500 bg-rose-950/40 text-rose-300 line-through';
-            } else {
-              optClass += 'border-slate-800 text-slate-400';
-            }
-            optsMarkup += `<div class="${optClass}"><span>${letters[oIdx]})</span><span>${opt}</span></div>`;
-          });
-          optsMarkup += '</div>';
-
-          card.innerHTML = `
-            <div class="flex items-center justify-between">
-              <span class="font-bold text-cyan-400">ചോദ്യം ${idx + 1}</span>
-            </div>
-            <p class="text-slate-200 font-medium">${q.q}</p>
-            ${optsMarkup}
-            <div class="bg-slate-800 p-2 rounded-lg border border-slate-700 mt-1">
-              <span class="font-bold text-cyan-400">വിശദീകരണം:</span> <span class="text-slate-300">${q.exp}</span>
-            </div>
-          `;
-          list.appendChild(card);
-        }
-      });
-
-      if (count === 0) {
-        list.innerHTML = `<p class="py-3 text-center text-slate-400">ഈ വിഭാഗത്തിൽ ചോദ്യങ്ങൾ ഒന്നുമില്ല.</p>`;
-      }
-
-      area.scrollIntoView({ behavior: 'smooth' });
-    }
-
-    document.getElementById('closeFilterReviewBtn').onclick = () => {
-      document.getElementById('filterReviewArea').classList.add('hidden');
-    };
 
     function openFeedbackModal() {
       document.getElementById('feedbackModal').classList.remove('hidden');
@@ -794,14 +716,9 @@
 
     function sendResultToGoogleSheet(payload) {
       const statusDiv = document.getElementById('sheetStatus');
-      if (!GOOGLE_SHEET_WEBAPP_URL || GOOGLE_SHEET_WEBAPP_URL.includes("YOUR_APPS_SCRIPT_WEBAPP_URL_HERE")) {
-        statusDiv.innerText = "Google Sheet ലിങ്ക് നൽകിയിട്ടില്ല.";
-        statusDiv.classList.remove('animate-pulse');
-        return;
-      }
+      if (!GOOGLE_SHEET_WEBAPP_URL) return;
 
       payload.sheetName = QUIZ_SHEET_NAME;
-      payload.wrongQuestionsCount = wrongQuestionsList.length;
       payload.wrongQuestionsList = wrongQuestionsList.join(", ");
 
       fetch(GOOGLE_SHEET_WEBAPP_URL, {
@@ -821,7 +738,7 @@
     }
 
     function sendReportQuestionToGoogleSheet(qNum, reason) {
-      if (!GOOGLE_SHEET_WEBAPP_URL || GOOGLE_SHEET_WEBAPP_URL.includes("YOUR_APPS_SCRIPT_WEBAPP_URL_HERE")) return;
+      if (!GOOGLE_SHEET_WEBAPP_URL) return;
       fetch(GOOGLE_SHEET_WEBAPP_URL, {
         method: 'POST',
         mode: 'no-cors',
@@ -836,7 +753,7 @@
     }
 
     function sendFeedbackToGoogleSheet(phone, feedback) {
-      if (!GOOGLE_SHEET_WEBAPP_URL || GOOGLE_SHEET_WEBAPP_URL.includes("YOUR_APPS_SCRIPT_WEBAPP_URL_HERE")) return;
+      if (!GOOGLE_SHEET_WEBAPP_URL) return;
       fetch(GOOGLE_SHEET_WEBAPP_URL, {
         method: 'POST',
         mode: 'no-cors',
@@ -889,7 +806,7 @@
             <span class="font-bold text-cyan-400">ചോദ്യം ${idx + 1}</span>
             <div class="flex items-center space-x-1.5">
               ${badge}
-              <button type="button" onclick="handleReportQuestion(${idx + 1})" class="px-1.5 py-0.5 bg-rose-950 border border-rose-700 text-[9px] font-bold text-rose-300 rounded">Report</button>
+              <button type="button" onclick="handleReportQuestion(${idx + 1})" class="px-1.5 py-0.5 bg-rose-950 border border-rose-700 text-[9px] font-bold text-rose-300 rounded">Report 🚩</button>
             </div>
           </div>
           <p class="font-medium text-slate-200">${q.q}</p>
@@ -902,93 +819,75 @@
       });
     }
 
-    // 🌟 2-Column Layout-ൽ റാങ്ക് ലിസ്റ്റും ഓരോ ചോദ്യവും എത്ര പേർക്ക് തെറ്റി എന്ന അനാലിസിസും ഫെച്ച് ചെയ്യുന്ന ഫങ്ഷൻ
+    // 🌟 2-Column Layout-ൽ റാങ്ക് ലിസ്റ്റും ഓരോ ചോദ്യവും എത്ര പേർക്ക് തെറ്റി എന്ന എറർ അനാലിസിസും ഫെച്ച് ചെയ്യുന്ന ഫങ്ഷൻ
     function fetchSideLeaderboardAndAnalytics() {
       const loader = document.getElementById('sideLeaderboardLoading');
       const wrapper = document.getElementById('sideLeaderboardWrapper');
       const tbody = document.getElementById('sideLeaderboardBody');
       const analyticsContainer = document.getElementById('analyticsContainer');
 
-      if (!GOOGLE_SHEET_WEBAPP_URL || GOOGLE_SHEET_WEBAPP_URL.includes("YOUR_APPS_SCRIPT_WEBAPP_URL_HERE")) {
-        loader.innerText = "URL സജ്ജീകരിച്ചിട്ടില്ല.";
-        return;
-      }
-
       fetch(`${GOOGLE_SHEET_WEBAPP_URL}?sheet=${encodeURIComponent(QUIZ_SHEET_NAME)}`)
         .then(res => res.json())
         .then(data => {
-          loader.classList.add('hidden');
-          wrapper.classList.remove('hidden');
-          tbody.innerHTML = '';
+          if (loader) loader.classList.add('hidden');
+          if (wrapper) wrapper.classList.remove('hidden');
+          if (tbody) tbody.innerHTML = '';
 
-          if (!data || data.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="3" class="py-4 text-center text-slate-500">ഡാറ്റ ലഭ്യമല്ല.</td></tr>';
-            analyticsContainer.innerHTML = '<p class="text-slate-500 text-center py-2">വിവരങ്ങൾ ലഭ്യമല്ല.</p>';
-            return;
-          }
+          // 1. റാങ്ക് ലിസ്റ്റ് അപ്ഡേറ്റ് ചെയ്യുന്നു
+          const list = data.leaderboard || [];
+          list.sort((a, b) => b.score - a.score || b.correct - a.correct);
 
-          // റാങ്ക് ലിസ്റ്റ് സോർട്ട് ചെയ്യുന്നു
-          data.sort((a, b) => b.score - a.score || b.correct - a.correct);
-
-          // 🌟 ഓരോ ചോദ്യവും എത്ര പേർക്ക് തെറ്റി എന്ന് കണക്കാക്കുന്നു (Wrong Questions Analysis)
-          let wrongCounts = {};
-          let totalStudents = data.length;
-
-          data.forEach(entry => {
-            // ഷീറ്റിൽ നിന്ന് വരുന്ന wrongQuestionsList അല്ലെങ്കിൽ wrongQuestions എമൗണ്ട് പരിശോധിക്കുന്നു
-            let wListStr = entry.wrongQuestionsList || entry.WrongQuestionsList || "";
-            if (wListStr) {
-              let nums = String(wListStr).split(",").map(n => parseInt(n.trim())).filter(n => !isNaN(n));
-              nums.forEach(qNum => {
-                wrongCounts[qNum] = (wrongCounts[qNum] || 0) + 1;
-              });
-            }
-          });
-
-          // റാങ്ക് ലിസ്റ്റ് ടേബിൾ ഫിൽ ചെയ്യുന്നു (Top 10)
-          data.slice(0, 10).forEach((entry, idx) => {
-            const masked = entry.phone ? String(entry.phone).substring(0, 5) + '*****' : '---';
-            const row = document.createElement('tr');
-            row.className = 'hover:bg-slate-700/30';
-            row.innerHTML = `
-              <td class="py-1.5 px-2 font-mono font-bold">${idx + 1}</td>
-              <td class="py-1.5 px-2 font-medium truncate max-w-[100px]">${entry.name}</td>
-              <td class="py-1.5 px-2 text-right font-mono font-bold text-cyan-400">${Number(entry.score).toFixed(2)}</td>
-            `;
-            tbody.appendChild(row);
-          });
-
-          // 🌟 ചോദ്യങ്ങളുടെ അനാലിസിസ് ബോക്സ് ഫിൽ ചെയ്യുന്നു
-          analyticsContainer.innerHTML = '';
-          let sortedWrong = Object.keys(wrongCounts).sort((a, b) => wrongCounts[b] - wrongCounts[a]);
-
-          if (sortedWrong.length === 0) {
-            analyticsContainer.innerHTML = '<p class="text-slate-500 text-center py-3 text-xs">ഇതുവരെ തെറ്റുകൾ രേഖപ്പെടുത്തിയിട്ടില്ല.</p>';
+          if (list.length === 0) {
+            if (tbody) tbody.innerHTML = '<tr><td colspan="3" class="py-3 text-center text-slate-500">ഡാറ്റ ലഭ്യമല്ല.</td></tr>';
           } else {
-            sortedWrong.forEach(qNum => {
-              let count = wrongCounts[qNum];
-              let percentage = Math.round((count / totalStudents) * 100);
-              
-              let barColor = percentage > 50 ? 'bg-rose-500' : percentage > 20 ? 'bg-amber-500' : 'bg-cyan-500';
-
-              let item = document.createElement('div');
-              item.className = "bg-slate-900/80 p-2.5 rounded-xl border border-slate-700 space-y-1";
-              item.innerHTML = `
-                <div class="flex justify-between items-center text-[11px]">
-                  <span class="font-bold text-slate-200">ചോദ്യം ${qNum}</span>
-                  <span class="text-rose-400 font-bold">${count} പേർക്ക് തെറ്റി (${percentage}%)</span>
-                </div>
-                <div class="w-full bg-slate-800 rounded-full h-1.5 overflow-hidden">
-                  <div class="${barColor} h-1.5 rounded-full" style="width: ${percentage}%"></div>
-                </div>
+            list.slice(0, 15).forEach((entry, idx) => {
+              const row = document.createElement('tr');
+              row.className = 'hover:bg-slate-700/30';
+              row.innerHTML = `
+                <td class="py-1 px-2 font-mono font-bold">${idx + 1}</td>
+                <td class="py-1 px-2 font-medium truncate max-w-[110px]">${entry.name}</td>
+                <td class="py-1 px-2 text-right font-mono font-bold text-cyan-400">${Number(entry.score).toFixed(2)}</td>
               `;
-              analyticsContainer.appendChild(item);
+              if (tbody) tbody.appendChild(row);
             });
           }
+
+          // 2. ചോദ്യങ്ങളുടെ എറർ അനാലിസിസ് (ഉദാ: ചോദ്യം 5 - 20 പേർക്ക് തെറ്റി)
+          const errList = data.errorStats || [];
+          errList.sort((a, b) => b.wrongCount - a.wrongCount); // കൂടുതൽ തെറ്റിയവ മുകളിൽ വരാൻ
+
+          if (analyticsContainer) {
+            analyticsContainer.innerHTML = '';
+            let hasErrors = false;
+
+            errList.forEach(item => {
+              if (item.wrongCount > 0) {
+                hasErrors = true;
+                const el = document.createElement('div');
+                el.className = "bg-slate-900/80 p-2 rounded-lg border border-slate-700 flex justify-between items-center";
+                el.innerHTML = `
+                  <span class="font-bold text-slate-200">${item.question}</span>
+                  <span class="text-rose-400 font-bold bg-rose-950/60 px-2 py-0.5 rounded border border-rose-800 text-[10px]">
+                    ${item.wrongCount} പേർക്ക് തെറ്റി
+                  </span>
+                `;
+                analyticsContainer.appendChild(el);
+              }
+            });
+
+            if (!hasErrors) {
+              analyticsContainer.innerHTML = '<p class="text-slate-500 text-center py-2 text-[11px]">ഇതുവരെ തെറ്റുകൾ ഒന്നും രേഖപ്പെടുത്തിയിട്ടില്ല.</p>';
+            }
+          }
+
+          // 3. ലൈക്ക് / ഡിസ്‌ലൈക്ക് കൗണ്ട് അപ്ഡേറ്റ്
+          const lElem = document.getElementById('displayLikesCount');
+          const dElem = document.getElementById('displayDislikesCount');
+          if (lElem) lElem.innerText = data.likes || 0;
+          if (dElem) dElem.innerText = data.dislikes || 0;
         })
         .catch(() => {
-          loader.innerText = "റാങ്ക് ലിസ്റ്റ് ലോഡ് ചെയ്യാൻ കഴിഞ്ഞില്ല.";
-          analyticsContainer.innerHTML = '<p class="text-rose-400 text-center py-2">ലോഡ് ചെയ്യുന്നതിൽ തടസ്സം നേരിട്ടു.</p>';
+          if (loader) loader.innerText = "വിവരങ്ങൾ എടുക്കുന്നതിൽ തടസ്സം നേരിട്ടു.";
         });
     }
 
@@ -1007,7 +906,7 @@
       btn.disabled = true;
 
       html2pdf().set(opt).from(element).save().then(() => {
-        btn.innerText = '📥 PDF ഡൗൺലോഡ്';
+        btn.innerText = '📥 PDF സേവ് ചെയ്യുക';
         btn.disabled = false;
       });
     });
